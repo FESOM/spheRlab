@@ -1,0 +1,69 @@
+sl.plot.init <-
+function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-90,90),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name="~/sl.plot.pdf",width=12) {
+	
+	pir = list(projection=projection)
+	
+	if (projection == "lonlat") {
+		xlab = ""
+		ylab = ""
+		if (lonlat.lonrange[2] <= lonlat.lonrange[1]) {stop("lonlat.lonrange must be given in increasing order")}
+		if (lonlat.lonrange[2] > 360 || lonlat.lonrange[1] < -360) {stop("lonlat.lonrange must be within [-360,360]")}
+		if (lonlat.lonrange[2] - lonlat.lonrange[1] > 360) {stop("lonlat.lonrange spans more than 360 degree")}
+		lat.span = lonlat.latrange
+		xlim = extendrange(lonlat.lonrange,f=0.1)
+		ylim = extendrange(lonlat.latrange,f=0.1)
+		pir$lonlat.lonrange = lonlat.lonrange
+		pir$lonlat.latrange = lonlat.latrange
+	} else if (projection == "polar") {
+		xlab = ""
+		ylab = ""
+		if (polar.latbound < 0 || polar.latbound >= 90) {stop("polar.latbound must be in [0,90)")}
+		xlim = extendrange(c(sin(pi*(polar.latbound-90)/180),sin(pi*(90-polar.latbound)/180)),f=0.1)
+		ylim = xlim
+		abg = sl.lonlatrot2abg(polar.lonlatrot)
+		pir$polar.lonlatrot = polar.lonlatrot
+		pir$polar.latbound = polar.latbound
+		pir$alpha = abg[1]
+		pir$beta = abg[2]
+		pir$gamma = abg[3]
+	} else if (projection == "regpoly") {
+		xlab = ""
+		ylab = ""
+		if (regpoly.lat0 <= 0 || regpoly.lat0 >= 90) {stop("regpoly.lat0 must be in (0,90)")}
+		regpoly.N = round(regpoly.N)
+		if (regpoly.N < 3) {stop("regpoly.N must be >= 3")}
+		xlim = extendrange(c(sin(pi*(regpoly.lat0-90)/180),sin(pi*(90-regpoly.lat0)/180)),f=0.1)
+		ylim = xlim
+		abg = sl.lonlatrot2abg(regpoly.lonlatrot)
+		pir$regpoly.lonlatrot = regpoly.lonlatrot
+		pir$regpoly.N = regpoly.N
+		pir$regpoly.lat0 = regpoly.lat0
+		pir$alpha = abg[1]
+		pir$beta = abg[2]
+		pir$gamma = abg[3]
+		pir$regpoly.z0 = sin(pi*regpoly.lat0/180)
+		pir$regpoly.rotfrac = regpoly.rotfrac
+		pir$regpoly.cornerlons0 = (seq(0,regpoly.N-1)+regpoly.rotfrac)*360/regpoly.N
+		pir$regpoly.lat0i = sl.p2p(pir$regpoly.cornerlons0[1],regpoly.lat0,pir$regpoly.cornerlons0[2],regpoly.lat0,0.5)$lat
+		rot.inv = sl.rot(pir$regpoly.cornerlons0,regpoly.lat0,pir$alpha,pir$beta,pir$gamma,invert=TRUE)
+		pir$regpoly.cornerlons = rot.inv$lon
+		pir$regpoly.cornerlats = rot.inv$lat
+	} else {
+		stop("projections other than 'lonlat', 'polar', and 'regpoly' not yet implemented")
+	}
+	
+	if (do.init) {
+		height = width * (ylim[2]-ylim[1]) / (xlim[2]-xlim[1])
+		pdf(file.name,width,height)
+		par(mar=rep(0,4))
+		plot(x=NULL,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,main=main,xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg=col.background)
+	}
+	
+	pir$xlim = xlim
+	pir$ylim = ylim
+	pir$xshift = xshift
+	pir$yshift = yshift
+	
+	return(pir)
+	
+}
