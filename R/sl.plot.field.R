@@ -14,6 +14,10 @@ function (plot.init.res,num,lon.v,lat.v,fill=TRUE,col.fill="colbar",border=FALSE
 		sl.plot.polygon.qad(plot.init.res,lon.v[np,],lat.v[np,],fill=fill,col.fill=cb.fill,border=border,col.border=cb.border,border.lwd=border.lwd,border.lty=border.lty)
 	}
 	
-	return(get0("colbar.res"))
+	if (exists("colbar.res")) {
+		return(colbar.res)
+	} else {
+		return(NULL)
+	}
 	
 }

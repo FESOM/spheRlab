@@ -29,6 +29,10 @@ function (plot.init.res,lon,lat,elem,border=TRUE,col.border="black",length.corr=
 		}
 	}
 	
-	return(get0("colbar.res"))
+	if (exists("colbar.res")) {
+		return(colbar.res)
+	} else {
+		return(NULL)
+	}
 	
 }

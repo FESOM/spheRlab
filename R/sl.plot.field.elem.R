@@ -13,6 +13,10 @@ function (plot.init.res,num,lon,lat,elem,fill=TRUE,col.fill="colbar",border=FALS
 	
 	colbar.res = sl.plot.field(plot.init.res=plot.init.res,num=num.elem,lon.v=lon.elem,lat.v=lat.elem,fill=fill,col.fill=col.fill,border=border,col.border=col.border,colbar=colbar,colbar.breaks=colbar.breaks,colbar.breaks.log=colbar.breaks.log,border.lwd=border.lwd,border.lty=border.lty)
 	
-	return(get0("colbar.res"))
+	if (exists("colbar.res")) {
+		return(colbar.res)
+	} else {
+		return(NULL)
+	}
 	
 }
