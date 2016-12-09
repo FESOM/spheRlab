@@ -43,6 +43,7 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 		seg.x = x[c(ns-1,ns)]
 		seg.y = y[c(ns-1,ns)]
 		if (projection == "lonlat") {
+			lonlat.lonrange = plot.init.res$lonlat.lonrange
 			if (sum(visible[c(ns-1,ns)]) == 1) {
 				if (min(seg.x) < lonlat.lonrange[1]) {
 					boundline.lon = lonlat.lonrange[1]

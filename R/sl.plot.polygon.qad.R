@@ -111,7 +111,8 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 	} else {
 		
 		if (projection == "lonlat") {
-			stop("lonlat projection not yet implemented for polygons")
+			#stop("lonlat projection not yet implemented for polygons")
+			lonlat.lonrange = plot.init.res$lonlat.lonrange
 			if (sum(visible[c(ns-1,ns)]) == 1) {
 				if (min(seg.x) < lonlat.lonrange[1]) {
 					boundline.lon = lonlat.lonrange[1]
