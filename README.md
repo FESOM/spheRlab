@@ -1,6 +1,4 @@
-## spheRlab README file
-
-###########
+# spheRlab README file
 
 spheRlab is an R package with numerous functions related to spherical geometry. The package is intended in particular for analysis and plotting of geophysical unstructured-grid data, for example data produced by the Finite Element (or volumE) Sea-ice Ocean Model (FESOM).
 
@@ -10,12 +8,11 @@ The further development of spheRlab is hoped to get some boost by the move of th
 
 Starting with version 1.0.0 on 8 December 2016, the code is known to be rich in bugs and needs for improvements. Any help and other feedback is greatly appreciated, either directly on GitHub or via email to <helge.goessling@awi.de>!
 
-##########
 
 What follows is a list of what needs and/or could be done to improve spheRlab:
 
-###
-URGENT
+
+## URGENT
 
 * make sure that lonlat plotting works fine
 
@@ -23,8 +20,7 @@ URGENT
 
 * add examples - for (almost) every function
 
-###
-NEXT
+## NEXT
 
 * finish sl.polygon.polygon.intersect and sl.polygon.rotdir (or omit?).
 
@@ -44,8 +40,7 @@ NEXT
 
 * write a decent vignette?
 
-###
-WISHLIST
+## WISHLIST
 
 * split sl.read.FESOM into a more basic read function and multiple grid analysis functions
 
