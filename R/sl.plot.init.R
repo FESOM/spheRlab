@@ -7,7 +7,7 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-90,
 		xlab = ""
 		ylab = ""
 		if (lonlat.lonrange[2] <= lonlat.lonrange[1]) {stop("lonlat.lonrange must be given in increasing order")}
-		if (lonlat.lonrange[2] > 360 || lonlat.lonrange[1] < -360) {stop("lonlat.lonrange must be within [-360,360]")}
+		if (lonlat.lonrange[2] > 360 || lonlat.lonrange[1] <= -360) {stop("lonlat.lonrange must be within (-360,360]")}
 		if (lonlat.lonrange[2] - lonlat.lonrange[1] > 360) {stop("lonlat.lonrange spans more than 360 degree")}
 		lat.span = lonlat.latrange
 		xlim = extendrange(lonlat.lonrange,f=0.1)

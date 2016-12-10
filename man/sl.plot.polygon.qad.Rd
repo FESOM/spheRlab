@@ -8,7 +8,7 @@ Plot Polygon
 Plot a polygon into a spheRlab plot.
 }
 \usage{
-sl.plot.polygon.qad(plot.init.res, lon, lat, fill = TRUE, col.fill = "black", border = FALSE, col.border = col.fill, border.lwd = 0.01, border.lty = 1, ignore.visibility = FALSE, remove.identical.neighbours = TRUE)
+sl.plot.polygon.qad(plot.init.res, lon, lat, fill = TRUE, col.fill = "black", border = FALSE, col.border = col.fill, border.lwd = 0.01, border.lty = 1, ignore.visibility = FALSE, remove.identical.neighbours = TRUE, split.side = "none")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -44,6 +44,9 @@ a logical value indicating whether or not the polygon shall be attempted to be d
 }
   \item{remove.identical.neighbours}{
 a logical value indicating whether or not identical neighbours shall be removed from the polygon vertices before plotting.
+}
+  \item{splitside}{
+a character. If not \code{"none"}, it indicates a nested call with a polygon splitted by a circular boundary.
 }
 }
 \details{
