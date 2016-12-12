@@ -45,9 +45,6 @@ a logical value indicating whether or not the polygon shall be attempted to be d
   \item{remove.identical.neighbours}{
 a logical value indicating whether or not identical neighbours shall be removed from the polygon vertices before plotting.
 }
-  \item{splitside}{
-a character. If not \code{"none"}, it indicates a nested call with a polygon splitted by a circular boundary.
-}
 }
 \details{
 This is one of the lowest-level plotting functions of spheRlab. First the visibility of the polygon vertices is checked, which depends on the projection and plot domain boundaries. A polygon for which all vertices are invisible is not drawn. (This implies that a polygon is not drawn if all vertices are invisible, even if some other part of the polygon is visible.) Then for two partly visible edges an intersection point with the boundary is computed and the two intersection points are added to the polygon, replacing the (one or more) invisible vertices. The resulting polygon is then drawn.

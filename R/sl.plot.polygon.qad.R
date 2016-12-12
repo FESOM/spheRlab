@@ -1,5 +1,5 @@
 sl.plot.polygon.qad <-
-function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.border=col.fill,border.lwd=0.01,border.lty=1,ignore.visibility=FALSE,remove.identical.neighbours=TRUE,splitside="none") {
+function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.border=col.fill,border.lwd=0.01,border.lty=1,ignore.visibility=FALSE,remove.identical.neighbours=TRUE) {
 	
 	L = length(lon)
 	if (remove.identical.neighbours) {
@@ -104,58 +104,92 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 		
 	if (projection == "lonlat") {
 		lonlat.lonrange = plot.init.res$lonlat.lonrange
-		if (splitside == "none") {
-			# need to check if this is a circular polygon that needs to be drawn on both sides, i.e. twice
-			if (min(x) < lonlat.lonrange[1]) {
-				boundline.lon = lonlat.lonrange[1]
-			} else if (max(seg.x) > lonlat.lonrange[2]) {
-				boundline.lon = lonlat.lonrange[2]
+		lonlat.latrange = plot.init.res$lonlat.latrange
+		if (vis.partial) {
+			if (x[1] < lonlat.lonrange[1]) {
+				lli.res = sl.line.line.intersect(x[1:2],y[1:2],rep(lonlat.lonrange[1],2),c(-89,89))
+				x[1] = lonlat.lonrange[1]
+				y[1] = lli.res$lat
+			} else if (x[1] > lonlat.lonrange[2]) {
+				lli.res = sl.line.line.intersect(x[1:2],y[1:2],rep(lonlat.lonrange[2],2),c(-89,89))
+				x[1] = lonlat.lonrange[2]
+				y[1] = lli.res$lat
 			}
-		} else {
-			if (lonlat.lonrange[2] - lonlat.lonrange[2] == 360) {
-				if (splitside == "left") {
-			
-				} else {
-			
-				}
+			if (y[1] < lonlat.latrange[1]) {
+				llati.res = sl.line.lat.intersect(x[1:2],y[1:2],lonlat.latrange[1])
+				x[1] = llati.res$lon
+				y[1] = lonlat.latrange[1]
+			} else if (y[1] > lonlat.latrange[2]) {
+				llati.res = sl.line.lat.intersect(x[1:2],y[1:2],lonlat.latrange[2])
+				x[1] = llati.res$lon
+				y[1] = lonlat.latrange[2]
 			}
-			else {
-				
+			if (x[L] < lonlat.lonrange[1]) {
+				lli.res = sl.line.line.intersect(x[(L-1):L],y[(L-1):L],rep(lonlat.lonrange[1],2),c(-89,89))
+				x[L] = lonlat.lonrange[1]
+				y[L] = lli.res$lat
+			} else if (x[L] > lonlat.lonrange[2]) {
+				lli.res = sl.line.line.intersect(x[(L-1):L],y[(L-1):L],rep(lonlat.lonrange[2],2),c(-89,89))
+				x[L] = lonlat.lonrange[2]
+				y[L] = lli.res$lat
+			}
+			if (y[L] < lonlat.latrange[1]) {
+				llati.res = sl.line.lat.intersect(x[(L-1):L],y[(L-1):L],lonlat.latrange[1])
+				x[L] = llati.res$lon
+				y[L] = lonlat.latrange[1]
+			} else if (y[L] > lonlat.latrange[2]) {
+				llati.res = sl.line.lat.intersect(x[(L-1):L],y[(L-1):L],lonlat.latrange[2])
+				x[L] = llati.res$lon
+				y[L] = lonlat.latrange[2]
 			}
 		}
-		if (vis.partial) {
-			if (min(seg.x) < lonlat.lonrange[1]) {
-				boundline.lon = lonlat.lonrange[1]
-			} else if (max(seg.x) > lonlat.lonrange[2]) {
-				boundline.lon = lonlat.lonrange[2]
-			} else {stop("line seemingly completely visible, something is wrong")}
-			lli.res = sl.line.line.intersect(seg.x,seg.y,rep(boundline.lon,2),c(-30,30))
-			p.x = lli.res$lon
-			p.y = lli.res$lat
-			if (visible[ns]) {
-				seg.x[1] = p.x
-				seg.y[1] = p.y
-			} else {
-				seg.x[2] = p.x
-				seg.y[2] = p.y
+		if (max(x) - min(x) > 180) {
+			# this seems to be a circular boundary polygon that needs to be drawn in two parts on both sides
+			left = (x < mean(lonlat.lonrange))
+			left.ext = c(left,left[1])
+			x.left = NULL
+			y.left = NULL
+			x.right = NULL
+			y.right = NULL
+			i = 0
+			repeat {
+				i = i + 1
+				if (!left.ext[i] && left.ext[i+1]) {break}
 			}
-			lines(x=seg.x+xshift,y=seg.y+yshift,col=col[ns-1],lwd=lwd,lty=lty)
-		} else if (max(seg.x) - min(seg.x) > 180) {
-			# this seems to be a circular boundary polygon that needs to be drawn on both sides, i.e. twice
-			seg.x.mod = seg.x
-			seg.x.mod[seg.x<mean(lonlat.lonrange)] = lonlat.lonrange[2]
-			seg.y.mod = seg.y
-			lli.res.right = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[2],2),c(-30,30))
-			seg.y.mod[seg.x<mean(lonlat.lonrange)] = lli.res.right$lat
-			lines(x=seg.x.mod+xshift,y=seg.y.mod+yshift,col=col[ns-1],lwd=lwd,lty=lty)
-			seg.x.mod = seg.x
-			seg.x.mod[seg.x>mean(lonlat.lonrange)] = lonlat.lonrange[1]
-			seg.y.mod = seg.y
-			lli.res.left = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[1],2),c(-30,30))
-			seg.y.mod[seg.x>mean(lonlat.lonrange)] = lli.res.left$lat
-			lines(x=seg.x.mod+xshift,y=seg.y.mod+yshift,col=col[ns-1],lwd=lwd,lty=lty)
+			repeat {
+				x.left = c(x.left,x[i])
+				y.left = c(y.left,y[i])
+				i = (i%%L) + 1
+				if (left.ext[i] && !left.ext[i+1]) {break}
+			}
+			x.left = c(x.left,x[i],x[(i%%L)+1])
+			y.left = c(y.left,y[i],y[(i%%L)+1])
+			L.left = length(x.left)
+			lli.res = sl.line.line.intersect(x.left[1:2],y.left[1:2],rep(lonlat.lonrange[1],2),c(-89,89))
+			x.left[1] = lonlat.lonrange[1]
+			y.left[1] = lli.res$lat
+			lli.res = sl.line.line.intersect(x.left[(L.left-1):L.left],y.left[(L.left-1):L.left],rep(lonlat.lonrange[1],2),c(-89,89))
+			x.left[L] = lonlat.lonrange[1]
+			y.left[L] = lli.res$lat
+			polygon(x=x.right+xshift,y=y.right+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
+			repeat {
+				x.right = c(x.right,x[i])
+				y.right = c(y.right,y[i])
+				i = (i%%L) + 1
+				if (!left.ext[i] && left.ext[i+1]) {break}
+			}
+			x.right = c(x.right,x[i],x[(i%%L)+1])
+			y.right = c(y.right,y[i],y[(i%%L)+1])
+			L.right = length(x.right)
+			lli.res = sl.line.line.intersect(x.right[1:2],y.right[1:2],rep(lonlat.lonrange[2],2),c(-89,89))
+			x.right[1] = lonlat.lonrange[2]
+			y.right[1] = lli.res$lat
+			lli.res = sl.line.line.intersect(x.right[(L.right-1):L.right],y.right[(L.right-1):L.right],rep(lonlat.lonrange[2],2),c(-89,89))
+			x.right[L] = lonlat.lonrange[2]
+			y.right[L] = lli.res$lat
+			polygon(x=x.right+xshift,y=y.right+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 		} else {
-			lines(x=seg.x+xshift,y=seg.y+yshift,col=col[ns-1],lwd=lwd,lty=lty)
+			polygon(x=x+xshift,y=y+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 		}
 	} else if (projection == "polar") {
 		if (vis.partial) {
@@ -182,9 +216,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			x[L] = llati.res$x
 			y[L] = llati.res$y
 		}
-		x=x+xshift
-		y=y+yshift
-		polygon(x=x,y=y,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
+		polygon(x=x+xshift,y=y+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 	} else if (projection == "regpoly") {
 		if (vis.partial) {
 			regpoly.cornerlons0 = plot.init.res$regpoly.cornerlons0
@@ -223,9 +255,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			x[L] = p.xyz[1] * stretch.fac
 			y[L] = p.xyz[2] * stretch.fac
 		}
-		x=x+xshift
-		y=y+yshift
-		polygon(x=x,y=y,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
+		polygon(x=x+xshift,y=y+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 	} else {
 		stop("projections other than 'lonlat', 'polar', and 'regpoly' not yet implemented")
 	}

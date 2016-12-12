@@ -44,15 +44,25 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 		seg.y = y[c(ns-1,ns)]
 		if (projection == "lonlat") {
 			lonlat.lonrange = plot.init.res$lonlat.lonrange
+			lonlat.latrange = plot.init.res$lonlat.latrange
 			if (sum(visible[c(ns-1,ns)]) == 1) {
-				if (min(seg.x) < lonlat.lonrange[1]) {
-					boundline.lon = lonlat.lonrange[1]
-				} else if (max(seg.x) > lonlat.lonrange[2]) {
-					boundline.lon = lonlat.lonrange[2]
+				if (min(seg.x) < lonlat.lonrange[1] || max(seg.x) > lonlat.lonrange[2]) {
+					if (min(seg.x) < lonlat.lonrange[1]) {
+						boundline.lon = lonlat.lonrange[1]
+					} else {
+						boundline.lon = lonlat.lonrange[2]
+					}
+					p.x = boundline.lon
+					p.y = sl.line.line.intersect(seg.x,seg.y,rep(boundline.lon,2),c(-89,89))$lat
+				} else if (min(seg.y) < lonlat.latrange[1] || max(seg.y) > lonlat.latrange[2]) {
+					if (min(seg.y) < lonlat.latrange[1]) {
+						boundline.lat = lonlat.latrange[1]
+					} else {
+						boundline.lat = lonlat.latrange[2]
+					}
+					p.x = sl.line.lat.intersect(seg.x,seg.y,boundline.lat)$lon
+					p.y = boundline.lat
 				} else {stop("line seemingly completely visible, something is wrong")}
-				lli.res = sl.line.line.intersect(seg.x,seg.y,rep(boundline.lon,2),c(-30,30))
-				p.x = lli.res$lon
-				p.y = lli.res$lat
 				if (visible[ns]) {
 					seg.x[1] = p.x
 					seg.y[1] = p.y
@@ -60,21 +70,19 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 					seg.x[2] = p.x
 					seg.y[2] = p.y
 				}
-				lines(x=seg.x+xshift,y=seg.y+yshift,col=col[ns-1],lwd=lwd,lty=lty)
-			} else if (max(seg.x) - min(seg.x) > 180) {
-				# this seems to be a circular boundary segment that needs to be drawn on both sides, i.e. twice
+			}
+			if (max(seg.x) - min(seg.x) > 180) {
+				# this seems to be a circular boundary segment that needs to be drawn in two parts on both sides
 				seg.x.mod = seg.x
-				#seg.x.mod[seg.x<mean(lonlat.lonrange)] = seg.x.mod[seg.x<mean(lonlat.lonrange)] + 360
 				seg.x.mod[seg.x<mean(lonlat.lonrange)] = lonlat.lonrange[2]
 				seg.y.mod = seg.y
-				lli.res.right = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[2],2),c(-30,30))
+				lli.res.right = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[2],2),c(-89,89))
 				seg.y.mod[seg.x<mean(lonlat.lonrange)] = lli.res.right$lat
 				lines(x=seg.x.mod+xshift,y=seg.y.mod+yshift,col=col[ns-1],lwd=lwd,lty=lty)
-				#seg.x.mod = seg.x.mod - 360
 				seg.x.mod = seg.x
 				seg.x.mod[seg.x>mean(lonlat.lonrange)] = lonlat.lonrange[1]
 				seg.y.mod = seg.y
-				lli.res.left = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[1],2),c(-30,30))
+				lli.res.left = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[1],2),c(-89,89))
 				seg.y.mod[seg.x>mean(lonlat.lonrange)] = lli.res.left$lat
 				lines(x=seg.x.mod+xshift,y=seg.y.mod+yshift,col=col[ns-1],lwd=lwd,lty=lty)
 			} else {

@@ -1,5 +1,5 @@
 sl.plot.init <-
-function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-90,90),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name="~/sl.plot.pdf",width=12) {
+function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-80,80),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name="~/sl.plot.pdf",width=12) {
 	
 	pir = list(projection=projection)
 	
@@ -9,6 +9,8 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-90,
 		if (lonlat.lonrange[2] <= lonlat.lonrange[1]) {stop("lonlat.lonrange must be given in increasing order")}
 		if (lonlat.lonrange[2] > 360 || lonlat.lonrange[1] <= -360) {stop("lonlat.lonrange must be within (-360,360]")}
 		if (lonlat.lonrange[2] - lonlat.lonrange[1] > 360) {stop("lonlat.lonrange spans more than 360 degree")}
+		if (max(abs(lonlat.latrange)) >= 90) {stop("lonlat.latrange must be within (-90,90)")}
+		if (lonlat.latrange[2] <= lonlat.latrange[1]) {stop("lonlat.latrange must be given in increasing order")}
 		lat.span = lonlat.latrange
 		xlim = extendrange(lonlat.lonrange,f=0.1)
 		ylim = extendrange(lonlat.latrange,f=0.1)
