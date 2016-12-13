@@ -21,15 +21,11 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
 			#print(paste("plotting subplot",npir,"...",sep=" "))
-			sl.plot.polygon.qad(pir,lon,lat,fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours=FALSE)#,border.visborder
+			sl.plot.polygon.qad(pir,lon,lat,fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours=FALSE)
 			npir = npir + 1
 		}
 		
 	}
-	
-	#if (!fill && border && !border.visborder) {
-	#	sl.plot.lines(plot.init.res,lon=c(lon,lon[1]),lat=c(lat,lat[1]),col=col.border,lwd=border.lwd,lty=border.lty,ignore.visibility=ignore.visibility)
-	#} else {
 		
 	if (!border) {col.border=NA}
 	
@@ -42,9 +38,12 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 	rot.lon = vsr.res$rot.lon
 	rot.lat = vsr.res$rot.lat
 	
-	#if (anyNA(x)) {return()}
-	
+	vis.partial = FALSE
 	if (sum(visible) < L) {
+		vis.partial = TRUE
+	}
+		
+	if (vis.partial && projection != "lonlat") {
 		visible.ext = c(visible,visible[1])
 		x.new = NULL
 		y.new = NULL
@@ -74,30 +73,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 		rot.lat = c(rot.lat.new,rot.lat[i])
 		L = length(x)
 		rm(x.new,y.new,rot.lon.new,rot.lat.new)
-		vis.partial = TRUE
-	} else {
-		vis.partial = FALSE
 	}
-	
-	#This block may be needed for a fully-grown polygon plotting function
-	#polys = list()
-	#if (sum(visible) == L) {
-	#	polys[[1]] = list(ind=1:L,boundary.ind=rep(NA,L))
-	#	all.vis = TRUE
-	#} else {
-	#	all.vis = FALSE
-	#	p.count = 0
-	#	cont = FALSE
-	#	if (visible[1]) {cont = TRUE}
-	#	for (i in 2:L) {
-	#		if (visible[i]) {
-	#			if (!visible[i-1]) {
-	#				p.count = p.count + 1
-	#			}
-	#			polys[[p.count]] = i
-	#		}
-	#	}
-	#}
 	
 	xshift = plot.init.res$xshift
 	yshift = plot.init.res$yshift
@@ -106,41 +82,61 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 		lonlat.lonrange = plot.init.res$lonlat.lonrange
 		lonlat.latrange = plot.init.res$lonlat.latrange
 		if (vis.partial) {
-			if (x[1] < lonlat.lonrange[1]) {
-				lli.res = sl.line.line.intersect(x[1:2],y[1:2],rep(lonlat.lonrange[1],2),c(-89,89))
-				x[1] = lonlat.lonrange[1]
-				y[1] = lli.res$lat
-			} else if (x[1] > lonlat.lonrange[2]) {
-				lli.res = sl.line.line.intersect(x[1:2],y[1:2],rep(lonlat.lonrange[2],2),c(-89,89))
-				x[1] = lonlat.lonrange[2]
-				y[1] = lli.res$lat
+			if (min(x) < lonlat.lonrange[1]) {
+				inds = sl.segment(x>lonlat.lonrange[1],extend=TRUE,first.only=TRUE)
+				x = x[inds]
+				y = y[inds]
+				L = length(x)
+				if (x[1] < lonlat.lonrange[1]) {
+					y[1] = y[2] + (lonlat.lonrange[1] - x[2])/(x[1] - x[2]) * (y[1] - y[2])
+					x[1] = lonlat.lonrange[1]
+				}
+				if (x[L] < lonlat.lonrange[1]) {
+					y[L] = y[L-1] + (lonlat.lonrange[1] - x[L-1])/(x[L] - x[L-1]) * (y[L] - y[L-1])
+					x[L] = lonlat.lonrange[1]
+				}
 			}
-			if (y[1] < lonlat.latrange[1]) {
-				llati.res = sl.line.lat.intersect(x[1:2],y[1:2],lonlat.latrange[1])
-				x[1] = llati.res$lon
-				y[1] = lonlat.latrange[1]
-			} else if (y[1] > lonlat.latrange[2]) {
-				llati.res = sl.line.lat.intersect(x[1:2],y[1:2],lonlat.latrange[2])
-				x[1] = llati.res$lon
-				y[1] = lonlat.latrange[2]
+			if (max(x) > lonlat.lonrange[2]) {
+				inds = sl.segment(x<lonlat.lonrange[2],extend=TRUE,first.only=TRUE)
+				x = x[inds]
+				y = y[inds]
+				L = length(x)
+				if (x[1] > lonlat.lonrange[2]) {
+					y[1] = y[2] + (lonlat.lonrange[2] - x[2])/(x[1] - x[2]) * (y[1] - y[2])
+					x[1] = lonlat.lonrange[2]
+				}
+				if (x[L] > lonlat.lonrange[2]) {
+					y[L] = y[L-1] + (lonlat.lonrange[2] - x[L-1])/(x[L] - x[L-1]) * (y[L] - y[L-1])
+					x[L] = lonlat.lonrange[2]
+				}
 			}
-			if (x[L] < lonlat.lonrange[1]) {
-				lli.res = sl.line.line.intersect(x[(L-1):L],y[(L-1):L],rep(lonlat.lonrange[1],2),c(-89,89))
-				x[L] = lonlat.lonrange[1]
-				y[L] = lli.res$lat
-			} else if (x[L] > lonlat.lonrange[2]) {
-				lli.res = sl.line.line.intersect(x[(L-1):L],y[(L-1):L],rep(lonlat.lonrange[2],2),c(-89,89))
-				x[L] = lonlat.lonrange[2]
-				y[L] = lli.res$lat
+			if (min(y) < lonlat.latrange[1]) {
+				inds = sl.segment(y>lonlat.latrange[1],extend=TRUE,first.only=TRUE)
+				x = x[inds]
+				y = y[inds]
+				L = length(x)
+				if (y[1] < lonlat.latrange[1]) {
+					x[1] = x[2] + (lonlat.latrange[1] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
+					y[1] = lonlat.latrange[1]
+				}
+				if (y[L] < lonlat.latrange[1]) {
+					x[L] = x[L-1] + (lonlat.latrange[1] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
+					y[L] = lonlat.latrange[1]
+				}
 			}
-			if (y[L] < lonlat.latrange[1]) {
-				llati.res = sl.line.lat.intersect(x[(L-1):L],y[(L-1):L],lonlat.latrange[1])
-				x[L] = llati.res$lon
-				y[L] = lonlat.latrange[1]
-			} else if (y[L] > lonlat.latrange[2]) {
-				llati.res = sl.line.lat.intersect(x[(L-1):L],y[(L-1):L],lonlat.latrange[2])
-				x[L] = llati.res$lon
-				y[L] = lonlat.latrange[2]
+			if (max(y) > lonlat.latrange[2]) {
+				inds = sl.segment(y<lonlat.latrange[2],extend=TRUE,first.only=TRUE)
+				x = x[inds]
+				y = y[inds]
+				L = length(x)
+				if (y[1] > lonlat.latrange[2]) {
+					x[1] = x[2] + (lonlat.latrange[2] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
+					y[1] = lonlat.latrange[2]
+				}
+				if (y[L] > lonlat.latrange[2]) {
+					x[L] = x[L-1] + (lonlat.latrange[2] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
+					y[L] = lonlat.latrange[2]
+				}
 			}
 		}
 		if (max(x) - min(x) > 180) {
@@ -259,7 +255,5 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 	} else {
 		stop("projections other than 'lonlat', 'polar', and 'regpoly' not yet implemented")
 	}
-	
-	#}
 	
 }
