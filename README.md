@@ -8,48 +8,48 @@ The further development of spheRlab is hoped to get some boost by the move of th
 
 Starting with version 1.0.0 on 8 December 2016, the code is known to be rich in bugs and needs for improvements. Any help and other feedback is greatly appreciated, either directly on GitHub or via email to <helge.goessling@awi.de>!
 
-
 What follows is a list of what needs and/or could be done to improve spheRlab:
-
 
 ## URGENT
 
-* make sure that lonlat plotting works fine
+* Add simple grid (so-called pi-grid) and a corresponding field for examples.
 
-* add simple grid (so-called pi-grid) and a corresponding field for examples
+* Add examples - for (almost) every function.
 
-* add examples - for (almost) every function
+* Implement automatic lon-lat labelling into sl.plot.lonlatgrid.
 
 ## NEXT
 
-* finish sl.polygon.polygon.intersect and sl.polygon.rotdir (or omit?).
+* Finish sl.polygon.polygon.intersect and sl.polygon.rotdir (or omit?).
 
-* add function that writes filter information into a CDO-readable file (see corresponding script).
+* Update sl.plot.polygon.qad to handle polygons truncated into multiple visible parts also in polar and regpoly projections.
 
-* add decent coastline capabilities
+* Add function that writes filter information into a CDO-readable file (see corresponding script).
 
-* add a set of predefined colourbars, e.g. the one mentioned by Nicolay
+* Add decent coastline capabilities.
 
-* add other projections (robin, mercator, other?)
+* Add more predefined colourbars, e.g. the one mentioned by Nicolay, and write a documentation for the pre-defined colourbars.
 
-* add Modified/Partial Hausdorff Distance
+* Add other projections (robin, mercator, other?).
 
-* group function index: plotting; spherical geometry; mostly internal functions; …
+* Add Modified/Partial Hausdorff Distance.
 
-* add fesom2cdo functionality: convert 3D field, stored in a single vector as done in FESOMv1, to a matrix where the second dimension is the depth index. Dummy nodes with NAs are added where the local ocean depth is exceeded.
+* Group function index: plotting; spherical geometry; mostly internal functions; …
 
-* write a decent vignette?
+* Add fesom2cdo functionality: convert 3D field, stored in a single vector as done in FESOMv1, to a matrix where the second dimension is the depth index. Dummy nodes with NAs are added where the local ocean depth is exceeded.
+
+* Write a decent vignette.
 
 ## WISHLIST
 
-* split sl.read.FESOM into a more basic read function and multiple grid analysis functions
+* Split sl.read.FESOM into a more basic read function and multiple grid analysis functions.
 
-* add grid generation capabilities
+* Add grid generation capabilities.
 
-* maybe introduce objects (S3 or S4?)? -> grid; colourbar (with breaks?); plot specifics list; more?
+* Maybe introduce objects (S3 or S4?)? -> grid; colourbar (with breaks?); plot specifics list; more?
 
-* more argument testing at beginning of functions
+* More argument testing at beginning of functions.
 
-* speed up things where possible
+* Speed up things where possible.
 
-* move into 3D-field plotting and analysis
+* Move into 3D-field plotting and analysis; includes handling sections.
