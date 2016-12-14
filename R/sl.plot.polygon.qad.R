@@ -20,7 +20,6 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
-			#print(paste("plotting subplot",npir,"...",sep=" "))
 			sl.plot.polygon.qad(pir,lon,lat,fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours=FALSE)
 			npir = npir + 1
 		}
@@ -77,113 +76,221 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 	
 	xshift = plot.init.res$xshift
 	yshift = plot.init.res$yshift
-		
+	
 	if (projection == "lonlat") {
 		lonlat.lonrange = plot.init.res$lonlat.lonrange
 		lonlat.latrange = plot.init.res$lonlat.latrange
 		if (vis.partial) {
 			if (min(x) < lonlat.lonrange[1]) {
-				inds = sl.segment(x>lonlat.lonrange[1],extend=TRUE,first.only=TRUE)
-				x = x[inds]
-				y = y[inds]
+				inds = sl.segment(x>lonlat.lonrange[1],extend=TRUE)
+				if (is.list(inds)) {
+					for (i in 2:length(inds)) {
+						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+					}
+					x = x[inds[[1]]]
+					y = y[inds[[1]]]
+				} else {
+					x = x[inds]
+					y = y[inds]
+				}
 				L = length(x)
 				if (x[1] < lonlat.lonrange[1]) {
-					y[1] = y[2] + (lonlat.lonrange[1] - x[2])/(x[1] - x[2]) * (y[1] - y[2])
-					x[1] = lonlat.lonrange[1]
+					if (x[2]-x[1]>180) {
+						y[1] = y[2] + (lonlat.lonrange[2] - x[2])/(x[1]+360 - x[2]) * (y[1] - y[2])
+						x[1] = lonlat.lonrange[2]
+					} else {
+						y[1] = y[2] + (lonlat.lonrange[1] - x[2])/(x[1] - x[2]) * (y[1] - y[2])
+						x[1] = lonlat.lonrange[1]
+					}
 				}
 				if (x[L] < lonlat.lonrange[1]) {
-					y[L] = y[L-1] + (lonlat.lonrange[1] - x[L-1])/(x[L] - x[L-1]) * (y[L] - y[L-1])
-					x[L] = lonlat.lonrange[1]
+					if (x[L-1]-x[L]>180) {
+						y[L] = y[L-1] + (lonlat.lonrange[2] - x[L-1])/(x[L]+360 - x[L-1]) * (y[L] - y[L-1])
+						x[L] = lonlat.lonrange[2]
+					} else {
+						y[L] = y[L-1] + (lonlat.lonrange[1] - x[L-1])/(x[L] - x[L-1]) * (y[L] - y[L-1])
+						x[L] = lonlat.lonrange[1]
+					}
 				}
 			}
 			if (max(x) > lonlat.lonrange[2]) {
-				inds = sl.segment(x<lonlat.lonrange[2],extend=TRUE,first.only=TRUE)
-				x = x[inds]
-				y = y[inds]
+				inds = sl.segment(x<lonlat.lonrange[2],extend=TRUE)
+				if (is.list(inds)) {
+					for (i in 2:length(inds)) {
+						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+					}
+					x = x[inds[[1]]]
+					y = y[inds[[1]]]
+				} else {
+					x = x[inds]
+					y = y[inds]
+				}
 				L = length(x)
 				if (x[1] > lonlat.lonrange[2]) {
-					y[1] = y[2] + (lonlat.lonrange[2] - x[2])/(x[1] - x[2]) * (y[1] - y[2])
-					x[1] = lonlat.lonrange[2]
+					if (x[1]-x[2]>180) {
+						y[1] = y[2] + (lonlat.lonrange[1] - x[2])/(x[1]-360 - x[2]) * (y[1] - y[2])
+						x[1] = lonlat.lonrange[1]
+					} else {
+						y[1] = y[2] + (lonlat.lonrange[2] - x[2])/(x[1] - x[2]) * (y[1] - y[2])
+						x[1] = lonlat.lonrange[2]
+					}
 				}
 				if (x[L] > lonlat.lonrange[2]) {
-					y[L] = y[L-1] + (lonlat.lonrange[2] - x[L-1])/(x[L] - x[L-1]) * (y[L] - y[L-1])
-					x[L] = lonlat.lonrange[2]
+					if (x[L]-x[L-1]>180) {
+						y[L] = y[L-1] + (lonlat.lonrange[1] - x[L-1])/(x[L]-360 - x[L-1]) * (y[L] - y[L-1])
+						x[L] = lonlat.lonrange[1]
+					} else {
+						y[L] = y[L-1] + (lonlat.lonrange[2] - x[L-1])/(x[L] - x[L-1]) * (y[L] - y[L-1])
+						x[L] = lonlat.lonrange[2]
+					}
 				}
 			}
 			if (min(y) < lonlat.latrange[1]) {
-				inds = sl.segment(y>lonlat.latrange[1],extend=TRUE,first.only=TRUE)
-				x = x[inds]
-				y = y[inds]
+				inds = sl.segment(y>lonlat.latrange[1],extend=TRUE)
+				if (is.list(inds)) {
+					for (i in 2:length(inds)) {
+						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+					}
+					x = x[inds[[1]]]
+					y = y[inds[[1]]]
+				} else {
+					x = x[inds]
+					y = y[inds]
+				}
 				L = length(x)
 				if (y[1] < lonlat.latrange[1]) {
-					x[1] = x[2] + (lonlat.latrange[1] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
-					y[1] = lonlat.latrange[1]
+					if (abs(x[1]-x[2])>180) {
+						if (x[1]-x[2]>180) {
+							x[1]=x[1]-360
+						} else {
+							x[1]=x[1]+360
+						}
+						x[1] = x[2] + (lonlat.latrange[1] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
+						if (x[1]<lonlat.lonrange[1]) {x[1]=x[1]+360}
+						if (x[1]>lonlat.lonrange[2]) {x[1]=x[1]-360}
+						y[1] = lonlat.latrange[1]
+					} else {
+						x[1] = x[2] + (lonlat.latrange[1] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
+						y[1] = lonlat.latrange[1]
+					}
 				}
 				if (y[L] < lonlat.latrange[1]) {
-					x[L] = x[L-1] + (lonlat.latrange[1] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
-					y[L] = lonlat.latrange[1]
+					if (abs(x[L]-x[L-1])>180) {
+						if (x[L]-x[L-1]>180) {
+							x[L]=x[L]-360
+						} else {
+							x[L]=x[L]+360
+						}
+						x[L] = x[L-1] + (lonlat.latrange[1] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
+						if (x[L]<lonlat.lonrange[1]) {x[L]=x[L]+360}
+						if (x[L]>lonlat.lonrange[2]) {x[L]=x[L]-360}
+						y[L] = lonlat.latrange[1]
+					}
+					else {
+						x[L] = x[L-1] + (lonlat.latrange[1] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
+						y[L] = lonlat.latrange[1]
+					}
 				}
 			}
 			if (max(y) > lonlat.latrange[2]) {
-				inds = sl.segment(y<lonlat.latrange[2],extend=TRUE,first.only=TRUE)
-				x = x[inds]
-				y = y[inds]
+				inds = sl.segment(y<lonlat.latrange[2],extend=TRUE)
+				if (is.list(inds)) {
+					for (i in 2:length(inds)) {
+						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+					}
+					x = x[inds[[1]]]
+					y = y[inds[[1]]]
+				} else {
+					x = x[inds]
+					y = y[inds]
+				}
 				L = length(x)
 				if (y[1] > lonlat.latrange[2]) {
-					x[1] = x[2] + (lonlat.latrange[2] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
-					y[1] = lonlat.latrange[2]
+					if (abs(x[1]-x[2])>180) {
+						if (x[1]-x[2]>180) {
+							x[1]=x[1]-360
+						} else {
+							x[1]=x[1]+360
+						}
+						x[1] = x[2] + (lonlat.latrange[2] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
+						if (x[1]<lonlat.lonrange[1]) {x[1]=x[1]+360}
+						if (x[1]>lonlat.lonrange[2]) {x[1]=x[1]-360}
+						y[1] = lonlat.latrange[2]
+					} else {
+						x[1] = x[2] + (lonlat.latrange[2] - y[2])/(y[1] - y[2]) * (x[1] - x[2])
+						y[1] = lonlat.latrange[2]
+					}
 				}
 				if (y[L] > lonlat.latrange[2]) {
-					x[L] = x[L-1] + (lonlat.latrange[2] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
-					y[L] = lonlat.latrange[2]
+					if (abs(x[L]-x[L-1])>180) {
+						if (x[L]-x[L-1]>180) {
+							x[L]=x[L]-360
+						} else {
+							x[L]=x[L]+360
+						}
+						x[L] = x[L-1] + (lonlat.latrange[2] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
+						if (x[L]<lonlat.lonrange[1]) {x[L]=x[L]+360}
+						if (x[L]>lonlat.lonrange[2]) {x[L]=x[L]-360}
+						y[L] = lonlat.latrange[2]
+					} else {
+						x[L] = x[L-1] + (lonlat.latrange[2] - y[L-1])/(y[L] - y[L-1]) * (x[L] - x[L-1])
+						y[L] = lonlat.latrange[2]
+					}
 				}
 			}
 		}
-		if (max(x) - min(x) > 180) {
-			# this seems to be a circular boundary polygon that needs to be drawn in two parts on both sides
-			left = (x < mean(lonlat.lonrange))
-			left.ext = c(left,left[1])
-			x.left = NULL
-			y.left = NULL
-			x.right = NULL
-			y.right = NULL
-			i = 0
-			repeat {
-				i = i + 1
-				if (!left.ext[i] && left.ext[i+1]) {break}
+		if (max(x) - min(x) > 180 && max(abs(x - x[c(2:L,1)])) > 180) {
+			l2r = which(x[c(2:L,1)]-x > 180)
+			r2l = which(x[c(2:L,1)]-x < -180)
+			N.lr = length(l2r)
+			if (N.lr > 1) {
+				if (l2r[1] > r2l[1]) {r2l = r2l[c(2:L,1)]}
+				for (i in 2:N.lr) {
+					if (r2l[i]%%L+1 > l2r[i]) {
+						right = l2r[i]:(r2l[i]%%L+1)
+					} else {
+						right = c(l2r[i]:L,1:(r2l[i]%%L+1))
+					}
+					if (l2r[i%%N.lr+1]%%L+1 > r2l[i]) {
+						left = r2l[i]:(l2r[i%%N.lr+1]%%L+1)
+					} else {
+						left = c(r2l[i]:L,1:(l2r[i%%N.lr+1]%%L+1))
+					}
+					sl.plot.polygon.qad(pir,x[left],y[left],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+					sl.plot.polygon.qad(pir,x[right],y[right],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+				}
 			}
-			repeat {
-				x.left = c(x.left,x[i])
-				y.left = c(y.left,y[i])
-				i = (i%%L) + 1
-				if (left.ext[i] && !left.ext[i+1]) {break}
+			if (r2l[1]%%L+1 > l2r[1]) {
+				right = l2r[1]:(r2l[1]%%L+1)
+			} else {
+				right = c(l2r[1]:L,1:(r2l[1]%%L+1))
 			}
-			x.left = c(x.left,x[i],x[(i%%L)+1])
-			y.left = c(y.left,y[i],y[(i%%L)+1])
-			L.left = length(x.left)
-			lli.res = sl.line.line.intersect(x.left[1:2],y.left[1:2],rep(lonlat.lonrange[1],2),c(-89,89))
-			x.left[1] = lonlat.lonrange[1]
-			y.left[1] = lli.res$lat
-			lli.res = sl.line.line.intersect(x.left[(L.left-1):L.left],y.left[(L.left-1):L.left],rep(lonlat.lonrange[1],2),c(-89,89))
-			x.left[L] = lonlat.lonrange[1]
-			y.left[L] = lli.res$lat
-			polygon(x=x.right+xshift,y=y.right+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
-			repeat {
-				x.right = c(x.right,x[i])
-				y.right = c(y.right,y[i])
-				i = (i%%L) + 1
-				if (!left.ext[i] && left.ext[i+1]) {break}
+			if (l2r[1%%N.lr+1]%%L+1 > r2l[1]) {
+				left = r2l[1]:(l2r[1%%N.lr+1]%%L+1)
+			} else {
+				left = c(r2l[1]:L,1:(l2r[1%%N.lr+1]%%L+1))
 			}
-			x.right = c(x.right,x[i],x[(i%%L)+1])
-			y.right = c(y.right,y[i],y[(i%%L)+1])
-			L.right = length(x.right)
-			lli.res = sl.line.line.intersect(x.right[1:2],y.right[1:2],rep(lonlat.lonrange[2],2),c(-89,89))
-			x.right[1] = lonlat.lonrange[2]
-			y.right[1] = lli.res$lat
-			lli.res = sl.line.line.intersect(x.right[(L.right-1):L.right],y.right[(L.right-1):L.right],rep(lonlat.lonrange[2],2),c(-89,89))
-			x.right[L] = lonlat.lonrange[2]
-			y.right[L] = lli.res$lat
-			polygon(x=x.right+xshift,y=y.right+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
+			x.r = x[right]
+			y.r = y[right]
+			L.r = length(right)
+			if (x.r[1] < lonlat.lonrange[2]) {x.r[1] = x.r[1] + 360}
+			y.r[1] = y.r[2] + (lonlat.lonrange[2] - x.r[2])/(x.r[1] - x.r[2]) * (y.r[1] - y.r[2])
+			x.r[1] = lonlat.lonrange[2]
+			if (x.r[L.r] < lonlat.lonrange[2]) {x.r[L.r] = x.r[L.r] + 360}
+			y.r[L.r] = y.r[L.r-1] + (lonlat.lonrange[2] - x.r[L.r-1])/(x.r[L.r] - x.r[L.r-1]) * (y.r[L.r] - y.r[L.r-1])
+			x.r[L.r] = lonlat.lonrange[2]
+			x.l = x[left]
+			y.l = y[left]
+			L.l = length(left)
+			if (x.l[1] > lonlat.lonrange[1]) {x.l[1] = x.l[1] - 360}
+			y.l[1] = y.l[2] + (lonlat.lonrange[1] - x.l[2])/(x.l[1] - x.l[2]) * (y.l[1] - y.l[2])
+			x.l[1] = lonlat.lonrange[1]
+			if (x.l[L.l] > lonlat.lonrange[1]) {x.l[L.l] = x.l[L.l] - 360}
+			y.l[L.l] = y.l[L.l-1] + (lonlat.lonrange[1] - x.l[L.l-1])/(x.l[L.l] - x.l[L.l-1]) * (y.l[L.l] - y.l[L.l-1])
+			x.l[L.l] = lonlat.lonrange[1]
+			polygon(x=x.r+xshift,y=y.r+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
+			polygon(x=x.l+xshift,y=y.l+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
+			if (min(abs(x)) < 170) {stop("look here")}
 		} else {
 			polygon(x=x+xshift,y=y+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 		}

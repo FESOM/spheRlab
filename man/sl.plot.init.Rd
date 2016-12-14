@@ -16,10 +16,10 @@ sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latra
 a character specifing the plot projection type. Currently possible projections are \code{"polar"}, \code{"lonlat"}, and \code{"regpoly"} (to be extended).
 }
   \item{lonlat.lonrange}{
-a vector of length 2 specifying the plot longitude range in ascending order. Only used if \code{projection="lonlat"}. Default is \code{lonlat.lonrange=c(-180,180)}.
+a vector of length 2 specifying the plot longitude range in ascending order. Only used if \code{projection="lonlat"}.
 }
   \item{lonlat.latrange}{
-a vector of length 2 specifying the plot latitude range in ascending order. Default is \code{lonlat.latrange=c(-90,90)}. Only used if \code{projection="lonlat"}.
+a vector of length 2 specifying the plot latitude range in ascending order. Absolute values above 89 degrees are forbidden. Only used if \code{projection="lonlat"}.
 }
   \item{polar.lonlatrot}{
 a vector of length 3 specifying the projection North Pole and rotation. See the documentation of \code{sl.lonlatrot2abg} for details. Only used if \code{projection="polar"}.

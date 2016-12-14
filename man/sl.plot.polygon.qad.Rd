@@ -63,7 +63,7 @@ This is one of the lowest-level plotting functions of spheRlab. First the visibi
 Helge Goessling
 }
 \note{
-The 'qad' in the function name stands for 'quick and dirty', referring to the fact that two more or less special cases are handled incorrectly: (i) If the polygon has more than one sequence of visible/invisible vertices, only one visible sequence is retained. (ii) If the two added points are located on distinct legs of the boundary, the resulting edge between them will cut through the plot domain instead of encompassing the whole relevant part of the boundary. In particular for correct plotting of rather complex polygons (e.g., with continents represented by polygons), a more comprehensive function needs to be implemented.
+The 'qad' in the function name stands for 'quick and dirty', referring to the fact that some special cases may still be handled incorrectly.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
