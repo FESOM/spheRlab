@@ -1,18 +1,14 @@
 sl.griddes2neighmat <-
 function (CDOgriddes,critnum.neigh=2,critnum.coast=1) {
-
-	#rm(list=ls())
-	#CDOgriddes = "/Users/hgoessli/AWI/CDO/unstructured/mesh_ref87k_CDOgriddes_testHudson1_exact.nc"
-	#critnum.neigh = 2
 	
-	require(ncdf)
+	require(ncdf4)
 	
-	griddes.fl = open.ncdf(CDOgriddes)
-	lat = get.var.ncdf(griddes.fl,varid="lat")
-	lon = get.var.ncdf(griddes.fl,varid="lon")
-	lat_vertices = get.var.ncdf(griddes.fl,varid="lat_vertices")
-	lon_vertices = get.var.ncdf(griddes.fl,varid="lon_vertices")
-	close.ncdf(griddes.fl)
+	griddes.fl = nc_open(CDOgriddes)
+	lat = ncvar_get(griddes.fl,varid="lat")
+	lon = ncvar_get(griddes.fl,varid="lon")
+	lat_vertices = ncvar_get(griddes.fl,varid="lat_vertices")
+	lon_vertices = ncvar_get(griddes.fl,varid="lon_vertices")
+	nc_close(griddes.fl)
 	
 	N = length(lat)
 	Nv = dim(lat_vertices)[2]

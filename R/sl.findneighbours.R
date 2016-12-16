@@ -1,12 +1,5 @@
 sl.findneighbours <-
 function (elem,maxmaxneigh=12,reverse=TRUE,verbose=FALSE,max.iter=10) {
-        
-# elem: an Nx3 matrix containing triangular elements, i.e. the
-#       corresponding nodes in clockwise order, as rows
-# maxneighbours: a priori estimate of an upper bound for the
-#       maximum number of neighbour nodes (if too low, function crashes)
-# reverse: logical flag whether to reverse order of neighbours
-# verbose: obvious
 
 # find neighbouring nodes and elements in correct order
 N = max(elem)
@@ -25,7 +18,7 @@ while (sum(iekdone) < Ne*3) {
                 completed = FALSE
                 break
         }
-        print(paste("starting iteration ",niter,sep=""))
+        if (verbose) {print(paste("starting iteration ",niter,sep=""))}
         for (ie in 1:Ne) {
                 if (sum(iekdone[ie,]) == 3) { next }
                 for (k in 1:3) {

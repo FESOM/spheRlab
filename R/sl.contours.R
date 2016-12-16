@@ -1,7 +1,7 @@
 sl.contours <-
 function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,verbose=FALSE) {
 	
-	require(ncdf)
+	require(ncdf4)
 	
 	if (is.null(neighmat)) {
 		neighmat = sl.findneighbours(elem)$neighbour.nodes
@@ -9,10 +9,10 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,ve
 	
 	if (is.null(var)) {
 		if (is.null(var.nc)) {stop("either var or var.nc must be provided")}
-		ifl = open.ncdf(var.nc)
-		var = get.var.ncdf(ifl,varid=varid)
+		ifl = nc_open(var.nc)
+		var = ncvar_get(ifl,varid=varid)
 		if (length(dim(var)) > 1) {stop("input file has more than one dimension")}
-		close.ncdf(ifl)
+		nc_close(ifl)
 	} else {
 		if (!is.null(var.nc)) {warning("using var, ignoring var.nc")}
 	}
