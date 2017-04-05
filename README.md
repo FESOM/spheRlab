@@ -20,6 +20,8 @@ What follows is a list of what needs and/or could be done to improve spheRlab:
 
 ## NEXT
 
+* Improve handling of ‘bad nodes’
+
 * Finish sl.polygon.polygon.intersect and sl.polygon.rotdir (or omit?).
 
 * Update sl.plot.polygon.qad to handle polygons truncated into multiple visible parts also in polar and regpoly projections.
