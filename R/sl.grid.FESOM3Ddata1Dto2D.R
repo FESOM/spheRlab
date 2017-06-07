@@ -1,4 +1,4 @@
-sl.grid.FESOM3Ddata1Dto2D <- function (ifile,ofile,meshdir,varnames=NULL,temp2sst=FALSE,salt2sss=FALSE,idepth=NULL,odepth=NULL,verbose=TRUE,return.env=FALSE) {
+sl.grid.FESOM3Ddata1Dto2D <- function (ifile,ofile,meshdir,varnames=NULL,temp2sst=FALSE,salt2sss=FALSE,idepth=NULL,odepth=NULL,compression=NA,shuffle=FALSE,verbose=TRUE,return.env=FALSE) {
 
 require("ncdf4")
 
@@ -39,7 +39,7 @@ if (is.null(time.dim.in)) {
 Nt = time.dim.in$len
 time.dim = ncdim_def(name="time",units=time.dim.in$units,vals=time.dim.in$vals,unlim=time.dim.in$unlim)
 if (time.dim.in$name == "T") {
-	time.dim$vals = ncvar_get(in.f,"time")
+	time.dim$vals = ncvar_get(in.f,"time",collapse_degen=FALSE)
 }
 if (is.null(varnames)) {
 	varnames = list()
@@ -58,34 +58,34 @@ for (i in 1:in.f$nvars) {
 		if (verbose) {print(paste("processing variable",vari$name))}
 		if (vari$prec == "int") { vari$prec = "integer" }
 		if (vari$ndims == 2 && vari$size[1] == N1D && vari$size[2] == Nt) {
-			vals[[ilist]] = ncvar_get(in.f,vari)
-			vars[[ilist]] = ncvar_def(vari$name,vari$units,list(ncells.dim,depth.dim,time.dim),vari$missval,vari$longname,vari$prec)
+			vals[[ilist]] = ncvar_get(in.f,vari,collapse_degen=FALSE)
+			vars[[ilist]] = ncvar_def(vari$name,vari$units,list(ncells.dim,depth.dim,time.dim),vari$missval,vari$longname,vari$prec,compression=compression,shuffle=shuffle)
 			convert.vars = c(convert.vars,TRUE)
 			if (vari$name == "temp" && !is.null(temp2sst) && as.logical(temp2sst)) {
 				if (verbose) {print("extracting sea surface temperatures from 3D potential temperature field")}
 				ilist = ilist + 1
-				vals[[ilist]] = ncvar_get(in.f,vari,count=c(N,-1))
-				vars[[ilist]] = ncvar_def("sst",vari$units,list(ncells.dim,time.dim),vari$missval,"Sea Surface Temperature",vari$prec)
+				vals[[ilist]] = ncvar_get(in.f,vari,count=c(N,-1),collapse_degen=FALSE)
+				vars[[ilist]] = ncvar_def("sst",vari$units,list(ncells.dim,time.dim),vari$missval,"Sea Surface Temperature",vari$prec,compression=compression,shuffle=shuffle)
 				convert.vars = c(convert.vars,FALSE)
 			}
 			if (vari$name == "salt" && !is.null(salt2sss) && as.logical(salt2sss)) {
 				if (verbose) {print("extracting sea surface salinities from 3D salinity field")}
 				ilist = ilist + 1
-				vals[[ilist]] = ncvar_get(in.f,vari,count=c(N,-1))
-				vars[[ilist]] = ncvar_def("sss",vari$units,list(ncells.dim,time.dim),vari$missval,"Sea Surface Salinity",vari$prec)
+				vals[[ilist]] = ncvar_get(in.f,vari,count=c(N,-1),collapse_degen=FALSE)
+				vars[[ilist]] = ncvar_def("sss",vari$units,list(ncells.dim,time.dim),vari$missval,"Sea Surface Salinity",vari$prec,compression=compression,shuffle=shuffle)
 				convert.vars = c(convert.vars,FALSE)
 			}
 			next
 		}
 		if (vari$ndims == 2 && vari$size[1] == N && vari$size[2] == Nt) {
-			vals[[ilist]] = ncvar_get(in.f,vari)
-			vars[[ilist]] = ncvar_def(vari$name,vari$units,list(ncells.dim,time.dim),vari$missval,vari$longname,vari$prec)
+			vals[[ilist]] = ncvar_get(in.f,vari,collapse_degen=FALSE)
+			vars[[ilist]] = ncvar_def(vari$name,vari$units,list(ncells.dim,time.dim),vari$missval,vari$longname,vari$prec,compression=compression,shuffle=shuffle)
 			convert.vars = c(convert.vars,FALSE)
 			next
 		}
 		if (vari$ndims == 1 && vari$size[1] == Nt) {
-			vals[[ilist]] = ncvar_get(in.f,vari)
-			vars[[ilist]] = ncvar_def(vari$name,vari$units,list(time.dim),vari$missval,vari$longname,vari$prec)
+			vals[[ilist]] = ncvar_get(in.f,vari,collapse_degen=FALSE)
+			vars[[ilist]] = ncvar_def(vari$name,vari$units,list(time.dim),vari$missval,vari$longname,vari$prec,compression=compression,shuffle=shuffle)
 			convert.vars = c(convert.vars,FALSE)
 			next
 		}

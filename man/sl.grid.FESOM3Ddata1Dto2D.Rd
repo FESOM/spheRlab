@@ -8,7 +8,7 @@ Covert 3D FESOM data from 1D to 2D.
 Covert 3D FESOM data from 1D to 2D where the second dimension is the depth, adding dummy nodes where necessary.
 }
 \usage{
-sl.grid.FESOM3Ddata1Dto2D(ifile, ofile, meshdir, varnames=NULL, temp2sst=FALSE, salt2sss=FALSE, idepth=NULL, odepth=NULL, verbose=TRUE, return.env=FALSE)
+sl.grid.FESOM3Ddata1Dto2D(ifile, ofile, meshdir, varnames=NULL, temp2sst=FALSE, salt2sss=FALSE, idepth=NULL, odepth=NULL, compression=NA, shuffle=FALSE, verbose=TRUE, return.env=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,6 +36,12 @@ a character specifying the name of an ascii file with the ocean level depths, fr
   \item{odepth}{
 a character specifying the name of an output ascii file to store the ocean level depths retrieved from the file 'nod3d.out' in 'meshdir', from surface to bottom with one row for each depth value, for future use with the argument 'idepth'. If NULL, no file is written.
 }
+  \item{compression}{
+an integer specifying the output compression level between 1 (least compression) and 9 (most compression). Default is NA, which means no compression. Turning compression on forces the created file to be in netcdf version 4 format, which will not be compatible with older software that only reads netcdf version 3 files.
+}
+  \item{shuffle}{
+a logical value specifying whether or not to turn on the shuffle filter. According to netcdf docs, turning the shuffle filter on can improve compression for integer variables. Default is FALSE (no shuffling). Turning the shuffle filter on forces the created file to be in netcdf version 4 format, which will not be compatible with older software that only reads netcdf version 3 files.
+}
   \item{verbose}{
 a logical value specifying whether or not print statements shall report on the function progess.
 }
@@ -47,6 +53,8 @@ a logical value specifying whether all objects stored in the function environmen
 This is a special function to covert FESOM1 output of 3D variables, which are by default stored as 1-dimensional vectors, to 2D variables where the second dimension is depth. This implies that dummy nodes with missing values are added in locations where the ocean is not as deep as the deepest level. The function reads from a NetCDF file and creates a new NetCDF file using the ncdf4 package. By default, all 3D variables contained in the input file are converted, and 2D variables are kept as they are. If variable names are specified, then only those variables are considered.
 
 A global attribute 'history' is added to the output file to document the time and function arguments.
+
+The function supports NetCDF4 compression and 'shuffling'.
 }
 \value{
   If 'return.env=TRUE', all objects stored in the function environment before exit are returned. Otherwise, the return value is NULL.
