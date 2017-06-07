@@ -290,7 +290,6 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			x.l[L.l] = lonlat.lonrange[1]
 			polygon(x=x.r+xshift,y=y.r+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 			polygon(x=x.l+xshift,y=y.l+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
-			if (min(abs(x)) < 170) {stop("look here")}
 		} else {
 			polygon(x=x+xshift,y=y+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 		}
