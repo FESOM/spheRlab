@@ -1,5 +1,5 @@
-\name{sl.plot.polygon.qad}
-\alias{sl.plot.polygon.qad}
+\name{sl.plot.polygon}
+\alias{sl.plot.polygon}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Plot Polygon
@@ -8,7 +8,7 @@ Plot Polygon
 Plot a polygon into a spheRlab plot.
 }
 \usage{
-sl.plot.polygon.qad(plot.init.res, lon, lat, fill = TRUE, col.fill = "black", border = FALSE, col.border = col.fill, border.lwd = 0.01, border.lty = 1, ignore.visibility = FALSE, remove.identical.neighbours = TRUE, split.side = "none")
+sl.plot.polygon(plot.init.res, lon, lat, fill = TRUE, col.fill = "black", border = FALSE, col.border = col.fill, border.lwd = 0.01, border.lty = 1, ignore.visibility = FALSE, remove.identical.neighbours = TRUE, refine.boundary = TRUE, refine.boundary.precision = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -45,9 +45,15 @@ a logical value indicating whether or not the polygon shall be attempted to be d
   \item{remove.identical.neighbours}{
 a logical value indicating whether or not identical neighbours shall be removed from the polygon vertices before plotting.
 }
+  \item{refine.boundary}{
+a logical value indicating whether or not to refine truncated polygons along curved plot boundaries (in polar projection).
+}
+  \item{refine.boundary.precision}{
+a scalar specifying the precision (in degrees) for the refinement of truncated polygons along curved plot boundaries (in polar projection).
+}
 }
 \details{
-This is one of the lowest-level plotting functions of spheRlab. First the visibility of the polygon vertices is checked, which depends on the projection and plot domain boundaries. A polygon for which all vertices are invisible is not drawn. (This implies that a polygon is not drawn if all vertices are invisible, even if some other part of the polygon is visible.) Then for two partly visible edges an intersection point with the boundary is computed and the two intersection points are added to the polygon, replacing the (one or more) invisible vertices. The resulting polygon is then drawn.
+This is one of the lowest-level plotting functions of spheRlab. First the visibility of the polygon vertices is checked, which depends on the projection and plot domain boundaries. A polygon for which all vertices are invisible is not drawn. (This implies that a polygon is not drawn if all vertices are invisible, even if some other part of the polygon is visible.) Then for two partly visible edges an intersection point with the boundary is computed and the two intersection points are added to the polygon, replacing the (one or more) invisible vertices. The resulting polygon is then drawn, if applicable optionally after refinement of the truncation edge (see argument 'refine.boundary').
 }
 \value{
 %%  ~Describe the value returned
@@ -63,7 +69,7 @@ This is one of the lowest-level plotting functions of spheRlab. First the visibi
 Helge Goessling
 }
 \note{
-The 'qad' in the function name stands for 'quick and dirty', referring to the fact that some special cases may still be handled incorrectly.
+%%
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

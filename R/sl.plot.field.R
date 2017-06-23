@@ -11,7 +11,7 @@ function (plot.init.res,num,lon.v,lat.v,fill=TRUE,col.fill="colbar",border=FALSE
 		cb.border = col.border
 		if (col.fill == "colbar") {cb.fill = colbar[[col.ind[np]]]}
 		if (col.border == "colbar") {cb.border = colbar[[col.ind[np]]]}
-		sl.plot.polygon.qad(plot.init.res,lon.v[np,],lat.v[np,],fill=fill,col.fill=cb.fill,border=border,col.border=cb.border,border.lwd=border.lwd,border.lty=border.lty)
+		sl.plot.polygon(plot.init.res,lon.v[np,],lat.v[np,],fill=fill,col.fill=cb.fill,border=border,col.border=cb.border,border.lwd=border.lwd,border.lty=border.lty)
 	}
 	
 	if (exists("colbar.res")) {

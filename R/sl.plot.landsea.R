@@ -26,7 +26,7 @@ function (plot.init.res,lon,lat,elem,col.land="grey",col.sea="white",lwd=1,lty=1
 	if (!is.na(col.sea)) {
 		# draw each ocean element
 		for (ne in 1:nrow(elem)) {
-			sl.plot.polygon.qad(plot.init.res,lon[elem[ne,]],lat[elem[ne,]],col.fill=col.sea,border=TRUE,border.lwd=.1)
+			sl.plot.polygon(plot.init.res,lon[elem[ne,]],lat[elem[ne,]],col.fill=col.sea,border=TRUE,border.lwd=.1)
 		}
 	}
 	

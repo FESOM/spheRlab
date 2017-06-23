@@ -4,7 +4,7 @@ function (plot.init.res,lon,lat,elem,border=TRUE,col.border="black",length.corr=
 	if (fill) {
 		Ne = nrow(elem)
 		for (ne in 1:Ne) {
-			sl.plot.polygon.qad(plot.init.res,lon[elem[ne,]],lat[elem[ne,]],col.fill=col.fill)
+			sl.plot.polygon(plot.init.res,lon[elem[ne,]],lat[elem[ne,]],col.fill=col.fill)
 		}
 	}
 	

@@ -1,5 +1,5 @@
-sl.plot.polygon.qad <-
-function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.border=col.fill,border.lwd=0.01,border.lty=1,ignore.visibility=FALSE,remove.identical.neighbours=TRUE) {
+sl.plot.polygon <-
+function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.border=col.fill,border.lwd=0.01,border.lty=1,ignore.visibility=FALSE,remove.identical.neighbours=TRUE,refine.boundary=TRUE,refine.boundary.precision=1) {
 	
 	L = length(lon)
 	if (remove.identical.neighbours) {
@@ -20,7 +20,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
-			sl.plot.polygon.qad(pir,lon,lat,fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours=FALSE)
+			sl.plot.polygon(pir,lon,lat,fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours=FALSE,refine.boundary,refine.boundary.precision)
 			npir = npir + 1
 		}
 		
@@ -85,7 +85,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 				inds = sl.segment(x>lonlat.lonrange[1],extend=TRUE)
 				if (is.list(inds)) {
 					for (i in 2:length(inds)) {
-						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+						sl.plot.polygon(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours,refine.boundary,refine.boundary.precision)
 					}
 					x = x[inds[[1]]]
 					y = y[inds[[1]]]
@@ -117,7 +117,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 				inds = sl.segment(x<lonlat.lonrange[2],extend=TRUE)
 				if (is.list(inds)) {
 					for (i in 2:length(inds)) {
-						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+						sl.plot.polygon(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours,refine.boundary,refine.boundary.precision)
 					}
 					x = x[inds[[1]]]
 					y = y[inds[[1]]]
@@ -149,7 +149,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 				inds = sl.segment(y>lonlat.latrange[1],extend=TRUE)
 				if (is.list(inds)) {
 					for (i in 2:length(inds)) {
-						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+						sl.plot.polygon(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours,refine.boundary,refine.boundary.precision)
 					}
 					x = x[inds[[1]]]
 					y = y[inds[[1]]]
@@ -196,7 +196,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 				inds = sl.segment(y<lonlat.latrange[2],extend=TRUE)
 				if (is.list(inds)) {
 					for (i in 2:length(inds)) {
-						sl.plot.polygon.qad(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+						sl.plot.polygon(pir,x[inds[[i]]],y[inds[[i]]],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours,refine.boundary,refine.boundary.precision)
 					}
 					x = x[inds[[1]]]
 					y = y[inds[[1]]]
@@ -243,6 +243,11 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			l2r = which(x[c(2:L,1)]-x > 180)
 			r2l = which(x[c(2:L,1)]-x < -180)
 			N.lr = length(l2r)
+			N.rl = length(r2l)
+			if (N.lr != N.rl) {
+				warning("This nasty polygon can not be plotted; it might be circular, crossing the lonlat boundary an uneven number of times, that is, it may contain one or the other pole. Consider splitting the polygon into better behaving pieces.")
+				return()
+			}
 			if (N.lr > 1) {
 				if (l2r[1] > r2l[1]) {r2l = r2l[c(2:L,1)]}
 				for (i in 2:N.lr) {
@@ -256,8 +261,8 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 					} else {
 						left = c(r2l[i]:L,1:(l2r[i%%N.lr+1]%%L+1))
 					}
-					sl.plot.polygon.qad(pir,x[left],y[left],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
-					sl.plot.polygon.qad(pir,x[right],y[right],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours)
+					sl.plot.polygon(pir,x[left],y[left],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours,refine.boundary,refine.boundary.precision)
+					sl.plot.polygon(pir,x[right],y[right],fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours,refine.boundary,refine.boundary.precision)
 				}
 			}
 			if (r2l[1]%%L+1 > l2r[1]) {
@@ -295,28 +300,60 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 		}
 	} else if (projection == "polar") {
 		if (vis.partial) {
-			llati.res = sl.line.lat.intersect(rot.lon[1:2],rot.lat[1:2],plot.init.res$polar.latbound)
-			if (!llati.res$line.lat.intersect) {
+			llati.res1 = sl.line.lat.intersect(rot.lon[1:2],rot.lat[1:2],plot.init.res$polar.latbound)
+			if (!llati.res1$line.lat.intersect) {
 				warning("line does not intersect with the bounding latitude, something is wrong")
 				return()
 			}
-			if (llati.res$line.lat.intersect.twice) {
+			if (llati.res1$line.lat.intersect.twice) {
 				warning("line intersects twice with the bounding latitude, something is wrong")
 				return()
 			}
-			x[1] = llati.res$x
-			y[1] = llati.res$y
-			llati.res = sl.line.lat.intersect(rot.lon[(L-1):L],rot.lat[(L-1):L],plot.init.res$polar.latbound)
-			if (!llati.res$line.lat.intersect) {
+			x[1] = llati.res1$x
+			y[1] = llati.res1$y
+			llati.res2 = sl.line.lat.intersect(rot.lon[(L-1):L],rot.lat[(L-1):L],plot.init.res$polar.latbound)
+			if (!llati.res2$line.lat.intersect) {
 				warning("line does not intersect with the bounding latitude, something is wrong")
 				return()
 			}
-			if (llati.res$line.lat.intersect.twice) {
+			if (llati.res2$line.lat.intersect.twice) {
 				warning("line intersects twice with the bounding latitude, something is wrong")
 				return()
 			}
-			x[L] = llati.res$x
-			y[L] = llati.res$y
+			x[L] = llati.res2$x
+			y[L] = llati.res2$y
+			if (refine.boundary) {
+				lon1 = llati.res1$lon
+				lon2 = llati.res2$lon
+				if (lon2 < lon1) {
+					if ((lon1-lon2) <= 180) {
+						ori = 1
+					} else {
+						ori = -1
+						lon1 = lon1 - 360
+					}
+				} else {
+					if ((lon2-lon1) <= 180) {
+						ori = -1
+					} else {
+						ori = 1
+						lon1 = lon1 + 360
+					}
+				}
+				Nrefine = floor(abs(lon2-lon1))
+				if (Nrefine > 0) {
+					lons.ext = seq(lon2,lon1,by=ori*refine.boundary.precision)
+					x.ext = c()
+					y.ext = c()
+					for (i in 1:Nrefine) {
+						xyz = sl.lonlat2xyz(c(lons.ext[i],plot.init.res$polar.latbound))
+						x.ext = c(x.ext,xyz[1])
+						y.ext = c(y.ext,xyz[2])
+					}
+					x = c(x,x.ext)
+					y = c(y,y.ext)
+				}
+			}
 		}
 		polygon(x=x+xshift,y=y+yshift,col=col.fill,lwd=border.lwd,lty=border.lty,border=col.border)
 	} else if (projection == "regpoly") {

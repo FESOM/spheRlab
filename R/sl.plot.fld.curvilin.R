@@ -35,7 +35,7 @@ function (plot.init.res,vals,mask=NULL,lon.i,lat.i,border=TRUE,border.lwd=0.01,c
 				p.lat = c(lat.i[m,n],lat.i[m+1,n],lat.i[m+1,n+1],lat.i[m,n+1])
 				#print(p.lon)
 				#print(p.lat)
-				sl.plot.polygon.qad(plot.init.res,p.lon,p.lat,col.fill=colbar[[col.ind[m,n]]],border=border,border.lwd=border.lwd)
+				sl.plot.polygon(plot.init.res,p.lon,p.lat,col.fill=colbar[[col.ind[m,n]]],border=border,border.lwd=border.lwd)
 			}
 		}
 	}
