@@ -1,5 +1,5 @@
 sl.plot.points <-
-function (plot.init.res,lon,lat,col="black",pch=1,ignore.visibility=FALSE) {
+function (plot.init.res,lon,lat,col="black",pch=1,cex=1,ignore.visibility=FALSE) {
 	
 	projection = plot.init.res$projection
 	
@@ -10,7 +10,7 @@ function (plot.init.res,lon,lat,col="black",pch=1,ignore.visibility=FALSE) {
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
-			sl.plot.points(pir,lon,lat,col,pch,ignore.visibility)
+			sl.plot.points(pir,lon,lat,col,pch,cex,ignore.visibility)
 			npir = npir + 1
 		}
 		
@@ -44,10 +44,16 @@ function (plot.init.res,lon,lat,col="black",pch=1,ignore.visibility=FALSE) {
 			}
 			pch = pch[(1:np)[visible]]
 		}
+		if (length(cex) > 1) {
+			if (length(cex) < np) {
+				cex = rep(cex,np%/%length(cex)+1)
+			}
+			cex = cex[(1:np)[visible]]
+		}
 		x = x[visible]
 		y = y[visible]
 	}
 	
-	points(x=x+xshift,y=y+yshift,col=col,pch=pch)
+	points(x=x+xshift,y=y+yshift,col=col,pch=pch,cex=cex)
 	
 }
