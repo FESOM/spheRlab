@@ -1,11 +1,11 @@
 Package: spheRlab
 Type: Package
-Title: Spherical Geometry, Unstructured Grids, and Plotting of Geoscientific Data
-Version: 1.0.1
-Date: 2016-12-08
-Author: Helge Goessling
+Title: Spherical Geometry, Analysis, and Plotting of Geoscientific Data on Arbitrary Grids
+Version: 1.1.0
+Date: 2017-06-28
+Author: Helge Goessling, Lorenzo Zampieri
 Maintainer: Helge Goessling <helge.goessling@awi.de>
-Description: An R package with numerous functions related to spherical geometry. The package is intended in particular for analysis and plotting of geophysical unstructured-grid data, for example data produced by the Finite Element (or volumE) Sea-ice Ocean Model (FESOM).
+Description: An R package for spherical geometry, analysis, and plotting of geoscientific data on arbitrary grids.
 LazyData: true
-Suggests: ncdf4
+Suggests: ncdf4, rgdal
 License: GPL-3
