@@ -9,3 +9,4 @@ Description: An R package for spherical geometry, analysis, and plotting of geos
 LazyData: true
 Suggests: ncdf4, rgdal
 License: GPL-3
+SystemRequirements: ffmpeg
