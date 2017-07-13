@@ -8,5 +8,6 @@ Maintainer: Helge Goessling <helge.goessling@awi.de>
 Description: An R package for spherical geometry, analysis, and plotting of geoscientific data on arbitrary grids.
 LazyData: true
 Suggests: ncdf4, rgdal
+Depends: doMC
 License: GPL-3
 SystemRequirements: ffmpeg
