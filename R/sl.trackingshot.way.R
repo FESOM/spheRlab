@@ -1,5 +1,5 @@
 sl.trackingshot.way <-
-  function(waypoints, times, smooth.line = 0, smooth.time = 0, ignore.checks = F){
+  function(waypoints, times, smooth.line = 0, ignore.checks = F){
     if(!ignore.checks){
       if(!is.list(waypoints) || class(waypoints) != "sl.waypoints") stop("waypoints list has to be of class sl.waypoints!")
       if(!is.numeric(times)) stop("times has to be a numeric vector!")
@@ -9,11 +9,6 @@ sl.trackingshot.way <-
         smooth.line = 0
       }
       if(length(smooth.line) > 1) smooth.line = smooth.line[1]
-      if(!is.numeric(smooth.time)) {
-        cat("smooth.time set to non-numeric value. resetting to default...\n")
-        smooth.time = 0
-      }
-      if(length(smooth.time) > 1) smooth.time = smooth.time[1]
       if(!is.character(waypoints$projection)) stop("waypoints$projection must be a string")
       for(w in waypoints){
         if(!is.character(w)){

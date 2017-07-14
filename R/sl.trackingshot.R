@@ -72,6 +72,16 @@ sl.trackingshot <-
           w$lonlat.lonrange = (w2$lonlat.lonrange - w1$lonlat.lonrange)*ft+w1$lonlat.lonrange
           w$lonlat.latrange = (w2$lonlat.latrange - w1$lonlat.latrange)*ft+w1$lonlat.latrange
         }
+        else if(projection == "polar"){
+          w$polar.lonlatrot = (w2$polar.lonlatrot - w1$polar.lonlatrot)*ft+w1$polar.lonlatrot
+          w$polar.latbound = (w2$polar.latbound - w1$polar.latbound)*ft+w1$polar.latbound
+        }
+        else if(projection == "regpoly"){
+          w$regpoly.lonlatrot =(w2$regpoly.lonlatrot - w1$regpoly.lonlatrot)*ft+w1$regpoly.lonlatrot
+          w$regpoly.N =round((w2$regpoly.N - w1$regpoly.N)*ft+w1$regpoly.N)
+          w$regpoly.lat0 = (w2$regpoly.lat0 - w1$regpoly.lat0)*ft+w1$regpoly.lat0
+          w$regpoly.rotfrac = (w2$regpoly.rotfrac - w1$regpoly.rotfrac)*ft+w1$regpoly.rotfrac
+        }
       }
       filename = file.path(getwd(), imgdir, sprintf(paste0("img_%0", floor(log10(imagecount))+1, "d.png"), i))
       
@@ -79,7 +89,7 @@ sl.trackingshot <-
       sl.plot.field.elem(plot.init.res=pir, num=num, lon=lon, lat=lat, elem=elem, col.fill = col.fill, col.border = col.border, colbar = colbar, colbar.breaks = colbar.breaks, border.lwd = border.lwd, border.lty = border.lty)
       sl.plot.end(plot.init.res=pir)
       
-      system(paste0(ffmpeg, " -y -i ", filename, " -vf \"scale=max(", width, "\\,a*", height, "):max(", height, "\\,", width, "/a),crop=", width, ":", height, "\" ", filename))
+      if(projection == "lonlat") system(paste0(ffmpeg, " -y -i ", filename, " -vf \"scale=max(", width, "\\,a*", height, "):max(", height, "\\,", width, "/a),crop=", width, ":", height, "\" ", filename))
     }
     
     cmd = paste0(ffmpeg, " -y -framerate ", fps, " -s ", paste0(width, "x", round(width/(16/9))), " -i ", file.path(getwd(), imgdir, paste0("img_%0", floor(log10(imagecount))+1, "d.png")), " -pix_fmt yuv420p ", file.name)
