@@ -20,25 +20,21 @@ What follows is a list of what needs and/or could be done to improve spheRlab:
 
 ## NEXT
 
-* Improve handling of ‘bad nodes’
+* Make background colour functioning properly.
+
+* Improve handling of ‘bad nodes’.
 
 * Finish sl.polygon.polygon.intersect and sl.polygon.rotdir (or omit?).
 
-* Update sl.plot.polygon.qad to handle polygons truncated into multiple visible parts also in polar and regpoly projections.
+* Update sl.plot.polygon to handle polygons truncated into multiple visible parts also in polar and regpoly projections.
 
 * Add function that writes filter information into a CDO-readable file (see corresponding script).
-
-* Add decent coastline capabilities.
 
 * Add more predefined colourbars, e.g. the one mentioned by Nicolay, and write a documentation for the pre-defined colourbars.
 
 * Add other projections (robin, mercator, other?).
 
-* Add Modified/Partial Hausdorff Distance.
-
 * Group function index: plotting; spherical geometry; mostly internal functions; …
-
-* Add fesom2cdo functionality: convert 3D field, stored in a single vector as done in FESOMv1, to a matrix where the second dimension is the depth index. Dummy nodes with NAs are added where the local ocean depth is exceeded.
 
 * Write a decent vignette.
 
