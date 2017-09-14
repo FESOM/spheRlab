@@ -8,7 +8,7 @@ Initialise spheRlab Plot
 Initialise a standard spheRlab plot. Returns a plot specifics list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{sl.plot.end}.
 }
 \usage{
-sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = "white", main = "", xshift = 0, yshift = 0, do.init = TRUE, file.name = "~/sl.plot.pdf", width = 12)
+sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = "white", main = "", xshift = 0, yshift = 0, do.init = TRUE, file.name = "~/sl.plot.pdf", width = 12, png = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -59,6 +59,9 @@ a character specifying the output file. Only used if \code{do.init=TRUE}.
 }
   \item{width}{
 a scalar giving the width of the resulting figure. Only used if \code{do.init=TRUE}.
+}
+  \item{png}{
+a logical value specifying whether the output format shall be png instead of pdf (which is the default). png is used by 'sl.trackingshot' so that images can be concatenated into videos using ffmpeg.
 }
 }
 \details{

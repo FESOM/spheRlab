@@ -1,5 +1,5 @@
 sl.plot.init <-
-function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name="~/sl.plot.pdf",width=12) {
+function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name="~/sl.plot.pdf",width=12,png=F) {
 	
 	pir = list(projection=projection)
 	
@@ -56,7 +56,8 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 	
 	if (do.init) {
 		height = width * (ylim[2]-ylim[1]) / (xlim[2]-xlim[1])
-		pdf(file.name,width,height)
+		if(png) png(file.name, width, height)
+		else pdf(file.name,width,height)
 		par(mar=rep(0,4))
 		plot(x=NULL,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,main=main,xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg=col.background)
 	}
