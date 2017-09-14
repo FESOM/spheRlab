@@ -1,10 +1,7 @@
 sl.trackingshot <- 
-  function(way, num, lon, lat, elem, fps = 25L, time = NA, ffmpeg = Sys.which("ffmpeg"), col.background="white", col.fill="colbar", col.border="colbar", colbar=sl.colbar.redgreyblue_256, colbar.breaks=NA, border.lwd=0.01, border.lty=1, file.name = "video.mp4", width=1080, threads = 1, delete.images = TRUE){
+  function(way, num, lon, lat, elem, fps = 25L, time = NA, ffmpeg = Sys.which("ffmpeg"), col.background="white", col.fill="colbar", col.border="colbar", colbar=sl.colbar.redgreyblue_256, colbar.breaks=NA, border.lwd=0.01, border.lty=1, out.path=getwd(), file.name = "sl.trackingshot.mp4", width=1080, threads = 1, delete.images = TRUE, verbose=TRUE){
     
-    if (!requireNamespace("doMC", quietly = TRUE)) {
-      stop("Package 'doMC' for parallelisation needed for this function to work. Please install it (from CRAN).",
-           call. = FALSE)
-    }
+    require(doMC)
     if(!is.list(way) || class(way) != "sl.way") stop("way has to be a list of class 'sl.way'")
     if(!is.integer(fps)) stop("fps has to be integer")
     if(length(fps) > 1) fps = fps[1]
@@ -45,10 +42,11 @@ sl.trackingshot <-
     }
     
     imagecount = round(waytime * fps)
-    imgdir = "tmpSpherlabImg"
-    if(!dir.exists(file.path(getwd(), imgdir))) dir.create(file.path(getwd(), imgdir))
+    imgdir = file.path(out.path, "tmp_trackingshot")
+    if (!dir.exists(imgdir)) {dir.create(imgdir)}
     
     height = round(width*9/16)
+    if (verbose) {print(paste0("plotting ",imagecount," images using ",threads," threads ..."))}
     registerDoMC(threads)
     
     foreach(i = 1:imagecount) %dopar% {
@@ -88,9 +86,9 @@ sl.trackingshot <-
           w$regpoly.rotfrac = (w2$regpoly.rotfrac - w1$regpoly.rotfrac)*ft+w1$regpoly.rotfrac
         }
       }
-      filename = file.path(getwd(), imgdir, sprintf(paste0("img_%0", floor(log10(imagecount))+1, "d.png"), i))
+      filename = file.path(imgdir, sprintf(paste0("img_%0", floor(log10(imagecount))+1, "d.png"), i))
       
-      pir = sl.plot.init(projection = projection, lonlat.lonrange = w$lonlat.lonrange, lonlat.latrange = w$lonlat.latrange, polar.lonlatrot = w$polar.lonlatrot, polar.latbound = w$polar.latbound, regpoly.lonlatrot = w$regpoly.lonlatrot, regpoly.N = w$regpoly.N, regpoly.lat0 = w$regpoly.lat0, regpoly.rotfrac = w$regpoly.rotfrac, col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name=sprintf(filename, i),width=width, png = TRUE)
+      pir = sl.plot.init(projection = projection, lonlat.lonrange = w$lonlat.lonrange, lonlat.latrange = w$lonlat.latrange, polar.lonlatrot = w$polar.lonlatrot, polar.latbound = w$polar.latbound, regpoly.lonlatrot = w$regpoly.lonlatrot, regpoly.N = w$regpoly.N, regpoly.lat0 = w$regpoly.lat0, regpoly.rotfrac = w$regpoly.rotfrac, col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name=sprintf(filename, i),width=width,png=TRUE)
       sl.plot.field.elem(plot.init.res=pir, num=num, lon=lon, lat=lat, elem=elem, col.fill = col.fill, col.border = col.border, colbar = colbar, colbar.breaks = colbar.breaks, border.lwd = border.lwd, border.lty = border.lty)
       sl.plot.end(plot.init.res=pir)
       
@@ -99,5 +97,5 @@ sl.trackingshot <-
     
     cmd = paste0(ffmpeg, " -y -framerate ", fps, " -s ", paste0(width, "x", round(width/(16/9))), " -i ", file.path(getwd(), imgdir, paste0("img_%0", floor(log10(imagecount))+1, "d.png")), " -pix_fmt yuv420p ", file.name)
     system(cmd)
-    if(delete.images) unlink(x = file.path(getwd(), imgdir), recursive = TRUE, force = TRUE)
+    if(delete.images) unlink(x = imgdir, recursive = TRUE, force = TRUE)
   }
