@@ -1,12 +1,14 @@
 sl.plot.naturalearth <-
-function (plot.init.res=NULL,load.res=NULL,what="coastline",resolution="medium",lines.col="black",lwd=1,lty=1,fill.col="grey",fill.refine.boundary=TRUE,fill.refine.boundary.precision=1,polygon.borders=FALSE,points.text=TRUE,points.text.col="black",points.text.cex=1,points.text.adj=NULL,points.text.pos=NULL,points.text.offset=0.5,points.text.vfont=NULL,points.text.font=NULL,points.points=FALSE,points.pch=20,points.col="black",points.cex=1,ignore.visibility=FALSE,naturalearth.dir="~/naturalearthdata",verbose=TRUE) {
+function (plot.init.res=NULL,load.res=NULL,what="coastline",resolution="medium",lines.col="black",lwd=1,lty=1,fill.col="grey",fill.refine.boundary=TRUE,fill.refine.boundary.precision=1,polygon.borders=FALSE,points.text=TRUE,points.text.col="black",points.text.cex=1,points.text.adj=NULL,points.text.pos=NULL,points.text.offset=0.5,points.text.vfont=NULL,points.text.font=NULL,points.points=FALSE,points.pch=20,points.col="black",points.cex=1,ignore.visibility=FALSE,naturalearth.dir="~/naturalearthdata",verbose=FALSE) {
 	
 	if (what[1] == "list") {
 		return(sl.load.naturalearth(what="list",resolution=resolution))
+	} else if (is.null(plot.init.res)) {
+		stop("argument 'plot.init.res' missing (without default value)")
 	}
 	
 	if (is.null(load.res)) {
-		if (verbose) {print("Argument 'load.res' not provided; using 'sl.load.naturalearth()' to load Natural Earth data.")}
+		if (verbose) {print("Using 'sl.load.naturalearth()' to load Natural Earth data (as argument 'load.res' is not provided).")}
 		load.res = sl.load.naturalearth(what=what,resolution=resolution,naturalearth.dir=naturalearth.dir,verbose=verbose)
 	}
 	
@@ -38,12 +40,15 @@ function (plot.init.res=NULL,load.res=NULL,what="coastline",resolution="medium",
 				}
 			}
 		} else if (is(load.res[[k]])[2] == "SpatialPolygons") {
+			if (!is.na(fill.col[k])) {fill = TRUE} else {fill = FALSE}
+			containshole = FALSE
 			for (i in 1:length(load.res[[k]]@polygons)) {
 				for (j in 1:length(load.res[[k]]@polygons[[i]]@Polygons)) {
-					if (!is.na(fill.col[k])) {fill = TRUE} else {fill = FALSE}
+					if (load.res[[k]]@polygons[[i]]@Polygons[[j]]@hole) {containshole = TRUE}
 					sl.plot.polygon(plot.init.res=plot.init.res,lon=load.res[[k]]@polygons[[i]]@Polygons[[j]]@coords[,1],lat=load.res[[k]]@polygons[[i]]@Polygons[[j]]@coords[,2],fill=fill,col.fill=fill.col[k],border=polygon.borders[k],col.border=lines.col[k],border.lwd=lwd[k],border.lty=lty[k],ignore.visibility=ignore.visibility[k],remove.identical.neighbours=FALSE,refine.boundary=fill.refine.boundary[k],refine.boundary.precision=fill.refine.boundary.precision[k])
 				}
 			}
+			if (containshole) {warning("This data set contains inverse polygons; the plot will probably be corrupt. Consider using other data. The issue is known for the 'ocean' polygons for which you can use instead either 'bathymetry_L_0' (only available for resolution='fine'), or 'land' with defining a background colour in 'sl.plot.init()' to set the ocean colour.")}
 		} else if (is(load.res[[k]])[2] == "SpatialPoints") {
 			for (i in 1:length(load.res[[k]]@data$name)) {
 				if (points.points[k]) {

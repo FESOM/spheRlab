@@ -62,7 +62,7 @@ function (what="all",resolution="medium",naturalearth.dir="~/naturalearthdata",f
 		}
 		
 		if (read) {
-			res.list[[reswhat]] = readOGR(dsn=path.expand(naturalearth.dir),layer=paste0("ne_",reswhat))
+			res.list[[reswhat]] = readOGR(dsn=path.expand(naturalearth.dir),layer=paste0("ne_",reswhat),verbose=verbose)
 		}
 		
 	}
