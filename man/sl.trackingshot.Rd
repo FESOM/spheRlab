@@ -69,11 +69,12 @@ sl.trackingshot(way, num, lon, lat, elem,
   \item{verbose}{
     Logical value indicating whether additional info is printed
 }
+}
 \note{
 1) It appears that the function fails if it's immediately executed with multiple threads. This can be circumvented by starting the function with a single thread, aborting it (if more threads are desired), and re-running it with multiple threads.
 
 2) This initial implementation of the function is designed to make movies based on one specific plotting function, namely \code{\link{sl.plot.field.elem}}. For the future it would be nice to make this tool more general. For example, the trackingshot function could take a function containing arbitrary plot calls as an argument. The user could then define such a function quite generally, e.g., adding coastlines, points, or whatsoever. Ideally, it should also be possible to use data with a time dimension, so that not only the view is changing but at the same time the displayed field advances in time.
-}
+
 }
 \author{
   Lukas Müller, slightly modified by Helge Goessling
