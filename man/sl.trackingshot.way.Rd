@@ -32,6 +32,8 @@ sl.trackingshot.way(waypoints, times, smooth.line = 0, ignore.checks = F)
 \dontrun{
 ### read mesh
 mesh = sl.grid.readFESOM(griddir="somedir",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90))
+# a sample mesh can be obtained from GitHub, e.g., using 'svn checkout' from the command line:
+# > svn checkout https://github.com/FESOM/FESOM-data/trunk/pi-grid ~/pi-grid
 
 ### read corresponding data
 require(ncdf4)

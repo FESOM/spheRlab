@@ -1,10 +1,10 @@
 \name{sl.trackingshot}
 \alias{sl.trackingshot}
 \title{
-Create trackingshot movie
+Create Trackingshot Movie
 }
 \description{
-Creates a specified number of temporary images and concatenates them to a video.
+Creates a specified number of temporary images and concatenates them to a video. SEE NOTE 1) BELOW FOR A WORKAROUND FOR AN EXISTING ISSUE.
 }
 \usage{
 sl.trackingshot(way, num, lon, lat, elem, 
@@ -69,6 +69,11 @@ sl.trackingshot(way, num, lon, lat, elem,
   \item{verbose}{
     Logical value indicating whether additional info is printed
 }
+\note{
+1) It appears that the function fails if it's immediately executed with multiple threads. This can be circumvented by starting the function with a single thread, aborting it (if more threads are desired), and re-running it with multiple threads.
+
+2) This initial implementation of the function is designed to make movies based on one specific plotting function, namely \code{\link{sl.plot.field.elem}}. For the future it would be nice to make this tool more general. For example, the trackingshot function could take a function containing arbitrary plot calls as an argument. The user could then define such a function quite generally, e.g., adding coastlines, points, or whatsoever. Ideally, it should also be possible to use data with a time dimension, so that not only the view is changing but at the same time the displayed field advances in time.
+}
 }
 \author{
   Lukas Müller, slightly modified by Helge Goessling
@@ -77,6 +82,8 @@ sl.trackingshot(way, num, lon, lat, elem,
 \dontrun{
 ### read mesh
 mesh = sl.grid.readFESOM(griddir="somedir",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90))
+# a sample mesh can be obtained from GitHub, e.g., using 'svn checkout' from the command line:
+# > svn checkout https://github.com/FESOM/FESOM-data/trunk/pi-grid ~/pi-grid
 
 ### read corresponding data
 require(ncdf4)
