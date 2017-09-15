@@ -12,11 +12,13 @@ What follows is a list of what needs and/or could be done to improve spheRlab:
 
 ## URGENT
 
-* Add simple grid (so-called pi-grid) and a corresponding field for examples.
-
-* Add examples - for (almost) every function.
+* Write two vignettes (based on rmarkdown and probably packagedocs; http://hafen.github.io/packagedocs/): 1) General spheRlab documentation, 2) Using spheRlab for FESOM
 
 * Implement automatic lon-lat labelling into sl.plot.lonlatgrid.
+
+* Add function that downloads FESOM meshes and example data from GitHub; default shall be the pi-grid at GitHub FESOM-data.
+
+* Add examples for (almost) every function; for functions involving unstructured meshes, use the pi-grid.
 
 ## NEXT
 
@@ -30,13 +32,11 @@ What follows is a list of what needs and/or could be done to improve spheRlab:
 
 * Add function that writes filter information into a CDO-readable file (see corresponding script).
 
-* Add more predefined colourbars, e.g. the one mentioned by Nicolay, and write a documentation for the pre-defined colourbars.
+* Add more predefined colourbars, e.g., the one mentioned by Nikolay and ColorBrewer ones, and write a documentation for the pre-defined colourbars.
 
 * Add other projections (robin, mercator, other?).
 
 * Group function index: plotting; spherical geometry; mostly internal functions; …
-
-* Write a decent vignette.
 
 ## WISHLIST
 
@@ -47,6 +47,8 @@ What follows is a list of what needs and/or could be done to improve spheRlab:
 * Maybe introduce objects (S3 or S4?)? -> grid; colourbar (with breaks?); plot specifics list; more?
 
 * More argument testing at beginning of functions.
+
+* Generalise sl.trackingshot (see note 2 in the corresponding documentation)
 
 * Speed up things where possible.
 
