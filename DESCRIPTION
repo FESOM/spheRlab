@@ -12,6 +12,7 @@ Suggests:
     rgdal,
     knitr,
     rmarkdown,
-    doMC
+    doMC,
+    RColorBrewer
 License: GPL-3
 VignetteBuilder: knitr

@@ -13,7 +13,7 @@ sl.colbar(cols, N = (length(cols) - 1) * 10 + 1, cols.at = seq(0, 1, by = 1/(len
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{cols}{
-a list of (at least 2) RGB tuples (length-3 vectors) defining the basis colours of the colourbar.
+either a list of (at least 2) RGB tuples (length-3 vectors in the range [0,1]) or a character vector of named colours and/or hexadecimal-coded RGB colours. Defines the basis colours of the colourbar.
 }
   \item{N}{
 number of colours the resulting colourbar shall contain.
@@ -23,7 +23,7 @@ a vector of length \code{N} that specifies at which relative locations the basis
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+Can also use RColorBrewer colourbars as input, see corresponding examples below.
 }
 \value{
   A list of length \code{N} with characters describing RGB values (hexadecimal) of the colours comprising the colourbar.
@@ -41,7 +41,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.view.colbar}, \code{sl.num2colbar}, \code{sl.num2colbarbreaks}
+\code{\link{sl.view.colbar}}, \code{\link{sl.plot.colbar}}, \code{\link{sl.num2colbar}}, \code{\link{sl.num2colbarbreaks}}
 }
 \examples{
 sl.colbar(cols=list(c(1,0,0),c(1,1,1),c(0,0,1)),N=5)
@@ -60,6 +60,29 @@ sl.colbar(cols=list(c(1,0,0),c(1,1,1),c(0,0,1)),N=5)
 ## 
 ## [[5]]
 ## [1] "#0000FF"
+
+require("RColorBrewer")
+## For a list of all available Color Brew colourbars, type display.brewer.all()
+sl.colbar(cols=brewer.pal(5,"BrBG"),N=5)
+## Should return:
+## [[1]]
+## [1] "#A6611A"
+## 
+## [[2]]
+## [1] "#DFC27D"
+## 
+## [[3]]
+## [1] "#F5F5F5"
+## 
+## [[4]]
+## [1] "#80CDC1"
+## 
+## [[5]]
+## [1] "#018571"
+
+## Using a different 'N' (as by default), colours are interpolated inbetween, e.g.:
+sl.view.colbar(sl.colbar(cols=brewer.pal(11,"BrBG")))
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

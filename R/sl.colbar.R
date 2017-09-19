@@ -1,7 +1,16 @@
 sl.colbar <-
 function (cols,N=(length(cols)-1)*10+1,cols.at=seq(0,1,by=1/(length(cols)-1))) {
 	
-	Ncols = length(cols)
+  Ncols = length(cols)
+  
+  if (is.character(cols)) {
+    cols.in = cols
+    cols = list()
+    for (i in 1:Ncols) {
+      cols[[i]] = as.vector(col2rgb(cols.in[i]))/255
+    }
+  }
+	
 	col.out = list()
 	col.out[[1]] = rgb(matrix(cols[[1]],ncol=3))
 	for (i in 2:(N-1)) {
