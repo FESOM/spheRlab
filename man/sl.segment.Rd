@@ -26,7 +26,7 @@ a logical value indicating whether, instead of start and end indices, complete s
 }
 }
 \details{
-This function is used internally by \code{sl.plot.polygon.qad} when polygons need to be truncated.
+This function is used internally by \code{\link{sl.plot.polygon}} when polygons need to be truncated.
 }
 \value{
 	If \code{return.segments=TRUE}: a vector of indices corresponding to a segment of contiguous \code{TRUE} values in \code{logivec} if only one segment is contained or if \code{first.only=TRUE}, or otherwise an (unnamed) list of such vectors.

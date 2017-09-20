@@ -44,7 +44,7 @@ A vector with logical values indicating at which positions points are identical 
 Helge Goessling
 }
 \note{
-%%  ~~further notes~~
+This function is used in \code{\link{sl.plot.polygon}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

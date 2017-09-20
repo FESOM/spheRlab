@@ -4,7 +4,7 @@
   Create waypoint
 }
 \description{
-  Creates a list with class "sl.waypoint" containing necessary arguments for making image(s)
+  Creates a list with class \code{sl.waypoint} containing necessary arguments for making image(s)
 }
 \usage{
 sl.trackingshot.waypoint(projection, time = 0, 

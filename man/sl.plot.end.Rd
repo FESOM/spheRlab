@@ -13,7 +13,7 @@ sl.plot.end(plot.init.res, line.border = TRUE, col.border = "black", precision =
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{line.border}{
 a logical value indicating whether or not to draw lines along the plot boundaries.
@@ -32,9 +32,9 @@ the line type of the boundaries.
 }
 }
 \details{
-Instead of using this function, a plot initialised by \code{sl.plot.init} or any variant thereof could also simply be closed using \code{dev.off}. However, \code{sl.plot.end} allows one to draw plot boundary lines in an automated way before \code{dev.off} is called by \code{sl.plot.end}.
+Instead of using this function, a plot initialised by \code{\link{sl.plot.init}} or any variant thereof could also simply be closed using \code{\link{dev.off}}. However, \code{\link{sl.plot.end}} allows one to draw plot boundary lines in an automated way before \code{\link{dev.off}} is called by \code{\link{sl.plot.end}}.
 
-For a plot initialised with \code{sl.plot.platon.init}, use \code{sl.plot.platon.end} instead of this function.
+For a plot initialised with \code{\link{sl.plot.platon.init}}, use \code{\link{sl.plot.platon.end}} instead of this function.
 }
 \value{
 %%  ~Describe the value returned
@@ -56,7 +56,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.init}, \code{sl.plot.platon.end}
+\code{\link{sl.plot.init}}, \code{\link{sl.plot.platon.end}}
 }
 \examples{
 ## To be provided ...

@@ -5,7 +5,7 @@
 Insert Points into Line on Sphere
 }
 \description{
-Insert points at equidistant locations along a line on a sphere. Note that the algorithm works in x-y-z coordinates. This means that, if more than one point is added, the points are not exactly equidistant in terms of great-circle distances after projection onto the sphere, with deviations becoming large for long lines. (See \code{sl.p2p} for a more precise alternative where arbitrary fractions can be specified.)
+Insert points at equidistant locations along a line on a sphere. Note that the algorithm works in x-y-z coordinates. This means that, if more than one point is added, the points are not exactly equidistant in terms of great-circle distances after projection onto the sphere, with deviations becoming large for long lines. (See \code{\link{sl.p2p}} for a more precise alternative where arbitrary fractions can be specified.)
 }
 \usage{
 sl.fillequidist(lon, lat, np = 1)
@@ -42,7 +42,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.p2p}
+\code{\link{sl.p2p}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{

@@ -35,7 +35,7 @@ a logical value indicating whether or not the rotation shall be inverted.
 }
 }
 \details{
-The parameters \code{alpha}, \code{beta}, and \code{gamma} can be derived from more intuitive parameters for the original coordinates of the new North Pole and the angle (in degrees) of rotation around the new North Pole using \code{sl.lonlatrot2abg}.
+The parameters \code{alpha}, \code{beta}, and \code{gamma} can be derived from more intuitive parameters for the original coordinates of the new North Pole and the angle (in degrees) of rotation around the new North Pole using \code{\link{sl.lonlatrot2abg}}.
 }
 
 \value{
@@ -61,7 +61,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.lonlatrot2abg}
+\code{\link{sl.lonlatrot2abg}}
 }
 \examples{
 abg = sl.lonlatrot2abg(lonlatrot=c(20,30,-45))

@@ -5,7 +5,7 @@
 Convert Numerics to Integers (Colourbar Breaks)
 }
 \description{
-Convert a numerical vector or array to integers corresponding to discrete intervals defined by \code{breaks}. The latter can be provided as argument, or they are computed by calling \code{sl.num2colbarbreaks}). This function is used for plotting numerical fields where polygons are coloured according to a colourbar with colours assigned to discrete intervals.
+Convert a numerical vector or array to integers corresponding to discrete intervals defined by \code{breaks}. The latter can be provided as argument, or they are computed by calling \code{\link{sl.num2colbarbreaks}}). This function is used for plotting numerical fields where polygons are coloured according to a colourbar with colours assigned to discrete intervals.
 }
 \usage{
 sl.num2colbar(num, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = FALSE)
@@ -26,14 +26,14 @@ sl.num2colbar(num, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = 
 }
 }
 \details{
-This function is used by \code{sl.num2colbarbreaks}, \code{sl.plot.elem}, \code{sl.plot.field}, and \code{sl.plot.fld.curvilin}.
+This function is used by \code{\link{sl.num2colbarbreaks}}, \code{\link{sl.plot.elem}}, \code{\link{sl.plot.field}}, and \code{\link{sl.plot.fld.curvilin}}.
 }
 \value{
 \item{colour.index}{
-  A vector or array with the same dimensions as the argument \code{num}, converted to integers corresponding to discrete intervals defined by \code{breaks} (which were either provided as argument or computed by calling \code{sl.num2colbarbreaks}).
+  A vector or array with the same dimensions as the argument \code{num}, converted to integers corresponding to discrete intervals defined by \code{breaks} (which were either provided as argument or computed by calling \code{\link{sl.num2colbarbreaks}}).
 }
 \item{breaks}{
-  A vector giving the \code{breaks} (particularly relevant if these were not provided as argument but computed by calling \code{sl.num2colbarbreaks}).
+  A vector giving the \code{breaks} (particularly relevant if these were not provided as argument but computed by calling \code{\link{sl.num2colbarbreaks}}).
 }
 }
 \references{
@@ -49,7 +49,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.colbar}, \code{sl.num2colbarbreaks}.
+\code{\link{sl.colbar}}, \code{\link{sl.num2colbarbreaks}}.
 }
 \examples{
 cb = sl.colbar(cols=list(c(1,0,0),c(.5,.5,.5),c(0,0,1)),N=5)

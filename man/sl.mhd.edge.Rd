@@ -16,17 +16,17 @@ sl.mhd.edge(Var,LonGrid,LatGrid,Threshold)
   The variable from which the edge has to be extracted. For sea ice this can be sea ice concentration or sea ice probability. Generally this is a 2D \code{M x N} array. In case of a model output with more than one ensemble member, this parameter can be passed as 3D \code{M x N x e} array, with \code{e} as the ensemble size. In this case the sea ice edge is calculated using the sea ice probability. IMPORTANT: Apply a data land mask as NaN directly to \code{Var} before passing the argument to the function. In this way the calculation of MHD will be meaningful.  
 }
   \item{LonGrid}{
-  The \code{M x N} longitude grid. See the function \code{sl.ll.rec} for more details.
+  The \code{M x N} longitude grid. See the function \code{\link{sl.ll.rec}} for more details.
 }
   \item{LatGrid}{
-  The \code{M x N} latitude grid. See the function \code{sl.ll.rec} for more details.
+  The \code{M x N} latitude grid. See the function \code{\link{sl.ll.rec}} for more details.
 }
   \item{Threshold}{
   A threshold value (number). For sea ice concentration this is usually 15 \% 
 }
 }
 \details{
-Please refer to the function \code{sl.mhd.edge} to calculate the coordinates of the edge and of the land interface. \code{sl.mhd.edge} output is the natural imput for \code{sl.mhd}. The distance employed to compute the MHD is the "great circle distance", given by \code{sl.gc.dist} 
+Please refer to the function \code{\link{sl.mhd.edge}} to calculate the coordinates of the edge and of the land interface. \code{\link{sl.mhd.edge}} output is the natural imput for \code{\link{sl.mhd}}. The distance employed to compute the MHD is the "great circle distance", given by \code{\link{sl.gc.dist}}.
 }
 \value{
 A list containing the (lon,lat) coordinates of the edge and of the land-ice interface.  
@@ -44,10 +44,10 @@ Lorenzo Zampieri
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.mhd}}
 }
 \examples{
-list <- sl.mhd.edge(SeaIceConcentration,LonGrid,LatGrid,Threshold)
+list = sl.mhd.edge(SeaIceConcentration,LonGrid,LatGrid,Threshold)
 ## sl.mhd(Edge1,Edge2,LandEdge1,LandEdge2) 
 ## Should result in double, which represent the MHD of the two edges in meters
 }

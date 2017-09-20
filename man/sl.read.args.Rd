@@ -2,10 +2,10 @@
 \alias{sl.read.args}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Read named arguments in batch mode
+Read Named Arguments in Batch Mode
 }
 \description{
-Read arguments provided when a script is called by 'Rscript'. Based on R function 'commandArgs', but allowing to specify named arguments in the style '<argname>,<arg>', returning an accordingly named list.
+Read arguments provided when a script is called from the command line through \code{Rscript}. Based on \code{R} function \code|\link{commandArgs}}, but allowing to specify named arguments in the style \code{<argname>,<arg>}, returning an accordingly named list.
 }
 \usage{
 sl.read.args(sep = ",", missval = NULL)

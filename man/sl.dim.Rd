@@ -46,7 +46,7 @@ sl.dim(1:24)
 ## Should return:
 ## [1] 24
 
-## Note that the second example does not work if \code{dim} is used instead of \code{sl.dim}.
+## Note that the second example does not work if dim() is used instead of sl.dim().
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

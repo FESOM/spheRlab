@@ -13,7 +13,7 @@ sl.plot.domainbound.curvilin(plot.init.res, lon.i, lat.i, col = "black", lwd = 1
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a \code{spheRlab} plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon.i}{
 a matrix specifying the interface longitudes of the grid.

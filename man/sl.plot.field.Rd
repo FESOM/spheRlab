@@ -13,7 +13,7 @@ sl.plot.field(plot.init.res, num, lon.v, lat.v, fill = TRUE, col.fill = "colbar"
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{num}{
 a vector of length \code{N} specifying a 2-dimensional numerical (unstructured) field, with values valid at the nodes.
@@ -37,7 +37,7 @@ a logical value indicating whether or not to draw lines for the polygon borders.
 the colour of the borders. If \code{col.border="colbar"} (default), then borders are coloured according to the field (node/polygon) values. This generates minute graphical overlap that prevents artefacts ("fractures") between polygons in the plot.
 }
   \item{colbar}{
-a spheRlab colourbar (as returned by \code{sl.colbar}) of length \code{Nc} to be used for the field.
+a spheRlab colourbar (as returned by \code{\link{sl.colbar}}) of length \code{Nc} to be used for the field.
 }
   \item{colbar.breaks}{
 a numeric vector of length \code{Nc-1} specifying the breaks between colours.
@@ -71,7 +71,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.field.elem}, \code{sl.plot.elem}
+\code{\link{sl.plot.field.elem}}, \code{\link{sl.plot.elem}}, \code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}
 }
 \examples{
 ## To be provided ...

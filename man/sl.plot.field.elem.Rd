@@ -13,7 +13,7 @@ sl.plot.field.elem(plot.init.res, num, lon, lat, elem, fill = TRUE, col.fill = "
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{num}{
 a vector of length \code{N} specifying a 2-dimensional numerical (unstructured) field, with values valid at the nodes (triangle vertices).
@@ -40,7 +40,7 @@ a logical value indicating whether or not to draw lines for the element borders 
 the colour of the borders. If \code{col.border="colbar"} (default), then borders are coloured according to the field (element) values. This generates minute graphical overlap that prevents artefacts ("fractures") between elements in the plot.
 }
   \item{colbar}{
-a spheRlab colourbar (as returned by \code{sl.colbar}) of length \code{Nc} to be used for the field.
+a spheRlab colourbar (as returned by \code{\link{sl.colbar}}) of length \code{Nc} to be used for the field.
 }
   \item{colbar.breaks}{
 a numeric vector of length \code{Nc-1} specifying the breaks between colours.
@@ -56,7 +56,7 @@ the line type of the borders (edges).
 }
 }
 \details{
-The function uses \code{sl.plot.field} internally.
+The function uses \code{\link{sl.plot.field}} internally.
 }
 \value{
 If a colourbar is used, it will be returned for further usage (e.g., for plotting of the colourbar).
@@ -70,13 +70,13 @@ Helge Goessling
 \note{
 Unfortunately, \code{R} does not seem to have the capability to draw genuine colour gradients (as Matlab and Python do). If that capability is added at some point (or found to already exist), it should be added as an option to this function.
 
-Note that, instead of using this function with \code{fill=FALSE}, one should use \code{sl.plot.elem} where edges are drawn only once.
+Note that, instead of using this function with \code{fill=FALSE}, one should use \code{\link{sl.plot.elem}} where edges are drawn only once.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.field}, \code{sl.plot.elem}
+\code{\link{sl.plot.field}}, \code{\link{sl.plot.elem}}
 }
 \examples{
 ## To be provided ...

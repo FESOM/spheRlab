@@ -32,7 +32,7 @@ sl.plot.3D.init(file.name = "~/sl.plot.pdf", projection = "polar", width = 30, l
 }
 }
 \details{
-The list returned from this function must be provided to any spheRlab plotting functions called afterwards to fill the plot with data. After all plotting is done, \code{sl.plot.end} must be called, again with the list returned from this function provided.
+The list returned from this function must be provided to any spheRlab plotting functions called afterwards to fill the plot with data. After all plotting is done, \code{\link{sl.plot.end}} must be called, again with the list returned from this function provided.
 
 A displacement of the two poles by about 20 degrees (as by default) may be appropriate.
 }
@@ -52,7 +52,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.end}, \code{sl.plot.init}, \code{sl.plot.platon.init}
+\code{\link{sl.plot.end}}, \code{\link{sl.plot.init}}, \code{\link{sl.plot.platon.init}}
 }
 \examples{
 ## To be provided ...

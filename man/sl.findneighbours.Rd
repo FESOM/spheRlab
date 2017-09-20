@@ -58,13 +58,13 @@ a logical value indicating whether all neighbours and elements have been ordered
 Helge Goessling
 }
 \note{
-This function is used by \code{sl.grid.readFESOM}.
+This function is used by \code{\link{sl.grid.readFESOM}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.grid.readFESOM}
+\code{\link{sl.grid.readFESOM}}
 }
 \examples{
 ## To be provided ...

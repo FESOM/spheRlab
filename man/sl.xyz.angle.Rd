@@ -38,7 +38,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.lonlat.angle}
+\code{\link{sl.lonlat.angle}}
 }
 \examples{
 sl.xyz.angle(c(1,0,0),c(0,0,1))

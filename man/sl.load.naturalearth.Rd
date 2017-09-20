@@ -38,7 +38,7 @@ a logical value indicating whether or not to print more information.
 }
 }
 \details{
-This function, together with \code{sl.plot.naturalearth()}, enables using the openly available and free-to-use Natural Earth data (http://www.naturalearthdata.com) - including coastlines, rivers, land and ocean polygons, and much more - in spheRlab. This function is also invoked from \code{sl.plot.naturalearth()} if needed, so it does not need to be used explicitly to plot Natural Earth data.
+This function, together with \code{\link{sl.plot.naturalearth}}, enables using the openly available and free-to-use Natural Earth data (http://www.naturalearthdata.com) - including coastlines, rivers, land and ocean polygons, and much more - in spheRlab. This function is also invoked from \code{\link{sl.plot.naturalearth}} if needed, so it does not need to be used explicitly to plot Natural Earth data.
 
 If \code{read=TRUE}, the package rgdal is needed to read the shape file(s).
 }
@@ -58,7 +58,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.naturalearth}
+\code{\link{sl.plot.naturalearth}}
 }
 \examples{
 # load coastlines at coarse resolution:

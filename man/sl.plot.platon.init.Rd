@@ -5,7 +5,7 @@
 Initialise Platon Plot
 }
 \description{
-Initialise a Platonian-type body plot. Currently possible are hexahedrons (cubes) and icosahedrons. The plot is composed of faces arranged in a net that can be crafted into a 3-dimensional platonian-type body. Returns a list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{sl.plot.platon.end}.
+Initialise a Platonian-type body plot. Currently possible are hexahedrons (cubes) and icosahedrons. The plot is composed of faces arranged in a net that can be crafted into a 3-dimensional platonian-type body. Returns a list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.platon.end}}.
 }
 \usage{
 sl.plot.platon.init(file.name = "~/sl.plot.pdf", body.type = "hexahedron", width = 60, skip.faces = NULL)
@@ -53,7 +53,7 @@ If anyone wants to burn some spare time, how about adding the truncated icosahed
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.init}, \code{sl.plot.platon.end}
+\code{\link{sl.plot.init}}, \code{\link{sl.plot.platon.end}}
 }
 \examples{
 ## To be provided ...

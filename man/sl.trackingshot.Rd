@@ -16,7 +16,7 @@ sl.trackingshot(way, num, lon, lat, elem,
 }
 \arguments{
   \item{way}{
-    list of class "sl.way" like the one returned by \code{\link{sl.trackingshot.way}}
+    list of class \code{sl.way} like the one returned by \code{\link{sl.trackingshot.way}}
 }
   \item{num, lon, lat, elem}{
     Corresponding argument to \code{\link{sl.plot.field.elem}}

@@ -26,7 +26,7 @@ Scalar latitude of a point from which to decompose the polygon into triangles. I
 }
 }
 \details{
-The polygon is decomposed into triangles formed by any two neighboring vertices and one reference point. If not specified, the barycenter of all polygon vertices is used as reference point. For each triangle the centroid is computed using \code{sl.barycenter} and a weight proportional to the triangle size is assigned. If the direction of rotation around the refrence point is clockwise for a pair of polygon vertices, a negative weight is assigned. The polygon centroid is then computed as the weighted barycenter of the triangle centroids using \code{sl.barycenter}. Note that the overall direction of rotation (the order in which the polygon vertices are provided) does not affect the result because of the internal division by the sum of all weights.
+The polygon is decomposed into triangles formed by any two neighboring vertices and one reference point. If not specified, the barycenter of all polygon vertices is used as reference point. For each triangle the centroid is computed using \code{\link{sl.barycenter}} and a weight proportional to the triangle size is assigned. If the direction of rotation around the refrence point is clockwise for a pair of polygon vertices, a negative weight is assigned. The polygon centroid is then computed as the weighted barycenter of the triangle centroids using \code{\link{sl.barycenter}}. Note that the overall direction of rotation (the order in which the polygon vertices are provided) does not affect the result because of the internal division by the sum of all weights.
 }
 \value{
   \item{lon}{Longitude of the centroid}
@@ -48,7 +48,7 @@ Use this function with caution: it appears that the method is imprecise for larg
 %\section{Warning }{...}
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.barycenter}}
 }
 \examples{
 sl.centroid(stamp.lon=c(0,3,4,1.2),stamp.lat=c(-2,1,4,3.5))

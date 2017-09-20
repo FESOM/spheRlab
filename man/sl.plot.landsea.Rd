@@ -2,10 +2,10 @@
 \alias{sl.plot.landsea}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Plot Land-Sea Mask
+Plot Land-Sea Mask of a Grid
 }
 \description{
-Plot a land-sea mask (currently only based on an unstructured ocean grid).
+Plot a land-sea mask based on an unstructured ocean grid.
 }
 \usage{
 sl.plot.landsea(plot.init.res, lon, lat, elem, col.land = "grey", col.sea = "white", lwd = 1, lty = 1, polar.bg.res = 1)
@@ -13,7 +13,7 @@ sl.plot.landsea(plot.init.res, lon, lat, elem, col.land = "grey", col.sea = "whi
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon}{
 a vector of length \code{N} specifying the longitudes of the grid nodes.
@@ -57,13 +57,15 @@ First the whole plot domain is filled with \code{col.land}. For a polar projecti
 Helge Goessling
 }
 \note{
-Either this function or an extra function (could be named \code{sl.plot.coastline}) shall bring the additional capability of drawing coastlines. Those could be based either on a grid (that will be easy to be added here), or on extra - probably higher resolution - data sets providing coastlines and/or topography.
+1) This function could be amended slightly to enable drawing just the coastline of an ocean grid.
+
+2) For more sophisticated plotting of more realistic coastlines and other geographical standard datasets, see \code{\link{sl.plot.naturalearth}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.elem}
+\code{\link{sl.plot.elem}}, \code{\link{sl.plot.naturalearth}}
 }
 \examples{
 ## To be provided ...

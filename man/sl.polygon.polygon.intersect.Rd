@@ -44,7 +44,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.line.polygon.intersect}, \code{sl.line.line.intersect}
+\code{\link{sl.line.polygon.intersect}}, \code{\link{sl.line.line.intersect}}
 }
 \examples{
 ## To be provided ...

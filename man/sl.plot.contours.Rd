@@ -13,10 +13,10 @@ sl.plot.contours(plot.init.res, contours.res, indices = NULL, col = "black", lwd
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{contours.res}{
-a list of contours consisting of segments, as returned by \code{sl.contours}.
+a list of contours consisting of segments, as returned by \code{\link{sl.contours}}.
 }
   \item{indices}{
 an integer vector with indices indicating which contours (levels) of the contours list shall be plotted. If not specified, all contours are plotted.
@@ -38,7 +38,7 @@ NOT YET USED. LABELLING TO BE IMPLEMENTED.
 }
 }
 \details{
-The function uses \code{sl.plot.lines} to plot each segment of each contour line contained in \code{contours.res}.
+The function uses \code{\link{sl.plot.lines}} to plot each segment of each contour line contained in \code{contours.res}.
 }
 \value{
 %%  ~Describe the value returned
@@ -60,7 +60,7 @@ Automatic labelling shall be implemented at some point, making use at least of t
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.lines}
+\code{\link{sl.plot.lines}}
 }
 \examples{
 ## To be provided ...

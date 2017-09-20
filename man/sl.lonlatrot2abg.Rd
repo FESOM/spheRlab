@@ -27,7 +27,7 @@ sl.lonlatrot2abg(lonlatrot)
 %
 }
 \value{
-A vector of length 3 with the parameters alpha, beta, and gamma as used in \code{sl.rot}. Note that to achieve identity transformation (that is, no transformation at all) the third element of the argument must be \code{-90} (see the second example).
+A vector of length 3 with the parameters alpha, beta, and gamma as used in \code{\link{sl.rot}}. Note that to achieve identity transformation (that is, no transformation at all) the third element of the argument must be \code{-90} (see the second example).
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -42,7 +42,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.rot}
+\code{\link{sl.rot}}
 }
 \examples{
 abg = sl.lonlatrot2abg(lonlatrot=c(30,0,5))

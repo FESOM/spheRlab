@@ -13,7 +13,7 @@ sl.plot.platon.end(plot.platon.init.res, corners = TRUE, corners.length = 0.05, 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.platon.init.res}{
-a spheRlab plot specifics list returned by \code{sl.plot.platon.init}.
+a spheRlab plot specifics list returned by \code{\link{sl.plot.platon.init}}.
 }
   \item{corners}{
 a logical value indicating whether or not to draw 'corners' for every face.
@@ -50,7 +50,7 @@ the line width of the inner and/or outer face net boundaries. Only used if \code
 }
 }
 \details{
-Instead of using this function, a plot initialised by \code{sl.plot.platon.init} could also simply be closed using \code{dev.off}. However, \code{sl.plot.platon.end} allows one to draw inner and/or outer boundary lines of the face net, and/or lines delineating adhesive surfaces in an automated way before \code{dev.off} is called by \code{sl.plot.platon.end}.
+Instead of using this function, a plot initialised by \code{\link{sl.plot.platon.init}} could also simply be closed using \code{dev.off}. However, \code{\link{sl.plot.platon.end}} allows one to draw inner and/or outer boundary lines of the face net, and/or lines delineating adhesive surfaces in an automated way before \code{dev.off} is called by \code{\link{sl.plot.platon.end}}.
 }
 \value{
 %%  ~Describe the value returned
@@ -72,7 +72,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.platon.init}, \code{sl.plot.end}
+\code{\link{sl.plot.platon.init}}, \code{\link{sl.plot.end}}
 }
 \examples{
 ## To be provided ...

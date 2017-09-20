@@ -13,10 +13,10 @@ sl.plot.naturalearth(plot.init.res=NULL, load.res=NULL, what="coastline", resolu
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{load.res}{
-a list as returned by \code{sl.load.naturalearth}. If NULL (default), \code{sl.load.naturalearth} is invoked automatically to load the data specified by the arguments 'what' and 'resolution'.}
+a list as returned by \code{\link{sl.load.naturalearth}}. If NULL (default), \code{\link{sl.load.naturalearth}} is invoked automatically to load the data specified by the arguments 'what' and 'resolution'.}
   \item{what}{
 a character or character vector specifying which type of Natural Earth data
 to plot, e.g., 'coastline'. To list all possible values for the specified resolution, set what='list'. If 'what' contains more than one element, they are plotted in the order they are provided, that is, the last one will always be in the foreground. Ignored if load.res is not NULL.}
@@ -91,9 +91,9 @@ a logical value indicating whether or not to print more information.
 }
 }
 \details{
-This function, together with \code{sl.load.naturalearth()}, enables using the openly available and free-to-use Natural Earth data (http://www.naturalearthdata.com) - including coastlines, rivers, land and ocean polygons, and much more - in spheRlab.
+This function, together with \code{\link{sl.load.naturalearth}}, enables using the openly available and free-to-use Natural Earth data (http://www.naturalearthdata.com) - including coastlines, rivers, land and ocean polygons, and much more - in spheRlab.
 
-If needed, this function invokes \code{sl.plot.naturalearth()} to load (and possibly download from the internet) Natural Earth data before plotting. In this case, the package rgdal is needed to read the shape file(s).
+If needed, this function invokes \code{\link{sl.plot.naturalearth}} to load (and possibly download from the internet) Natural Earth data before plotting. In this case, the package rgdal is needed to read the shape file(s).
 }
 \value{
 %%
@@ -111,7 +111,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.load.naturalearth}
+\code{\link{sl.load.naturalearth}}
 }
 \examples{
 # plot coastlines at coarse resolution:

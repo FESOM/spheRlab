@@ -52,7 +52,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.fillequidist}
+\code{\link{sl.fillequidist}}
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{

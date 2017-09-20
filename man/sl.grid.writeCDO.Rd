@@ -13,7 +13,7 @@ sl.grid.writeCDO(grid, ofile = "~/sl.grid.CDO", netcdf = FALSE, write.precision 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{grid}{
-a spheRlab grid list as returned by \code{sl.grid.readFESOM}.
+a spheRlab grid list as returned by \code{\link{sl.grid.readFESOM}}.
 }
   \item{ofile}{
 a character specifying the path and file name of the output file.
@@ -50,7 +50,7 @@ Currently only ascii output is implemented. However, it would be much faster to 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.grid.readFESOM}, \code{sl.grid.addinfo}
+\code{\link{sl.grid.readFESOM}}, \code{\link{sl.grid.addinfo}}
 }
 \examples{
 \dontrun{

@@ -13,7 +13,7 @@ sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = 10, lat.d
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon.0}{
 a scalar specifying one of the longitudes (degrees east) to be drawn.
@@ -60,13 +60,13 @@ a line colour.
 Helge Goessling
 }
 \note{
-%%  ~~further notes~~
+Some standard lon-lat grids can also be plotted using \code{\link{sl.plot.naturalearth}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.plot.naturalearth}}
 }
 \examples{
 ## To be provided ...

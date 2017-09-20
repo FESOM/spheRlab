@@ -13,7 +13,7 @@ sl.plot.polygon(plot.init.res, lon, lat, fill = TRUE, col.fill = "black", border
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon}{
 a vector of length \code{N} specifying the longitudes of the polygon vertices.
@@ -75,7 +75,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.lines}
+\code{\link{sl.plot.lines}}, \code{\link{sl.plot.points}}
 }
 \examples{
 ## To be provided ...

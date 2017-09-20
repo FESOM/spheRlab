@@ -13,7 +13,7 @@ sl.grid.addinfo(grid, ncdf.file.in, ncdf.file.out = paste0(ncdf.file.in,"_addinf
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{grid}{
-a spheRlab grid list as returned by \code{sl.grid.readFESOM}.
+a spheRlab grid list as returned by \code{\link{sl.grid.readFESOM}}.
 }
   \item{ncdf.file.in}{
 a character specifying the path and file name of the file to which additional grid variables shall be added.
@@ -53,7 +53,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.grid.readFESOM}, \code{sl.grid.writeCDO}
+\code{\link{sl.grid.readFESOM}}, \code{\link{sl.grid.writeCDO}}
 }
 \examples{
 \dontrun{

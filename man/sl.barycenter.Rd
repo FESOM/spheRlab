@@ -5,7 +5,7 @@
 	Compute Barycenter of Points
 }
 \description{
-Compute the barycenter of points on a unit sphere. The locations of the three vertices can be provided in x-y-z or lon-lat coordinates. Can be used directly to compute the barycenter (centroid) of a triangle using its vertices, but NOT FOR POLYGONS WITH MORE THAN 3 VERTICES! To that end, use \code{sl.centroid}.
+Compute the barycenter of points on a unit sphere. The locations of the three vertices can be provided in x-y-z or lon-lat coordinates. Can be used directly to compute the barycenter (centroid) of a triangle using its vertices, but NOT FOR POLYGONS WITH MORE THAN 3 VERTICES! To that end, use \code{\link{sl.centroid}}.
 }
 \usage{
 sl.barycenter(x = NA, y = NA, z = NA, lon = NA, lat = NA, weights = NA)
@@ -51,7 +51,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.centroid}}
 }
 \examples{
 ## Using x-y-z as input:

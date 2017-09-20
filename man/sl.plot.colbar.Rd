@@ -13,7 +13,7 @@ sl.plot.colbar(colbar, breaks, vertical = FALSE, labels.at = rep(TRUE, length(br
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{colbar}{
-  A spheRlab colourbar of length \code{N} (as returned by \code{sl.colbar}).
+  A spheRlab colourbar of length \code{N} (as returned by \code{\link{sl.colbar}}).
 }
   \item{breaks}{
   a vector of length \code{N-1} specifying the breaks corresponding to \code{colbar}.
@@ -71,7 +71,7 @@ NOTE THAT SO FAR THIS FUNCTION HAS UNUSED ARGUMENTS AND OTHER GAPS (INCLUDING HO
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}
 }
 \examples{
 cb = sl.colbar(cols=list(c(1,0,0),c(.5,.5,.5),c(0,0,1)),N=10)

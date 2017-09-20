@@ -72,7 +72,7 @@ Requires 'ncdf4'.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%%
+\code{\link{sl.grid.readFESOM}}, \code{\link{sl.grid.writeCDO}}
 }
 \examples{
 ## sl.grid.FESOM3Ddata1Dto2D(ifile="~/fesom_file.nc",ofile="~/fesom_file_converted.nc",meshdir="~/fesom_meshdir")

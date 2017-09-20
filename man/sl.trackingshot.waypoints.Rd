@@ -5,7 +5,7 @@
 }
 \description{
 Concatenates waypoints to a list and extracts and combines their projection field to a toplevel projection field.
-The returned list's class is "sl.waypoints".
+The returned list's class is \code{sl.waypoints}.
 }
 \usage{
 sl.trackingshot.waypoints(projection, ...)
@@ -16,7 +16,7 @@ sl.trackingshot.waypoints(projection, ...)
     String containing the desired projection to do an equality check with given waypoints.
 }
   \item{\dots}{
-    lists of class "sl.waypoint" to be concatenated.
+    lists of class \code{sl.waypoint} to be concatenated.
 }
 }
 \author{

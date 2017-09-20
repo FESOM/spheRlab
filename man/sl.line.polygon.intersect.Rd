@@ -26,7 +26,7 @@ sl.line.polygon.intersect(line.lon, line.lat, polygon.lon, polygon.lat)
 }
 }
 \details{
-This functions is based on \code{sl.line.line.intersect}, which is applied to every line segment of the polygon.
+This functions is based on \code{\link{sl.line.line.intersect}}, which is applied to every line segment of the polygon.
 }
 \value{
 \item{anylines.intersect}{

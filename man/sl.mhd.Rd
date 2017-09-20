@@ -35,7 +35,7 @@ sl.mhd(A,B,cA=NULL,cB=NULL,kA=NULL,kB=NULL,R=1)
 }
 }
 \details{
-To calculate the coordinates of the edge and of the land-ice interface please refer to the function \code{sl.mhd.edge}. \code{sl.mhd.edge} output is the natural imput for \code{sl.mhd}. The distance employed to compute the MHD is the "great circle distance", given by \code{sl.gc.dist} 
+To calculate the coordinates of the edge and of the land-ice interface please refer to the function \code{\link{sl.mhd.edge}}. \code{\link{sl.mhd.edge}} output is the natural imput for \code{\link{sl.mhd}}. The distance employed to compute the MHD is the "great circle distance", given by \code{\link{sl.gc.dist}}.
 }
 \value{
 The MHD value in meters. 
@@ -53,7 +53,7 @@ Lorenzo Zampieri
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.mhd.edge}}
 }
 \examples{
 MHD <- sl.mhd(Edge1,Edge2,LandEdge1,LandEdge2,R=-1)

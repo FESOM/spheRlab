@@ -13,7 +13,7 @@ sl.plot.text(plot.init.res, lon, lat, labels = seq(1, length(lon)), col = "black
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon}{
 a scalar or vector specifying the longitude(s) of the text location(s).
@@ -66,7 +66,7 @@ Plots simple text at lon-lat locations, using the \code{R} function \code{text}.
 Helge Goessling
 }
 \note{
-It would be nice if, at some point, a function would be added to spheRlab that allows plotting text on the spherical surface, probably just making use of \code{sl.plot.polygon}.
+It would be nice if, at some point, a function would be added to spheRlab that allows plotting text on the spherical surface, probably just making use of \code{\link{sl.plot.polygon}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

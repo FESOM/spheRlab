@@ -2,10 +2,10 @@
 \alias{sl.lonlat.angle}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Compute Angle between Points on Sphere
+Compute Angle (GC-Distance) between Points on Sphere
 }
 \description{
-Compute the angle (distance) between two points on a sphere.
+Compute the angle (great-circle distance) between two points on a sphere.
 }
 \usage{
 sl.lonlat.angle(lon1, lat1, lon2, lat2)
@@ -29,7 +29,7 @@ sl.lonlat.angle(lon1, lat1, lon2, lat2)
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-A scalar giving the angle (distance) between the two points in degrees.
+A scalar giving the angle (great-circle distance) between the two points in degrees.
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -38,13 +38,13 @@ A scalar giving the angle (distance) between the two points in degrees.
 Helge Goessling
 }
 \note{
-%%  ~~further notes~~
+Do not confuse with \code{\link{sl.angle}} which provides the angle between two edges of a triangle.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.gc.dist}.
+\code{\link{sl.gc.dist}}, \code{\link{sl.angle}}.
 }
 \examples{
 sl.lonlat.angle(lon1=0,lat1=50,lon2=10,lat2=40)

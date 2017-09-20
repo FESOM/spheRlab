@@ -13,7 +13,7 @@ sl.view.colbar(colbar, labels = TRUE, labels.cex = 1, labels.col = "black")
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{colbar}{
-a spheRlab colourbar as returned by \code{sl.colbar}, that is, a list of length \code{N} with characters describing RGB values (hexadecimal) of the colours comprising the colourbar.
+a spheRlab colourbar as returned by \code{\link{sl.colbar}}, that is, a list of length \code{N} with characters describing RGB values (hexadecimal) of the colours comprising the colourbar.
 }
   \item{labels}{
 a logical value indicating whether or not the colour indices are added as labels.
@@ -48,7 +48,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.colbar}, \code{sl.plot.colbar}
+\code{\link{sl.colbar}}, \code{\link{sl.plot.colbar}}
 }
 \examples{
 \dontrun{

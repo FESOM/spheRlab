@@ -35,7 +35,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.lonlat2xyz}
+\code{\link{sl.lonlat2xyz}}
 }
 \examples{
 sl.xyz2lonlat(c(0,1/sqrt(2),1/sqrt(2)))

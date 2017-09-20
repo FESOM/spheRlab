@@ -16,7 +16,7 @@ sl.num2colbarbreaks(num, colbar = NA, Nbreaks = NA, breaks.log = FALSE)
   a numerical vector or matrix.
 }
   \item{colbar}{
-  a spheRlab colourbar of length \code{N}, that is, a list of characters giving colours as produced by \code{sl.colbar} (which uses the function \code{rgb} to generate the individual colours). This argument is optional; instead, just the number of breaks can be specified via \code{Nbreaks}.
+  a spheRlab colourbar of length \code{N}, that is, a list of characters giving colours as produced by \code{\link{sl.colbar}} (which uses the function \code{rgb} to generate the individual colours). This argument is optional; instead, just the number of breaks can be specified via \code{Nbreaks}.
 }
   \item{Nbreaks}{
   an integer giving the number of breaks to be generated. Note that \code{Nbreaks} corresponds to \code{N-1}. Used only if \code{colbar} is not specified.
@@ -26,7 +26,7 @@ sl.num2colbarbreaks(num, colbar = NA, Nbreaks = NA, breaks.log = FALSE)
 }
 }
 \details{
-This function is used by \code{sl.num2colbar}.
+This function is used by \code{\link{sl.num2colbar}}.
 }
 \value{
 A vector of length \code{N-1} giving the breaks.
@@ -44,7 +44,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.num2colbar}}
 }
 \examples{
 cb = sl.colbar(cols=list(c(1,0,0),c(.5,.5,.5),c(0,0,1)),N=5)

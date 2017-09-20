@@ -13,7 +13,7 @@ sl.vis.shift.rot(plot.init.res, lon, lat)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon}{
 a vector of length \code{N} specifying the longitudes of the points.
@@ -50,7 +50,7 @@ a vector of length \code{N} with logical values indicating the visibility of the
 Helge Goessling
 }
 \note{
-This function is used by \code{sl.plot.lines}, \code{sl.plot.polygon}, and \code{sl.plot.text}.
+This function is used by \code{\link{sl.plot.lines}}, \code{\link{sl.plot.polygon}}, and \code{\link{sl.plot.text}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

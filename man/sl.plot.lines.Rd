@@ -13,7 +13,7 @@ sl.plot.lines(plot.init.res, lon, lat, col = "black", lwd = 1, lty = 1, ignore.v
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon}{
 a vector of length \code{N} specifying the longitudes of the points defining the lines.
@@ -35,7 +35,7 @@ a logical value indicating whether or not the line shall be attempted to be draw
 }
 }
 \details{
-If \code{lon} and \code{lat} contain no NAs, \code{N-1} lines defined by any adjacent pairs of coordinates are drawn. Separate line segments can be drawn with a single call of \code{sl.plot.lines} by concatenating their coordinate vectors with NAs inbetween.
+If \code{lon} and \code{lat} contain no NAs, \code{N-1} lines defined by any adjacent pairs of coordinates are drawn. Separate line segments can be drawn with a single call of \code{\link{sl.plot.lines}} by concatenating their coordinate vectors with NAs inbetween.
 
 This is one of the lowest-level plotting functions of spheRlab. First the visibility of the points is checked, which depends on the projection and plot domain boundaries. Lines for which both end points are invisible are not drawn. (This means that lines where only a middle segment is visible are not drawn!) Then for partly visible lines an intersection point with the boundary is computed and only the visible part is drawn. Of course the completely visible lines are drawn as well.
 }
@@ -59,7 +59,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.polygon}
+\code{\link{sl.plot.polygon}}, \code{\link{sl.plot.points}}
 }
 \examples{
 ## To be provided ...

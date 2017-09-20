@@ -13,7 +13,7 @@ sl.plot.points(plot.init.res, lon, lat, col = "black", pch = 1, ignore.visibilit
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{lon}{
 a scalar, vector, or array with \code{N} elements specifying the longitudes of the points.
@@ -56,7 +56,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.lines}, \code{sl.plot.polygon}
+\code{\link{sl.plot.lines}}, \code{\link{sl.plot.polygon}}
 }
 \examples{
 ## To be provided ...

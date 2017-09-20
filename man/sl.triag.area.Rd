@@ -32,13 +32,13 @@ A scalar giving the area of the triangle (on a unit sphere).
 Helge Goessling
 }
 \note{
-This function is more accurate for large triangles but less accurate for small ones compared to \code{sl.smalltriag.area}. Also, \code{sl.smalltriag.area} is computationally cheaper, so for small triangles (<1/100 degrees or so), \code{sl.smalltriag.area} should be preferred in any case.
+This function is more accurate for large triangles but less accurate for small ones compared to \code{\link{sl.smalltriag.area}}. Also, \code{\link{sl.smalltriag.area}} is computationally cheaper, so for small triangles (<1/100 degrees or so), \code{\link{sl.smalltriag.area}} should be preferred in any case.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.smalltriag.area}, \code{sl.polygon.area}
+\code{\link{sl.smalltriag.area}}, \code{\link{sl.polygon.area}}
 }
 \examples{
 sl.triag.area(c(0,60,30),c(0,0,30))

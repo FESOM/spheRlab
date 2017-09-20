@@ -22,7 +22,7 @@ a logical value indicating whether or not to rotate the grid.
 a logical value indicating whether or not to invert the rotation.
 }
   \item{rot.abg}{
-a vector of length 3 specifying the \code{alpha}, \code{beta}, and \code{gamma} parameters for the rotation. See \code{sl.lonlatrot2abg} for details.
+a vector of length 3 specifying the \code{alpha}, \code{beta}, and \code{gamma} parameters for the rotation. See \code{\link{sl.lonlatrot2abg}} for details.
 }
   \item{reorder.ccw}{
 a logical value indicating whether or not to reorder the triangular elements counterclockwise.
@@ -34,7 +34,7 @@ an integer specifying an upper limit for the expected maximum number of neighbou
 an integer specifying the maximum number of iterations used to order the neighbours of each node. The default \code{max.iter=10} should be on the safe side.
 }
   \item{repeatlastpoint}{
-a logical value indicating whether or not to pad the rows of the 'stamp polygon' matrices \code{stamppoly.lon} and \code{stamppoly.lat} (for nodes that have below-maximum polygon vertices) by repeating the last polygon vertex. If \code{repeatlastpoint=FALSE}, equidistant points along the line connecting the last and the first vertex will be inserted using \code{sl.fillequidist}.
+a logical value indicating whether or not to pad the rows of the 'stamp polygon' matrices \code{stamppoly.lon} and \code{stamppoly.lat} (for nodes that have below-maximum polygon vertices) by repeating the last polygon vertex. If \code{repeatlastpoint=FALSE}, equidistant points along the line connecting the last and the first vertex will be inserted using \code{\link{sl.fillequidist}}.
 }
   \item{onlybaryc}{
 a logical value indicating whether or not to use only the barycenters (centroids) of the triangular elements for the stamp polygons, that is, to omit the edge medians inbetween. For a perfectly orthogonal grid the result will be identical as the lines connecting the centroids intersect the edge medians, but for non-orthogonal grids this introduces an inaccuracy.
@@ -95,13 +95,13 @@ a spheRlab grid list with the following elements:
 Helge Goessling
 }
 \note{
-It would probably make sense to split this function further as it consists of a number of well-defined blocks that might also be useful in other circumstances where the remainder of this function is not needed. The separate functions could be named consistenty \code{sl.grid.SOMETHING}.
+It would probably make sense to split this function further as it consists of a number of well-defined blocks that might also be useful in other circumstances where the remainder of this function is not needed. The separate functions could be named consistenty \code{\link{sl.grid.SOMETHING}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.grid.writeCDO}, \code{sl.grid.addinfo}
+\code{\link{sl.grid.writeCDO}}, \code{\link{sl.grid.addinfo}}
 }
 \examples{
 \dontrun{

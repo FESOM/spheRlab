@@ -38,7 +38,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.checkposition}
+\code{\link{sl.checkposition}}
 }
 \examples{
 ## To be provided ...

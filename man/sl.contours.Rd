@@ -25,7 +25,7 @@ a character providing the name of the variable in \code{var.nc} to be used. Used
 a vector providing the values for which contour lines shall be computed.
 }
   \item{neighmat}{
-an \code{N}x\code{M} matrix providing the neighbour nodes of each node (point) in \code{var} (or \code{var.nc}). If not provided, this matrix is computed using \code{sl.findneighbours} based on \code{elem}.
+an \code{N}x\code{M} matrix providing the neighbour nodes of each node (point) in \code{var} (or \code{var.nc}). If not provided, this matrix is computed using \code{\link{sl.findneighbours}} based on \code{elem}.
 }
   \item{lat}{
 a numeric vector of length \code{N} providing the latitudes of each node (point) in \code{var} (or \code{var.nc}).

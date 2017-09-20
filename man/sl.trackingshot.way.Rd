@@ -4,8 +4,8 @@
   Create tracking shot path
 }
 \description{
-  Takes list of class "sl.waypoints" containing all waypoints and a numeric vector of times between the waypoints.
-  They are turned into a list of class "sl.way" and returned.
+  Takes list of class \code{sl.waypoints} containing all waypoints and a numeric vector of times between the waypoints.
+  They are turned into a list of class \code{sl.way} and returned.
 }
 \usage{
 sl.trackingshot.way(waypoints, times, smooth.line = 0, ignore.checks = F)
@@ -13,7 +13,7 @@ sl.trackingshot.way(waypoints, times, smooth.line = 0, ignore.checks = F)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{waypoints}{
-    list of class "sl.waypoints" containing waypoints.
+    list of class \code{sl.waypoints} containing waypoints.
 }
   \item{times}{
     numeric vector of times between waypoints. Element 1 is the time between waypoints 1 and 2, and so on...

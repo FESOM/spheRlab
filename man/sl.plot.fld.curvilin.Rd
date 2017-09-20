@@ -13,7 +13,7 @@ sl.plot.fld.curvilin(plot.init.res, vals, mask = NULL, lon.i, lat.i, border = TR
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{plot.init.res}{
-a spheRlab plot specifics list as returned by \code{sl.plot.init} (or a variant thereof).
+a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{vals}{
 an \code{Nlat}x\code{Nlon} matrix specifying a 2-dimensional numerical curvilinear field.
@@ -34,7 +34,7 @@ a logical value indicating whether or not to draw lines for the polygon borders.
 the line width of the borders.
 }
   \item{colbar}{
-a spheRlab colourbar (as returned by \code{sl.colbar}) of length \code{Nc} to be used for the field.
+a spheRlab colourbar (as returned by \code{\link{sl.colbar}}) of length \code{Nc} to be used for the field.
 }
   \item{colbar.breaks}{
 a numeric vector of length \code{Nc-1} specifying the breaks between colours.
@@ -62,7 +62,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.plot.field}
+\code{\link{sl.plot.field}}, \code{\link{sl.colbar}}, \code{link{sl.num2colbar}}
 }
 \examples{
 ## To be provided ...

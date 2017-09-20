@@ -44,7 +44,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{sl.cart.dist}}
 }
 \examples{
 sl.gc.dist(lon=c(0,30,90,0),lat=c(0,0,0,90))

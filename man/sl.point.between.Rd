@@ -26,7 +26,7 @@ a vector of length 2 specifying the latitudes of the line end points.
 }
 }
 \details{
-Given that the function works under the assumption that the point is located either on the shorter or the longer part of the great-circle line defined by the two points, the result is not meaningful if that assumption is not met. If in doubt, use \code{sl.checkposition} to check the assumption.
+Given that the function works under the assumption that the point is located either on the shorter or the longer part of the great-circle line defined by the two points, the result is not meaningful if that assumption is not met. If in doubt, use \code{\link{sl.checkposition}} to check the assumption.
 }
 \value{
 a logical value indicating whether or not the point is located on the shortest line between the two points.
@@ -44,7 +44,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{sl.checkposition}
+\code{\link{sl.checkposition}}
 }
 \examples{
 sl.point.between(90,0,c(0,170),c(0,0))
