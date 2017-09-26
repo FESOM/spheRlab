@@ -1,5 +1,5 @@
 sl.grid.readFESOM <-
-function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,verbose=TRUE) {
+function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=FALSE,remove.emptylev=TRUE,read.boundary=TRUE,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,verbose=TRUE) {
 	
 	if (verbose) {print("reading node (grid point) coordinates and coast information ...")}
 	nod.scan = scan(paste0(griddir,"/nod2d.out"))
@@ -52,6 +52,37 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,reorder.ccw=TRUE,maxmaxneig
 			}
 		}
 		if (verbose) {print(paste0("... done. ",ord.c," of ",Ne," elements reordered."))}
+	}
+	
+	N3D = NULL
+	Nlev = NULL
+	depth = NULL
+	depth.lev = NULL
+	boundary = NULL
+	if (threeD) {
+	  if (verbose) {print("reading 3D information ...")}
+	  Nlev = scan(paste(griddir,"/aux3d.out",sep=""),n=1,what=integer())
+	  aux3d.mat = matrix(scan(paste(griddir,"/aux3d.out",sep=""),na.strings="-999",skip=1,n=Nlev*N,what=integer()),ncol=Nlev,byrow=TRUE)
+	  depth.lev = rep(Nlev,N)
+    for (lev in Nlev:1) {
+      isna.lev = is.na(aux3d.mat[,lev])
+      if (remove.emptylev && sum(isna.lev) == N) {
+        if (verbose) {print(paste("removing empty level",lev,"from data"))}
+        Nlev = Nlev - 1
+        aux3d.mat = aux3d.mat[,1:Nlev]
+      }
+      depth.lev[isna.lev] = depth.lev[isna.lev] - 1
+	  }
+	  N3D = sum(!is.na(aux3d.mat))
+    if (verbose) {print("retrieving depth information from nod3d.out ...")}
+	  nod3d.scan = scan(paste(griddir,"/nod3d.out",sep=""))
+    depth = unique(nod3d.scan[seq(5,N3D*5+1,5)]) * -1
+	  if (length(depth) != Nlev) { stop("data in aux3d.out is inconsistent with the number of depth levels") }
+    if (read.boundary) {
+      if (verbose) {print("retrieving 'coast/bottom' information from nod3d.out ...")}
+      boundary = as.integer(nod3d.scan[seq(6,N3D*5+1,5)])
+    }
+    rm(nod3d.scan)
 	}
 	
 	if (verbose) {print("searching all neighbours of each node based on the triangular elements ...")}
@@ -156,6 +187,6 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,reorder.ccw=TRUE,maxmaxneig
 		if (verbose) {print("... done.")}
 	}
 	
-	return(list(lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=neighnodes,neighelems=neighelems,stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,cellareas=cellareas,elemareas=elemareas))
+	return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=neighnodes,neighelems=neighelems,stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,cellareas=cellareas,elemareas=elemareas,depth=depth,depth.lev=depth.lev,boundary=boundary))
 	
 }

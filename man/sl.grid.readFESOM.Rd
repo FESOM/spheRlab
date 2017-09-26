@@ -5,10 +5,10 @@
 Read FESOM Grid
 }
 \description{
-Read and analyse a FESOM (surface) grid based on the ascii files 'nod2d.out' and 'elem2d.out'.
+Read and analyse a FESOM grid from ascii '.out' files.
 }
 \usage{
-sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, verbose = TRUE)
+sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = FALSE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,26 +24,35 @@ a logical value indicating whether or not to invert the rotation.
   \item{rot.abg}{
 a vector of length 3 specifying the \code{alpha}, \code{beta}, and \code{gamma} parameters for the rotation. See \code{\link{sl.lonlatrot2abg}} for details.
 }
+  \item{threeD}{
+a logical value indicating whether or not to read 3D grid information. If \code{FALSE} (default), only surface information is read.
+}
+  \item{remove.emptylev}{
+a logical value indicating whether or not to remove empty bottom levels from the 3D grid. Only used if \code{threeD=TRUE}.
+}
+  \item{read.boundary}{
+a logical value indicating whether or not to read info on which 3D nodes are at horizontal or vertical boundaries. Only used if \code{threeD=TRUE}.
+}
   \item{reorder.ccw}{
-a logical value indicating whether or not to reorder the triangular elements counterclockwise.
+a logical value indicating whether or not to reorder the triangular surface elements counterclockwise.
 }
   \item{maxmaxneigh}{
-an integer specifying an upper limit for the expected maximum number of neighbours for a node. For a typical (close to orthogonal) triangular mesh, there are 6 neighbours per node on average; the default value \code{maxmaxneigh=12} is relatively safe. A too small value results in an error. A larger value implies more memory usage.
+an integer specifying an upper limit for the expected maximum number of neighbours for a surface node. For a typical (close to orthogonal) triangular mesh, there are 6 neighbours per node on average; the default value \code{maxmaxneigh=12} is relatively safe. A too small value results in an error. A larger value implies more memory usage.
 }
   \item{findneighbours.maxiter}{
-an integer specifying the maximum number of iterations used to order the neighbours of each node. The default \code{max.iter=10} should be on the safe side.
+an integer specifying the maximum number of iterations used to order the neighbours of each surface node. The default \code{max.iter=10} should be on the safe side.
 }
   \item{repeatlastpoint}{
-a logical value indicating whether or not to pad the rows of the 'stamp polygon' matrices \code{stamppoly.lon} and \code{stamppoly.lat} (for nodes that have below-maximum polygon vertices) by repeating the last polygon vertex. If \code{repeatlastpoint=FALSE}, equidistant points along the line connecting the last and the first vertex will be inserted using \code{\link{sl.fillequidist}}.
+a logical value indicating whether or not to pad the rows of the 'stamp polygon' matrices \code{stamppoly.lon} and \code{stamppoly.lat} (for surface nodes that have below-maximum polygon vertices) by repeating the last polygon vertex. If \code{repeatlastpoint=FALSE}, equidistant points along the line connecting the last and the first vertex will be inserted using \code{\link{sl.fillequidist}}.
 }
   \item{onlybaryc}{
-a logical value indicating whether or not to use only the barycenters (centroids) of the triangular elements for the stamp polygons, that is, to omit the edge medians inbetween. For a perfectly orthogonal grid the result will be identical as the lines connecting the centroids intersect the edge medians, but for non-orthogonal grids this introduces an inaccuracy.
+a logical value indicating whether or not to use only the barycenters (centroids) of the triangular surface elements for the stamp polygons, that is, to omit the edge medians inbetween. For a perfectly orthogonal grid the result will be identical as the lines connecting the centroids intersect the edge medians, but for non-orthogonal grids this introduces an inaccuracy.
 }
   \item{omitcoastnds}{
-a logical value indicating whether or not to omit coastal nodes from their corresponding stamp polygons. Usually the default \code{omitcoastnds=FALSE} is appropriate.
+a logical value indicating whether or not to omit coastal surface nodes from their corresponding stamp polygons. Usually the default \code{omitcoastnds=FALSE} is appropriate.
 }
   \item{calcpolyareas}{
-a logical value indicating whether or not to compute the areas of the triangular elements and of the stamp polygons.
+a logical value indicating whether or not to compute the areas of the triangular surface elements and of the stamp polygons.
 }
   \item{Rearth}{
 a scalar specifying the radius of the sphere - in case of FESOM the Earth. Used only if \code{calcpolyareas=TRUE}.
@@ -53,21 +62,30 @@ a logical value indicating whether or not print statements shall report on the f
 }
 }
 \details{
-This is a special function which is typically the first step when converting FESOM grid information to a CDO-readable format, see the example below.
+This is a FESOM-specific function to read grid information from the standard FESOM ascii '.out' files.
 }
 \value{
 a spheRlab grid list with the following elements:
+\item{N}{
+	an integer specifying the number of surface nodes.
+}
+\item{Nlev}{
+	an integer specifying the number of vertical levels.
+}
+\item{N3D}{
+	an integer specifying the number of 3D nodes (only counting wet nodes).
+}
 \item{lon}{
-	a vector of length \code{N} with the node (grid point) longitudes.
+	a vector of length \code{N} with the surface node (grid point) longitudes.
 }
 \item{lat}{
-	a vector of length \code{N} with the node (grid point) latitudes.
+	a vector of length \code{N} with the surface node (grid point) latitudes.
 }
 \item{elem}{
-	an \code{Ne}x\code{3} matrix with the node indices of the triangular elements in rows.
+	an \code{Ne}x\code{3} matrix with the surface node indices of the triangular surface elements in rows.
 }
 \item{coast}{
-	a vector of length \code{N} with logical values indicating whether or not nodes are coastal.
+	a vector of length \code{N} with logical values indicating whether or not surface nodes are coastal.
 }
 \item{neighnodes}{
 	an \code{N}x\code{M} matrix with each row containing all neighbours of one node. The neighbours are arranged in clockwise or counterclockwise order, depending on the direction of rotation provided in \code{elem} (which is influenced by the argument \code{reorder.ccw}). \code{M} is the maximum number of neighbours actually found for a node (\code{M<=maxmaxneigh}).
@@ -87,6 +105,18 @@ a spheRlab grid list with the following elements:
 \item{elemareas}{
 	a vector of length \code{Ne} with the areas of the triangular elements.
 }
+\item{elemareas}{
+	a vector of length \code{Ne} with the areas of the triangular elements.
+}
+\item{depth}{
+	a vector of length \code{Nlev} with the depth of the vertical levels (commonly in meters).
+}
+\item{depth.lev}{
+	an integer vector of length \code{N} with the depth underneath each surface node in terms of vertical levels.
+}
+\item{boundary}{
+	an integer vector of length \code{N3D} specifying which 3D nodes are located at boundaries: the first digit encodes the vertical dimension (1=surface, 2=interior, 3=bottom), and the second digit encodes the horizontal dimension (0=interior, 1=coast). Note that this information is retrieved directly from 'nod3d.out' rather than derived from 3d element information.
+}
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -96,12 +126,14 @@ Helge Goessling
 }
 \note{
 It would probably make sense to split this function further as it consists of a number of well-defined blocks that might also be useful in other circumstances where the remainder of this function is not needed. The separate functions could be named consistenty \code{\link{sl.grid.SOMETHING}}.
+
+The 3D functionality is incomplete; e.g., no 3d-element information is considered. The functionality can be extended when needed.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{sl.grid.writeCDO}}, \code{\link{sl.grid.addinfo}}
+\code{\link{sl.grid.writeFESOM}}, \code{\link{sl.grid.writeCDO}}, \code{\link{sl.grid.addinfo}}
 }
 \examples{
 \dontrun{
