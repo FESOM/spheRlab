@@ -33,34 +33,34 @@ function (outpath,grd,griddir.name="FESOM_grid",which.files=NULL,overwrite=FALSE
     if (fl == "nod2d") {
       if (is.null(nsmall)) {nsmll=4} else {nsmll=nsmall}
       if (is.null(width)) {wdth=8} else {wdth=width}
-      write(format(grd$N,width=wdth),file=flx,append=FALSE)
+      write(format(grd$N,width=wdth,scientific=FALSE),file=flx,append=FALSE)
       write.mat = matrix(nrow=grd$N,ncol=4)
-      write.mat[,1] = format(1:grd$N,width=wdth)
+      write.mat[,1] = format(1:grd$N,width=wdth,scientific=FALSE)
       lon = grd$lon
       lon[lon<0] = lon[lon<0] + 360
-      write.mat[,2] = format(lon,width=wdth,nsmall=nsmll)
-      write.mat[,3] = format(grd$lat,width=wdth,nsmall=nsmll)
-      write.mat[,4] = format(as.integer(grd$coast),width=wdth)
+      write.mat[,2] = format(lon,width=wdth,nsmall=nsmll,scientific=FALSE)
+      write.mat[,3] = format(grd$lat,width=wdth,nsmall=nsmll,scientific=FALSE)
+      write.mat[,4] = format(as.integer(grd$coast),width=wdth,scientific=FALSE)
       write(t(write.mat),file=flx,append=TRUE,ncolumns=4)
     } else if (fl == "nod3d") {
       if (is.null(nsmall)) {nsmll=4} else {nsmll=nsmall}
       if (is.null(width)) {wdth=8} else {wdth=width}
-      write(format(grd$N3D,width=wdth),file=flx,append=FALSE)
+      write(format(grd$N3D,width=wdth,scientific=FALSE),file=flx,append=FALSE)
       Nabove = 0
       for (lev in 1:grd$Nlev) {
         wet = (lev <= grd$depth.lev)
         Nwet = sum(wet)
         write.mat = matrix(nrow=Nwet,ncol=5)
         if (is.null(width)) {wdth=8} else {wdth=width}
-        write.mat[,1] = format((1:Nwet)+Nabove,width=wdth)
+        write.mat[,1] = format((1:Nwet)+Nabove,width=wdth,scientific=FALSE)
         lon = grd$lon[wet]
         lon[lon<0] = lon[lon<0] + 360
-        write.mat[,2] = format(lon,width=wdth,nsmall=nsmll)
-        write.mat[,3] = format(grd$lat[wet],width=wdth,nsmall=nsmll)
+        write.mat[,2] = format(lon,width=wdth,nsmall=nsmll,scientific=FALSE)
+        write.mat[,3] = format(grd$lat[wet],width=wdth,nsmall=nsmll,scientific=FALSE)
         if (is.null(width)) {wdth=11} else {wdth=width}
-        write.mat[,4] = format(rep(grd$depth[lev]*(-1),Nwet),width=wdth,nsmall=nsmll)
+        write.mat[,4] = format(rep(grd$depth[lev]*(-1),Nwet),width=wdth,nsmall=nsmll,scientific=FALSE)
         if (is.null(width)) {wdth=3} else {wdth=width}
-        write.mat[,5] = format(grd$boundary[(1:Nwet)+Nabove],width=wdth)
+        write.mat[,5] = format(grd$boundary[(1:Nwet)+Nabove],width=wdth,scientific=FALSE)
         write(t(write.mat),file=flx,append=TRUE,ncolumns=5)
         Nabove = Nabove + Nwet
       }
