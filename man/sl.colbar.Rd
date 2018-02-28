@@ -5,7 +5,7 @@
 Generate a Custom Colourbar
 }
 \description{
-Generate a colourbar of length \code{N} from a series of >= 2 colours with linear interpolation in RGB-space between the colours. The provided colours can be placed not only in equidistant steps (default), but also in non-equidistant steps.
+Generate a colourbar of length \code{N} from a series of >= 2 colours with linear interpolation in RGB(alpha)-space between the colours. The provided colours can be placed not only in equidistant steps (default), but also in non-equidistant steps.
 }
 \usage{
 sl.colbar(cols, N = (length(cols) - 1) * 10 + 1, cols.at = seq(0, 1, by = 1/(length(cols) - 1)))
@@ -13,7 +13,7 @@ sl.colbar(cols, N = (length(cols) - 1) * 10 + 1, cols.at = seq(0, 1, by = 1/(len
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{cols}{
-either a list of (at least 2) RGB tuples (length-3 vectors in the range [0,1]) or a character vector of named colours and/or hexadecimal-coded RGB colours. Defines the basis colours of the colourbar.
+either a list of (at least 2) RGB(alpha) tuples (length-3 or length-4 vectors in the range [0,1]) or a character vector of named colours and/or hexadecimal-coded RGB colours. Defines the basis colours of the colourbar.
 }
   \item{N}{
 number of colours the resulting colourbar shall contain.
@@ -26,7 +26,7 @@ a vector of length \code{N} that specifies at which relative locations the basis
 Can also use RColorBrewer colourbars as input, see corresponding examples below.
 }
 \value{
-  A list of length \code{N} with characters describing RGB values (hexadecimal) of the colours comprising the colourbar.
+  A list of length \code{N} with characters describing RGB(alpha) values (hexadecimal) of the colours comprising the colourbar.
 }
 \references{
 %% ~put references to the literature/web site here ~
