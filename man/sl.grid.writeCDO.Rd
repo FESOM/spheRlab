@@ -5,10 +5,10 @@
 Write Grid for CDO
 }
 \description{
-Write a spheRlab grid to a file that is readable by the Climate Data Operators (CDO). Currently only ascii output is implemented.
+Write a spheRlab grid to a grid description file that makes unstructured-mesh data readable by the Climate Data Operators (CDO).
 }
 \usage{
-sl.grid.writeCDO(grid, ofile = "~/sl.grid.CDO", netcdf = FALSE, write.precision = Inf, overwrite = FALSE, verbose = TRUE)
+sl.grid.writeCDO(grid, ofile = "~/sl.grid.CDO", netcdf = TRUE, netcdf.prec = "double", ascii.digits = Inf, overwrite = FALSE, verbose = TRUE, cell_area = TRUE, node_node_links = TRUE, triag_nodes = TRUE, coast = TRUE, depth = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,16 +19,34 @@ a spheRlab grid list as returned by \code{\link{sl.grid.readFESOM}}.
 a character specifying the path and file name of the output file.
 }
   \item{netcdf}{
-NOT YET IMPLEMENTED - a logical value indicating whether or not to write directly to NetCDF instead of writing to ascii with subsequent conversion using CDO.
+a logical value indicating whether or not to write directly to NetCDF (default). If \code{FALSE}, only the variables \code{lon}, \code{lon_bnds}, \code{lat}, and \code{lat_bnds} are written in an ascii format that can be coverted subsequently to NetCDF using CDO. The latter is much slower.
 }
-  \item{write.precision}{
-a scalar giving the number of digits after which coordinates are truncated (rounded).
+  \item{netcdf.prec}{
+a character defining the precision at which the (non-integer) variables are written. Reasonable options are \code{"float"} and \code{"double"} (default). Used only if \code{netcdf=TRUE}.
+}
+  \item{ascii.digits}{
+a scalar giving the number of digits after which coordinates are truncated (rounded). Used only if \code{netcdf=FALSE}.
 }
   \item{overwrite}{
 a logical value indicating whether or not to overwrite an already existing file.
 }
   \item{verbose}{
 a logical value indicating whether or not print statements shall report on the function progess.
+}
+  \item{cell_area}{
+a logical value indicating whether or not to add cell (stamp polygon) areas (from \code{grid$cellareas}). Used only if \code{netcdf=TRUE}.
+}
+  \item{node_node_links}{
+a logical value indicating whether or not to add node-node links (from \code{grid$neighnodes}). Used only if \code{netcdf=TRUE}.
+}
+  \item{triag_nodes}{
+a logical value indicating whether or not to add triangular element triplets (from \code{grid$elem}). Used only if \code{netcdf=TRUE}.
+}
+  \item{coast}{
+a logical value indicating whether or not to add coast information (from \code{grid$coast}). Used only if \code{netcdf=TRUE}.
+}
+  \item{depth}{
+a logical value indicating whether or not to add a vector with the depth of each grid level (from \code{grid$depth}) and a vector that provides the number of active (wet) levels underneath each surface node (from \code{grid$depth.lev}). Used only if \code{netcdf=TRUE}.
 }
 }
 \details{
@@ -44,7 +62,7 @@ This is a special function that is typically used when converting FESOM grid inf
 Helge Goessling
 }
 \note{
-Currently only ascii output is implemented. However, it would be much faster to write directly to NetCDF instead of writing to ascii with subsequent conversion using CDO. This is particularly the case for very large FESOM grids.
+%%
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -55,10 +73,7 @@ Currently only ascii output is implemented. However, it would be much faster to 
 \examples{
 \dontrun{
 grid = sl.grid.readFESOM(griddir="PATH-TO-YOUR-FESOM-GRID",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90))
-ofile = "~/sl.grid.CDO"
-sl.grid.writeCDO(grid,ofile=ofile)
-system(paste0("cdo -f nc const,0,",ofile," ",ofile,".nc"))
-sl.grid.addinfo(grid,ncdf.file.in=paste0(ofile,".nc"))
+sl.grid.writeCDO(grid,ofile="~/sl.grid.CDO")
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -5,7 +5,7 @@
 Add Grid Variables to CDO Grid File
 }
 \description{
-Add additional variables from a spheRlab grid list to a corresponding CDO grid file (NetCDF).
+Add additional variables from a spheRlab grid list to a corresponding CDO grid file (NetCDF). SHOULD BE DEPRECATED NOW THAT sl.grid.writeCDO CAN WRITE TO NetCDF DIRECTLY.
 }
 \usage{
 sl.grid.addinfo(grid, ncdf.file.in, ncdf.file.out = paste0(ncdf.file.in,"_addinfo.nc"), add.cell_area = TRUE, add.node_node_links = TRUE, add.triag_nodes = TRUE, add.coast = TRUE)
