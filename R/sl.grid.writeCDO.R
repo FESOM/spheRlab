@@ -7,6 +7,7 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	maxNstamp = ncol(grid$stamppoly.lon)
 	if (verbose) {print(paste0("the grid has ",N," nodes (grid points) with up to ",maxNstamp," stamp polygon vertices per node."))}
 	if (depth) {
+	  if (is.null(grid$Nlev)) {stop("grid apparently has no depth information (at least no element Nlev). Rerun with depth=FALSE or add 3D variables to the grid.")}
 	  Nlev = grid$Nlev
 	  if (verbose) {print(paste0("the grid has ",Nlev," vertical levels."))}
 	}

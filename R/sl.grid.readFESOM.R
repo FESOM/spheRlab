@@ -1,5 +1,5 @@
 sl.grid.readFESOM <-
-function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=FALSE,remove.emptylev=TRUE,read.boundary=TRUE,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,verbose=TRUE) {
+function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev=TRUE,read.boundary=TRUE,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,verbose=TRUE) {
 	
 	if (verbose) {print("reading node (grid point) coordinates and coast information ...")}
 	nod.scan = scan(paste0(griddir,"/nod2d.out"))

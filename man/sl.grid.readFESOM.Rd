@@ -8,7 +8,7 @@ Read FESOM Grid
 Read and analyse a FESOM grid from ascii '.out' files.
 }
 \usage{
-sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = FALSE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, verbose = TRUE)
+sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = TRUE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,7 +25,7 @@ a logical value indicating whether or not to invert the rotation.
 a vector of length 3 specifying the \code{alpha}, \code{beta}, and \code{gamma} parameters for the rotation. See \code{\link{sl.lonlatrot2abg}} for details.
 }
   \item{threeD}{
-a logical value indicating whether or not to read 3D grid information. If \code{FALSE} (default), only surface information is read.
+a logical value indicating whether or not to read 3D grid information. If \code{FALSE}, only surface information is read. Default is \code{TRUE}.
 }
   \item{remove.emptylev}{
 a logical value indicating whether or not to remove empty bottom levels from the 3D grid. Only used if \code{threeD=TRUE}.
