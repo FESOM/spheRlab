@@ -8,7 +8,7 @@ Read FESOM Grid
 Read and analyse a FESOM grid from ascii '.out' files.
 }
 \usage{
-sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = TRUE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, verbose = TRUE)
+sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = TRUE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, basicreadonly = FALSE, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -56,6 +56,9 @@ a logical value indicating whether or not to compute the areas of the triangular
 }
   \item{Rearth}{
 a scalar specifying the radius of the sphere - in case of FESOM the Earth. Used only if \code{calcpolyareas=TRUE}.
+}
+  \item{basicreadonly}{
+a logical value indicating whether or not only to read grid data without analysing neighborhood information etc.
 }
   \item{verbose}{
 a logical value indicating whether or not print statements shall report on the function progess.
