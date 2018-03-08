@@ -1,6 +1,23 @@
 sl.grid.readFESOM <-
 function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev=TRUE,read.boundary=TRUE,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,basicreadonly=FALSE,verbose=TRUE) {
 	
+  if (basicreadonly) {
+    print("Reading only basic grid data without further computation of neighbourhood etc.")
+    if (rot || threeD || reorder.ccw) {
+      print("Reading would be even faster with rot, reorder.ccw, and threeD all set to FALSE")
+    }
+  }
+  
+  if (!file.exists(paste(griddir,"/nod2d.out",sep="")) || !file.exists(paste(griddir,"/elem2d.out",sep=""))) {
+    stop(paste0("Files nod2d.out and/or elem2d.out not found in ",griddir,"."))
+  }
+  
+  if (threeD) {
+    if (!file.exists(paste(griddir,"/aux3d.out",sep="")) || !file.exists(paste(griddir,"/nod3d.out",sep=""))) {
+      stop("3D information (files aux3d.out and nod3d.out) seems to be missing or incomplete. To read 2D only, rerun with threeD=FALSE")
+    }
+  }
+  
 	if (verbose) {print("reading node (grid point) coordinates and coast information ...")}
 	nod.scan = scan(paste0(griddir,"/nod2d.out"))
 	N = as.integer(nod.scan[1])

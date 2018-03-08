@@ -58,7 +58,7 @@ a logical value indicating whether or not to compute the areas of the triangular
 a scalar specifying the radius of the sphere - in case of FESOM the Earth. Used only if \code{calcpolyareas=TRUE}.
 }
   \item{basicreadonly}{
-a logical value indicating whether or not only to read grid data without analysing neighborhood information etc.
+a logical value indicating whether or not only to read grid data without analysing neighborhood information etc. Reading is even faster with rot, reorder.ccw, and threeD all set to FALSE.
 }
   \item{verbose}{
 a logical value indicating whether or not print statements shall report on the function progess.
