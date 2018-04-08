@@ -25,7 +25,7 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	lat.orig = nod.scan[seq(4,N*4+1,4)]
 	coast = as.logical(nod.scan[seq(5,N*4+1,4)]%%2)
 	rm(nod.scan)
-	if (verbose) {print(paste0("... done. grid contains ",N," nodes of which ",sum(coast)," are coastal."))}
+	if (verbose) {print(paste0("... done. grid contains ",N," nodes of which ",sum(coast)," are coastal (according to info in nod2d.out)."))}
 	
 	if (rot) {
 		if (verbose) {print("rotating grid ...")}
@@ -111,6 +111,10 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	neighnodes = findneighbours.res$neighbour.nodes
 	neighelems = findneighbours.res$neighbour.elems
 	Nneighs = findneighbours.res$N.neighbour.nodes
+	if (any(coast == findneighbours.res$internal.nodes)) {
+	  warning("coast information from nod2d.out seems to be corrupt, using diagnosed coast flag instead.")
+	  coast = !findneighbours.res$internal.nodes
+	}
 	if (findneighbours.res$all.elements.arranged) {
 		badnodes = NULL
 	} else {
