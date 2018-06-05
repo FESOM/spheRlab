@@ -1,11 +1,19 @@
 sl.grid.writeCDO <-
-function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.digits=Inf,overwrite=FALSE,verbose=TRUE,cell_area=TRUE,node_node_links=TRUE,triag_nodes=TRUE,coast=TRUE,depth=TRUE) {
+function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.digits=Inf,overwrite=FALSE,verbose=TRUE,cell_area=TRUE,node_node_links=TRUE,triag_nodes=TRUE,coast=TRUE,depth=TRUE,fesom2velocities=FALSE) {
 	
 	if (netcdf) {require("ncdf4")}
 	
 	N = length(grid$lon)
-	maxNstamp = ncol(grid$stamppoly.lon)
-	if (verbose) {print(paste0("the grid has ",N," nodes (grid points) with up to ",maxNstamp," stamp polygon vertices per node."))}
+	M = nrow(grid$elem)
+	if (!fesom2velocities) {
+	  maxNstamp = ncol(grid$stamppoly.lon)
+	  if (verbose) {print(paste0("the grid has ",N," nodes (grid points) with up to ",maxNstamp," stamp polygon vertices per node."))}
+	} else {
+	  if (verbose) {
+	    print(paste0("writing grid description for values defined at the centroids of the triangular elements instead of at the vertices."))
+	    print(paste0("the grid has ",M," triangular elements."))
+	  }
+	}
 	if (depth) {
 	  if (is.null(grid$Nlev)) {stop("grid apparently has no depth information (at least no element Nlev). Rerun with depth=FALSE or add 3D variables to the grid.")}
 	  Nlev = grid$Nlev
@@ -23,17 +31,29 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	if (netcdf) {
 	  
 	  ncells.dim = ncdim_def(name="ncells",units="",vals=1:N,create_dimvar=FALSE)
-	  vertices.dim = ncdim_def(name="vertices",units="",vals=1:maxNstamp,create_dimvar=FALSE)
-	  
-	  lon.var = ncvar_def(name="lon",units="degrees_east",dim=ncells.dim,prec=netcdf.prec)
-	  lon_bnds.var = ncvar_def(name="lon_bnds",units="degrees_east",dim=list(vertices.dim,ncells.dim),prec=netcdf.prec)
-	  lat.var = ncvar_def(name="lat",units="degrees_north",dim=ncells.dim,prec=netcdf.prec)
-	  lat_bnds.var = ncvar_def(name="lat_bnds",units="degrees_north",dim=list(vertices.dim,ncells.dim),prec=netcdf.prec)
+	  if (!fesom2velocities) {
+	    vertices.dim = ncdim_def(name="vertices",units="",vals=1:maxNstamp,create_dimvar=FALSE)
+	    lon.var = ncvar_def(name="lon",units="degrees_east",dim=ncells.dim,prec=netcdf.prec)
+	    lon_bnds.var = ncvar_def(name="lon_bnds",units="degrees_east",dim=list(vertices.dim,ncells.dim),prec=netcdf.prec)
+	    lat.var = ncvar_def(name="lat",units="degrees_north",dim=ncells.dim,prec=netcdf.prec)
+	    lat_bnds.var = ncvar_def(name="lat_bnds",units="degrees_north",dim=list(vertices.dim,ncells.dim),prec=netcdf.prec)
+	  } else {
+	    ntriags.dim = ncdim_def(name="ntriags",units="",vals=1:M,create_dimvar=FALSE)
+	    Three.dim = ncdim_def(name="Three",units="",vals=1:3,create_dimvar=FALSE)
+	    lon.var = ncvar_def(name="lon",units="degrees_east",dim=ntriags.dim,prec=netcdf.prec)
+	    lon_bnds.var = ncvar_def(name="lon_bnds",units="degrees_east",dim=list(Three.dim,ntriags.dim),prec=netcdf.prec)
+	    lat.var = ncvar_def(name="lat",units="degrees_north",dim=ntriags.dim,prec=netcdf.prec)
+	    lat_bnds.var = ncvar_def(name="lat_bnds",units="degrees_north",dim=list(Three.dim,ntriags.dim),prec=netcdf.prec)
+	  }
 
 	  var.list = list(lon.var,lon_bnds.var,lat.var,lat_bnds.var)
 	  
 	  if (cell_area) {
-	    cellareas.var = ncvar_def(name="cell_area",units="m2",dim=ncells.dim,missval=-1,longname="area of grid cell",prec=netcdf.prec)
+	    if (!fesom2velocities) {
+	      cellareas.var = ncvar_def(name="cell_area",units="m2",dim=ncells.dim,missval=-1,longname="area of grid cell",prec=netcdf.prec)
+	    } else {
+	      cellareas.var = ncvar_def(name="cell_area",units="m2",dim=ntriags.dim,missval=-1,longname="area of grid cell",prec=netcdf.prec)
+	    }
 	    var.list[[length(var.list)+1]] = cellareas.var
 	  }
 	  if (node_node_links) {
@@ -42,8 +62,10 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	    var.list[[length(var.list)+1]] = node_node_links.var
 	  }
 	  if (triag_nodes) {
-	    ntriags.dim = ncdim_def(name="ntriags",units="",vals=1:nrow(grid$elem),create_dimvar=FALSE)
-	    Three.dim = ncdim_def(name="Three",units="",vals=1:3,create_dimvar=FALSE)
+	    if (!fesom2velocities) {
+	      ntriags.dim = ncdim_def(name="ntriags",units="",vals=1:nrow(grid$elem),create_dimvar=FALSE)
+	      Three.dim = ncdim_def(name="Three",units="",vals=1:3,create_dimvar=FALSE)
+	    }
 	    triag_nodes.var = ncvar_def(name="triag_nodes",units="",dim=list(Three.dim,ntriags.dim),missval=-1,longname="Maps every triangular face to its three corner nodes.",prec="integer")
 	    var.list[[length(var.list)+1]] = triag_nodes.var
 	  }
@@ -61,24 +83,40 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	  
 	  ofl = nc_create(filename = ofile, vars = var.list)
 	  
-	  ncvar_put(ofl,"lon",vals=grid$lon)
+	  if (!fesom2velocities) {
+	    ncvar_put(ofl,"lon",vals=grid$lon)
+	    ncvar_put(ofl,"lon_bnds",vals=t(grid$stamppoly.lon))
+	    ncvar_put(ofl,"lat",vals=grid$lat)
+	    ncvar_put(ofl,"lat_bnds",vals=t(grid$stamppoly.lat))
+	  } else {
+	    ncvar_put(ofl,"lon",vals=grid$baryc.lon)
+	    vals = t(grid$elem) * NA
+	    vals[] = grid$lon[t(grid$elem)]
+	    ncvar_put(ofl,"lon_bnds",vals=vals)
+	    ncvar_put(ofl,"lat",vals=grid$baryc.lat)
+	    vals[] = grid$lat[t(grid$elem)]
+	    ncvar_put(ofl,"lat_bnds",vals=vals)
+	    rm(vals)
+	  }
+	  
 	  ncatt_put(ofl,"lon","standard_name","longitude")
 	  ncatt_put(ofl,"lon","bounds","lon_bnds")
 	  
-	  ncvar_put(ofl,"lon_bnds",vals=t(grid$stamppoly.lon))
 	  ncatt_put(ofl,"lon_bnds","standard_name","longitude_bounds")
 	  ncatt_put(ofl,"lon_bnds","centers","lon")
 	  
-	  ncvar_put(ofl,"lat",vals=grid$lat)
 	  ncatt_put(ofl,"lat","standard_name","latitude")
 	  ncatt_put(ofl,"lat","bounds","lat_bnds")
 	  
-	  ncvar_put(ofl,"lat_bnds",vals=t(grid$stamppoly.lat))
 	  ncatt_put(ofl,"lat_bnds","standard_name","latitude_bounds")
 	  ncatt_put(ofl,"lat_bnds","centers","lat")
 	  
 	  if (cell_area) {
-	    ncvar_put(ofl,"cell_area",vals=grid$cellareas)
+	    if (!fesom2velocities) {
+	      ncvar_put(ofl,"cell_area",vals=grid$cellareas)
+	    } else {
+	      ncvar_put(ofl,"cell_area",vals=grid$elemareas)
+	    }
 	    ncatt_put(ofl,"cell_area","grid_type","unstructured")
 	    ncatt_put(ofl,"cell_area","coordinates","lat lon")
 	  }
@@ -102,10 +140,17 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	  
 	  ncatt_put(ofl,0,"Conventions","CF-1.4")
 	  ncatt_put(ofl,0,"history","Grid description file generated with spheRlab sl.grid.writeCDO")
+	  if (fesom2velocities) {
+	    ncatt_put(ofl,0,"history","Grid description for values defined at the centroids of the triangular elements instead of at the vertices.")
+	  }
 	  
 	  nc_close(ofl)
 	  
 	} else {
+	  
+	  if (fesom2velocities) {
+	    stop("ascii output (which is deprecated and slow anyway) has not been implemented for fesom2velocities=TRUE.")
+	  }
 	  
 	  warning("Be aware that you are writing to ascii (instead of NetCDF) which is much slower.")
 	  

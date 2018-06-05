@@ -8,7 +8,7 @@ Write Grid for CDO
 Write a spheRlab grid to a grid description file that makes unstructured-mesh data readable by the Climate Data Operators (CDO).
 }
 \usage{
-sl.grid.writeCDO(grid, ofile = "~/sl.grid.CDO", netcdf = TRUE, netcdf.prec = "double", ascii.digits = Inf, overwrite = FALSE, verbose = TRUE, cell_area = TRUE, node_node_links = TRUE, triag_nodes = TRUE, coast = TRUE, depth = TRUE)
+sl.grid.writeCDO(grid, ofile = "~/sl.grid.CDO", netcdf = TRUE, netcdf.prec = "double", ascii.digits = Inf, overwrite = FALSE, verbose = TRUE, cell_area = TRUE, node_node_links = TRUE, triag_nodes = TRUE, coast = TRUE, depth = TRUE, fesom2velocities = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -48,6 +48,9 @@ a logical value indicating whether or not to add coast information (from \code{g
   \item{depth}{
 a logical value indicating whether or not to add a vector with the depth of each grid level (from \code{grid$depth}) and a vector that provides the number of active (wet) levels underneath each surface node (from \code{grid$depth.lev}). Used only if \code{netcdf=TRUE}.
 }
+  \item{fesom2velocities}{
+a logical value indicating whether or not a grid description for values defined at the centroids of the triangular elements (like horizontal velocities in FESOM2) instead of at the vertices shall be generated. Implemented only for \code{netcdf=TRUE}.
+}
 }
 \details{
 This is a special function that is typically used when converting FESOM grid information to a CDO-readable format, see the example below.
@@ -72,8 +75,9 @@ Helge Goessling
 }
 \examples{
 \dontrun{
-grid = sl.grid.readFESOM(griddir="PATH-TO-YOUR-FESOM-GRID",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90))
-sl.grid.writeCDO(grid,ofile="~/sl.grid.CDO")
+grid = sl.grid.readFESOM(griddir="PATH-TO-YOUR-FESOM-GRID",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90),threeD=FALSE)
+sl.grid.writeCDO(grid,ofile="~/sl.grid.scalars.CDO",depth=FALSE)
+sl.grid.writeCDO(grid,ofile="~/sl.grid.vectors.CDO",depth=FALSE,node_node_links=FALSE,triag_nodes=FALSE,coast=FALSE,fesom2velocities=TRUE)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

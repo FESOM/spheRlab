@@ -103,7 +103,7 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	}
 	
 	if (basicreadonly) {
-	  return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=NULL,neighelems=NULL,stamppoly.lon=NULL,stamppoly.lat=NULL,cellareas=NULL,elemareas=NULL,depth=depth,depth.lev=depth.lev,boundary=boundary))
+	  return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=NULL,neighelems=NULL,stamppoly.lon=NULL,stamppoly.lat=NULL,baryc.lon=NULL,baryc.lat=NULL,cellareas=NULL,elemareas=NULL,depth=depth,depth.lev=depth.lev,boundary=boundary))
 	}
 	
 	if (verbose) {print("searching all neighbours of each node based on the triangular elements ...")}
@@ -205,13 +205,14 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 		for (ie in 1:Ne) {
 			elemareas[ie] = sl.triag.area(lon[elem[ie,]],lat[elem[ie,]])
 		}
+		elemareas = elemareas * Rearth^2
 		for (i in 1:N) {
 			cellareas[i] = sum(elemareas[neighelems[i,]],na.rm=TRUE)
 		}
-		cellareas = cellareas / 3 * Rearth^2
+		cellareas = cellareas / 3
 		if (verbose) {print("... done.")}
 	}
 	
-	return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=neighnodes,neighelems=neighelems,stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,cellareas=cellareas,elemareas=elemareas,depth=depth,depth.lev=depth.lev,boundary=boundary))
+	return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=neighnodes,neighelems=neighelems,stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,baryc.lon=baryc.lon,baryc.lat=baryc.lat,cellareas=cellareas,elemareas=elemareas,depth=depth,depth.lev=depth.lev,boundary=boundary))
 	
 }

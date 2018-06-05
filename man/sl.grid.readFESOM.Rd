@@ -102,11 +102,14 @@ a spheRlab grid list with the following elements:
 \item{stamppoly.lat}{
 	as \code{stamppoly.lon}, but with latitudes.
 }
+\item{baryc.lon}{
+	a vector of length \code{Ne} with the surface node (grid point) longitudes.
+}
+\item{baryc.lat}{
+	a vector of length \code{Ne} with the surface node (grid point) latitudes.
+}
 \item{cellareas}{
 	a vector of length \code{N} with the areas of the stamp polygons.
-}
-\item{elemareas}{
-	a vector of length \code{Ne} with the areas of the triangular elements.
 }
 \item{elemareas}{
 	a vector of length \code{Ne} with the areas of the triangular elements.
