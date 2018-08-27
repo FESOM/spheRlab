@@ -1,5 +1,5 @@
 sl.plot.lonlatgrid <-
-function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distance,pole.hole=FALSE,precision=1,lty=1,lwd=.25,col="black") {
+function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distance,pole.hole=FALSE,precision=1,lty=1,lwd=.25,col="black",labels=FALSE,labels.every=3,labels.every.first=ceiling(labels.every/2),labels.col="grey",labels.cex=1) {
 	
 	lon.distance = abs(lon.distance)
 	lat.distance = abs(lat.distance)
@@ -45,9 +45,19 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distanc
 	}
 	
 	for (n in 1:(Nlat+Nlon)) {
-		
 		sl.plot.lines(plot.init.res,lon=lines.lonlatgrid[[n]]$lon,lat=lines.lonlatgrid[[n]]$lat,col=col,lwd=lwd,lty=lty)
-		
+	}
+	
+	if (labels) {
+	  lons.medians = (lons[1:(Nlon-1)] + lons[2:Nlon]) / 2
+	  lats.medians = (lats[1:(Nlat-1)] + lats[2:Nlat]) / 2
+	  labels.every.first.x = labels.every.first - ceiling(labels.every/2)
+	  if (labels.every.first.x < 1) {labels.every.first.x = labels.every.first.x + labels.every}
+	  lat.lons = lons.medians[seq(labels.every.first.x,Nlon-1,labels.every)]
+	  lat.lats = lats[seq(labels.every.first,Nlat,labels.every)]
+	  lon.lons = lons[seq(labels.every.first,Nlon,labels.every)]
+	  lon.lats = lats.medians[seq(labels.every.first.x,Nlat-1,labels.every)]
+	  sl.plot.lonlatlabels(plot.init.res,lat.lons=lat.lons,lat.lats=lat.lats,lon.lons=lon.lons,lon.lats=lon.lats,col=labels.col,cex=labels.cex)
 	}
 	
 }

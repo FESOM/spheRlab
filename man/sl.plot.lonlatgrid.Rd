@@ -8,7 +8,7 @@ Plot Longitude-Latitude Grid
 Plot a simple longitude-latitude grid over a spheRlab plot.
 }
 \usage{
-sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = 10, lat.distance = lon.distance, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black")
+sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = 10, lat.distance = lon.distance, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black", labels = FALSE, labels.every = 3, labels.every.first = ceiling(labels.every/2), labels.col = "grey", labels.cex = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -42,6 +42,21 @@ a scalar specifying the line width.
   \item{col}{
 a line colour.
 }
+  \item{labels}{
+a logical value indicating whether or not to add longitude and latitude labels. Note that the placement of labels is determined automatically based on the lon-lat-grid, with few arguments to control the behaviour. For more flexibility, use \code{sl.plot.lonlatlabels} directly.
+}
+  \item{labels.every}{
+an integer specifying the density at which labels are plotted. Affects latitude and longitude labels simultaneously.}
+}
+  \item{labels.every.first}{
+an integer specifying which is the first latitude (and longitude) to be labelled. Affects latitude and longitude labels simultaneously.
+}
+  \item{labels.col}{
+the color to be used for the labels, possibly a vector.
+}
+  \item{labels.cex}{
+numeric character expansion factor for the labels; multiplied by \code{par("cex")} yields the final character size. \code{NULL} and \code{NA} are equivalent to \code{1.0}.
+}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
@@ -61,12 +76,14 @@ Helge Goessling
 }
 \note{
 Some standard lon-lat grids can also be plotted using \code{\link{sl.plot.naturalearth}}.
+
+If you set \code{labels=TRUE}, note that the placement of labels is determined automatically based on the lon-lat-grid, with few arguments to control the behaviour. For more flexibility, use \code{sl.plot.lonlatlabels} directly.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{sl.plot.naturalearth}}
+\code{\link{sl.plot.naturalearth}}, \code{\link{sl.plot.lonlatlabels}}
 }
 \examples{
 ## To be provided ...
