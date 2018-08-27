@@ -1,5 +1,7 @@
 sl.p2p <-
 function(lon1,lat1,lon2,lat2,frac) {
+  if (anyNA(c(lon1,lat1,lon2,lat2,frac))) {return(list(lon=NA,lat=NA))}
+  if (lon1==lon2) {if (lat1==lat2) {return(list(lon=lon1,lat=lat1))}}
 	if (frac < 0) {
 		lon1tmp = lon1
 		lat1tmp = lat1
