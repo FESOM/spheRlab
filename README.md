@@ -14,8 +14,6 @@ What follows is a list of what needs and/or could be done to improve spheRlab:
 
 * Write two vignettes (based on rmarkdown and probably packagedocs; http://hafen.github.io/packagedocs/): 1) General spheRlab documentation, 2) Using spheRlab for FESOM
 
-* Implement automatic lon-lat labelling into sl.plot.lonlatgrid.
-
 * Add function that downloads FESOM meshes and example data from GitHub; default shall be the pi-grid at GitHub FESOM-data.
 
 * Add examples for (almost) every function; for functions involving unstructured meshes, use the pi-grid.
