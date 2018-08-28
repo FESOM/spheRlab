@@ -58,7 +58,7 @@ THIS FUNCTION IS ONLY PARTIALLY IMPLEMENTED: Currently only 'nod2d.out' and 'nod
 \examples{
 \dontrun{
 grid = sl.grid.readFESOM(griddir="PATH-TO-YOUR-FESOM-GRID",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90),threeD=TRUE)
-sl.grid.writeFESOM(outpath="PATH-TO-NEW-ROTATED-GRID",grd=grid,griddir.name="newgrid",ofile=ofile)
+sl.grid.writeFESOM(outpath="PATH-TO-NEW-ROTATED-GRID",grd=grid,griddir.name="newgrid")
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
