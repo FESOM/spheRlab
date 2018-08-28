@@ -8,7 +8,7 @@ Plot Longitude-Latitude Grid
 Plot a simple longitude-latitude grid over a spheRlab plot.
 }
 \usage{
-sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = 10, lat.distance = lon.distance, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black", labels = FALSE, labels.every = 3, labels.every.first = ceiling(labels.every/2), labels.col = "grey", labels.cex = 1)
+sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = 10, lat.distance = lon.distance, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black", labels = FALSE, labels.lat.every = 3, labels.lat.first = ceiling(labels.lat.every/2), labels.lat.offsetlatlon = c(0,0), labels.lon.every = 3, labels.lon.first = ceiling(labels.lon.every/2), labels.lon.offsetlatlon = c(0,0), labels.col = "grey", labels.cex = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,16 +43,28 @@ a scalar specifying the line width.
 a line colour.
 }
   \item{labels}{
-a logical value indicating whether or not to add longitude and latitude labels. Note that the placement of labels is determined automatically based on the lon-lat-grid, with few arguments to control the behaviour. For more flexibility, use \code{sl.plot.lonlatlabels} directly.
+a logical value indicating whether or not to add longitude and latitude labels. Note that the placement of labels is determined automatically based on the lon-lat-grid, with some arguments to control the behaviour. Latitude labels are placed between lines of longitudes and vice versa. For more flexibility, use \code{sl.plot.lonlatlabels} directly.
 }
-  \item{labels.every}{
-an integer specifying the density at which labels are plotted. Affects latitude and longitude labels simultaneously.}
+  \item{labels.lat.every}{
+an integer specifying the density in latitudinal direction at which labels are plotted. Affects latitude and longitude labels coherently.
 }
-  \item{labels.every.first}{
-an integer specifying which is the first latitude (and longitude) to be labelled. Affects latitude and longitude labels simultaneously.
+  \item{labels.lat.first}{
+an integer specifying the first latitude to receive a latitude label. Affects latitude and longitude labels coherently such that longitude labels are placed between latitude labels.
+}
+  \item{labels.lat.offsetlatlon}{
+a 2-element numeric vector specifying the degrees latitude and longitude by which latitude labels are to be shifted.
+}
+  \item{labels.lon.every}{
+an integer specifying the density in longitudinal direction at which labels are plotted. Affects latitude and longitude labels coherently.
+}
+  \item{labels.lon.first}{
+an integer specifying the first longitude to receive a longitude label. Affects longitude and latitude labels coherently such that latitude labels are placed between longitude labels.
+}
+  \item{labels.lon.offsetlatlon}{
+a 2-element numeric vector specifying the degrees latitude and longitude by which longitude labels are to be shifted.
 }
   \item{labels.col}{
-the color to be used for the labels, possibly a vector.
+the color to be used for the labels.
 }
   \item{labels.cex}{
 numeric character expansion factor for the labels; multiplied by \code{par("cex")} yields the final character size. \code{NULL} and \code{NA} are equivalent to \code{1.0}.
@@ -86,7 +98,13 @@ If you set \code{labels=TRUE}, note that the placement of labels is determined a
 \code{\link{sl.plot.naturalearth}}, \code{\link{sl.plot.lonlatlabels}}
 }
 \examples{
-## To be provided ...
+\dontrun{
+pir = sl.plot.init()
+sl.plot.naturalearth(pir, resolution="coarse")
+sl.plot.lonlatgrid(pir, labels=TRUE, labels.lat.first=3, labels.lon.first=1, labels.cex=0.7, labels.col="red")
+sl.plot.end(pir)
+### Should result in a pdf file named 'sl.plot.pdf' in your home directory.
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

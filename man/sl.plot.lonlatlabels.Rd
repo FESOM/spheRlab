@@ -21,14 +21,20 @@ a numeric vector specifying at which longitudes (degrees east) latitude labels a
   \item{lat.lats}{
 a numeric vector specifying at which latitudes (degrees north) latitude labels are to be drawn.
 }
+  \item{lat.offsetlatlon}{
+a 2-element numeric vector specifying the degrees latitude and longitude by which latitude labels are to be shifted.
+}
   \item{lon.lons}{
 a numeric vector specifying at which longitudes (degrees east) longitude labels are to be drawn.
 }
   \item{lon.lats}{
 a numeric vector specifying at which latitudes (degrees north) longitude labels are to be drawn.
 }
+  \item{lon.offsetlatlon}{
+a 2-element numeric vector specifying the degrees latitude and longitude by which longitude labels are to be shifted.
+}
   \item{col}{
-the color to be used for the labels, possibly a vector.
+the color to be used for the labels.
 }
   \item{cex}{
 numeric character expansion factor for the labels; multiplied by \code{par("cex")} yields the final character size. \code{NULL} and \code{NA} are equivalent to \code{1.0}.

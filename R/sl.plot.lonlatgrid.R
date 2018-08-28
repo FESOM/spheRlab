@@ -1,5 +1,8 @@
 sl.plot.lonlatgrid <-
-function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distance,pole.hole=FALSE,precision=1,lty=1,lwd=.25,col="black",labels=FALSE,labels.every=3,labels.every.first=ceiling(labels.every/2),labels.col="grey",labels.cex=1) {
+function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distance,pole.hole=FALSE,precision=1,
+          lty=1,lwd=.25,col="black",labels=FALSE,labels.lat.every=3,labels.lat.first=ceiling(labels.lat.every/2),
+          labels.lat.offsetlatlon=c(0,0),labels.lon.every=labels.lat.every,labels.lon.first=ceiling(labels.lon.every/2),
+          labels.lon.offsetlatlon=c(0,0),labels.col="grey",labels.cex=1) {
 	
 	lon.distance = abs(lon.distance)
 	lat.distance = abs(lat.distance)
@@ -51,13 +54,17 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distanc
 	if (labels) {
 	  lons.medians = (lons[1:(Nlon-1)] + lons[2:Nlon]) / 2
 	  lats.medians = (lats[1:(Nlat-1)] + lats[2:Nlat]) / 2
-	  labels.every.first.x = labels.every.first - ceiling(labels.every/2)
-	  if (labels.every.first.x < 1) {labels.every.first.x = labels.every.first.x + labels.every}
-	  lat.lons = lons.medians[seq(labels.every.first.x,Nlon-1,labels.every)]
-	  lat.lats = lats[seq(labels.every.first,Nlat,labels.every)]
-	  lon.lons = lons[seq(labels.every.first,Nlon,labels.every)]
-	  lon.lats = lats.medians[seq(labels.every.first.x,Nlat-1,labels.every)]
-	  sl.plot.lonlatlabels(plot.init.res,lat.lons=lat.lons,lat.lats=lat.lats,lon.lons=lon.lons,lon.lats=lon.lats,col=labels.col,cex=labels.cex)
+	  labels.lat.first.x = labels.lat.first - ceiling(labels.lat.every/2)
+	  if (labels.lat.first.x < 1) {labels.lat.first.x = labels.lat.first.x + labels.lat.every}
+	  labels.lon.first.x = labels.lon.first - ceiling(labels.lon.every/2)
+	  if (labels.lon.first.x < 1) {labels.lon.first.x = labels.lon.first.x + labels.lon.every}
+	  lat.lons = lons.medians[seq(labels.lon.first.x,Nlon-1,labels.lon.every)]
+	  lat.lats = lats[seq(labels.lat.first,Nlat,labels.lat.every)]
+	  lon.lons = lons[seq(labels.lon.first,Nlon,labels.lon.every)]
+	  lon.lats = lats.medians[seq(labels.lat.first.x,Nlat-1,labels.lat.every)]
+	  sl.plot.lonlatlabels(plot.init.res,lat.lons=lat.lons,lat.lats=lat.lats,lat.offsetlatlon=labels.lat.offsetlatlon,
+	                       lon.lons=lon.lons,lon.lats=lon.lats,lon.offsetlatlon=labels.lon.offsetlatlon,
+	                       col=labels.col,cex=labels.cex)
 	}
 	
 }
