@@ -62,7 +62,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{sl.plot.field}}, \code{\link{sl.colbar}}, \code{link{sl.num2colbar}}
+\code{\link{sl.plot.field}}, \code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}
 }
 \examples{
 ## To be provided ...
