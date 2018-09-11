@@ -13,7 +13,7 @@ sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latra
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{projection}{
-a character specifing the plot projection type. Currently possible projections are \code{"polar"}, \code{"lonlat"}, and \code{"regpoly"} (to be extended).
+a character specifing the plot projection type. Currently possible projections are \code{"polar"} (orthographic), \code{"lonlat"}, and \code{"regpoly"} (to be extended).
 }
   \item{lonlat.lonrange}{
 a vector of length 2 specifying the plot longitude range in ascending order. Only used if \code{projection="lonlat"}.
@@ -158,7 +158,7 @@ Helge Goessling
 \note{
 Projections to be added include: \code{"robinson"} and \code{"mercator"}.
 
-The projection \code{"regpoly"} corresponds to a stereographic projection, truncated along a regular polygon, which allows composing the whole spherical surface with precisely connecting polygons, forming a platonian-type body (e.g. cube or icosahedron). \code{\link{sl.plot.platon.init}} calls this function multiple times to plot onto platonian-type bodies.
+The projection \code{"regpoly"} corresponds to a polar orthographic projection, truncated along a regular polygon, which allows composing the whole spherical surface with precisely connecting polygons, forming a platonian-type body (e.g. cube or icosahedron). \code{\link{sl.plot.platon.init}} calls this function multiple times to plot onto platonian-type bodies.
 
 Typical multi-panel plotting (beyond the rather special functions \code{\link{sl.plot.platon.init}} or \code{\link{sl.plot.3D.init}}) shall be implemented at some point, too, making use of this function in a similar way as \code{\link{sl.plot.platon.init}} and \code{\link{sl.plot.3D.init}}, but with explicit calls inbetween where the current panel to be plotted into will need to be specified.
 }
