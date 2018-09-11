@@ -1,5 +1,5 @@
 sl.plot.fld.curvilin <-
-function (plot.init.res,vals,mask=NULL,lon.i,lat.i,border=TRUE,border.lwd=0.01,colbar=sl.colbar.blackwhite_256,colbar.breaks=NA,colbar.breaks.log=FALSE) {
+function (plot.init.res,vals,mask=NULL,lon.i,lat.i,border=TRUE,border.lwd=0.01,colbar=sl.colbar.blackwhite_256,colbar.breaks=NA,colbar.breaks.log=FALSE,na.col=NULL) {
 	
 	if (length(sl.dim(lon.i)) == 1) {
 		if (length(sl.dim(lat.i)) == 1) {
@@ -31,11 +31,16 @@ function (plot.init.res,vals,mask=NULL,lon.i,lat.i,border=TRUE,border.lwd=0.01,c
 	for (m in 1:M) {
 		for (n in 1:N) {
 			if (mask[m,n]) {
+			  if (is.na(vals[m,n])) {
+			    if (is.null(na.col)) {next}
+			  }
 				p.lon = c(lon.i[m,n],lon.i[m+1,n],lon.i[m+1,n+1],lon.i[m,n+1])
 				p.lat = c(lat.i[m,n],lat.i[m+1,n],lat.i[m+1,n+1],lat.i[m,n+1])
-				#print(p.lon)
-				#print(p.lat)
-				sl.plot.polygon(plot.init.res,p.lon,p.lat,col.fill=colbar[[col.ind[m,n]]],border=border,border.lwd=border.lwd)
+				if (is.na(vals[m,n])) {
+				  sl.plot.polygon(plot.init.res,p.lon,p.lat,col.fill=na.col,border=border,border.lwd=border.lwd)
+				} else {
+				  sl.plot.polygon(plot.init.res,p.lon,p.lat,col.fill=colbar[[col.ind[m,n]]],border=border,border.lwd=border.lwd)
+				}
 			}
 		}
 	}

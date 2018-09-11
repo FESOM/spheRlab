@@ -8,7 +8,7 @@ Plot Curvilinear Field
 Plot a 2-dimensional numerical field on a curvilinear grid.
 }
 \usage{
-sl.plot.fld.curvilin(plot.init.res, vals, mask = NULL, lon.i, lat.i, border = TRUE, border.lwd = 0.01, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = FALSE)
+sl.plot.fld.curvilin(plot.init.res, vals, mask = NULL, lon.i, lat.i, border = TRUE, border.lwd = 0.01, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = FALSE, na.col = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,7 +19,7 @@ a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a v
 an \code{Nlat}x\code{Nlon} matrix specifying a 2-dimensional numerical curvilinear field.
 }
   \item{mask}{
-an \code{Nlat}x\code{Nlon} matrix with logical values specifying which quadrangles to draw. Default is \code{mask=NULL}, equivalent to all matrix elements being \code{TRUE} meaning that all quadrangles are drawn.
+an \code{Nlat}x\code{Nlon} matrix with logical values specifying which quadrangles to draw. Default is \code{mask=NULL}, equivalent to all matrix elements being \code{TRUE} meaning that all quadrangles (except NA values if \code{na.col=NULL}) are drawn.
 }
   \item{lon.i}{
 an \code{Nlat+1}x\code{Nlon+1} matrix specifying the interface longitudes corresponding to \code{vals}.
@@ -42,6 +42,9 @@ a numeric vector of length \code{Nc-1} specifying the breaks between colours.
   \item{colbar.breaks.log}{
 a logical value indicating whether colourbar breaks are to be placed logarithmically.
 }
+  \item{na.col}{
+the color to be used for NA values. Default is \code{na.col=NULL}, meaning that no polygons are drawn where \code{vals=NA}.
+}
 }
 \details{
 For each point of the curvilinear field, a quadrangle as defined by the interface longitudes and latitudes is drawn, with colouring according to the numerical value of the point and the colourbar provided.
@@ -62,7 +65,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{sl.plot.field}}, \code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}
+\code{\link{sl.plot.field}}, \code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}, \code{\link{sl.lonlat2D.c2i}}
 }
 \examples{
 ## To be provided ...

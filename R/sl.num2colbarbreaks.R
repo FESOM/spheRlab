@@ -4,8 +4,8 @@ function (num,colbar=NA,Nbreaks=NA,breaks.log=FALSE) {
 	if (!anyNA(colbar)) {
 		Nbreaks = length(colbar) - 1
 	}
-	max.num = max(num)
-	min.num = min(num)
+	max.num = max(num,na.rm=TRUE)
+	min.num = min(num,na.rm=TRUE)
 	if (breaks.log) {
 		max.num = log(max.num)
 		min.num = log(min.num)
