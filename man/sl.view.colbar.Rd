@@ -26,7 +26,7 @@ the label colour.
 }
 }
 \details{
-This function allows to view a colourbar, independent of how it's applied to a numerical field with corresponding numerical breaks. A simple 'matrix' of the colours is plotted using \code{plot} and \code{rect}. In contrast to other spheRlab plotting functions, this one is not meant to produce a high-quality figure (in pdf format), but for a quick view.
+This function allows to view a colourbar, independent of how it's applied to a numerical field with corresponding numerical breaks. A simple 'matrix' of the colours is plotted using \code{plot} and \code{rect}. In contrast to other spheRlab plotting functions, this one is not meant to produce a high-quality figure, but for a quick view.
 }
 \value{
 %%  ~Describe the value returned

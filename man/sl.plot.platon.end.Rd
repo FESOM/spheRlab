@@ -8,7 +8,7 @@ Finish Platon Plot
 Finish a Platonian-type body plot.
 }
 \usage{
-sl.plot.platon.end(plot.platon.init.res, corners = TRUE, corners.length = 0.05, adhes.surf = TRUE, outer.boundaries = FALSE, inner.boundaries = FALSE, col.adh = "grey", lty.adh = 1, lwd.adh = 0.5, col.bnd = "grey", lty.bnd = 1, lwd.bnd = 0.5)
+sl.plot.platon.end(plot.platon.init.res, corners = TRUE, corners.length = 0.05, adhes.surf = TRUE, outer.boundaries = FALSE, inner.boundaries = FALSE, col.adh = "grey", lty.adh = 1, lwd.adh = 0.5, col.bnd = "grey", lty.bnd = 1, lwd.bnd = 0.5, do.close.device = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -47,6 +47,9 @@ the line type of the inner and/or outer face net boundaries. Only used if \code{
 }
   \item{lwd.bnd}{
 the line width of the inner and/or outer face net boundaries. Only used if \code{outer.boundaries=TRUE} or \code{inner.boundaries=TRUE}.
+}
+  \item{do.close.device}{
+a logical value specifying whether to call \code{dev.off()} to close the corresponding device in the end. Default is \code{do.close.device=TRUE}.
 }
 }
 \details{

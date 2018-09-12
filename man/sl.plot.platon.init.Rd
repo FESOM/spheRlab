@@ -8,13 +8,10 @@ Initialise Platon Plot
 Initialise a Platonian-type body plot. Currently possible are hexahedrons (cubes) and icosahedrons. The plot is composed of faces arranged in a net that can be crafted into a 3-dimensional platonian-type body. Returns a list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.platon.end}}.
 }
 \usage{
-sl.plot.platon.init(file.name = "~/sl.plot.pdf", body.type = "hexahedron", width = 60, skip.faces = NULL)
+sl.plot.platon.init(body.type = "hexahedron", width = 60, skip.faces = NULL, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.platon.",device))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{file.name}{
-  a character specifying the output file.
-}
   \item{body.type}{
   a character specifying the body type. Currently possible types are \code{"hexahedron"} (cube) and \code{"icosahedron"}.
 }
@@ -23,6 +20,18 @@ sl.plot.platon.init(file.name = "~/sl.plot.pdf", body.type = "hexahedron", width
 }
   \item{skip.faces}{
    an integer (vector) specifying the index (or indices) of faces to omit from the plot. Can be used e.g. for plotting a colourbar and/or other descriptive information onto one or more of the faces. If \code{skip.faces=NULL} (default), all faces are drawn.
+}
+  \item{device}{
+a character specifying which graphics device to use. Default is \code{device='pdf'}. Ignored if \code{do.init.device=FALSE}.
+}
+  \item{do.init}{
+a logical value indicating whether or not an initial call of \code{plot} shall be executed. Default is \code{do.init=TRUE}.
+}
+  \item{do.init.device}{
+a logical value indicating whether or not initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
+}
+  \item{file.name}{
+a character specifying the output file. Only used if \code{do.init.device=TRUE}. Default is \code{file.name=paste0('~/sl.plot.platon.',device)}.
 }
 }
 \details{

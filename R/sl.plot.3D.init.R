@@ -1,5 +1,5 @@
 sl.plot.3D.init <-
-function(file.name="~/sl.plot.pdf",projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(-10,0,0),gap.frac=.1) {
+function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(-10,0,0),gap.frac=.1,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.3D.",device)) {
 	
 	if (projection != "polar") {stop("projections other than 'polar' not yet implemented!")}
 	
@@ -15,9 +15,15 @@ function(file.name="~/sl.plot.pdf",projection="polar",width=30,lonlatrot.left=c(
 	pir.list[[2]] = sl.plot.init(projection="polar",polar.lonlatrot=lonlatrot.right,polar.latbound=0,do.init=FALSE,xshift=xshift,yshift=0)
 	
 	pir.list$projection = "3D"
-	pdf(file.name,width=width,height=height)
-	par(mar=rep(0,4))
-	plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
+	
+	if (do.init.device) {
+	  dev.fun = match.fun(device,descend=FALSE)
+	  dev.fun(file.name,width=width,height=height)
+	}
+	if (do.init) {
+	  par(mar=rep(0,4))
+	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
+	}
 	return(pir.list)
 	
 }

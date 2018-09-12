@@ -1,5 +1,5 @@
 sl.plot.platon.end <-
-function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,outer.boundaries=FALSE,inner.boundaries=FALSE,col.adh="grey",lty.adh=1,lwd.adh=0.5,col.bnd="grey",lty.bnd=1,lwd.bnd=0.5) {
+function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,outer.boundaries=FALSE,inner.boundaries=FALSE,col.adh="grey",lty.adh=1,lwd.adh=0.5,col.bnd="grey",lty.bnd=1,lwd.bnd=0.5,do.close.device=TRUE) {
 	
 	deltaxy = plot.platon.init.res$deltaxy
 	
@@ -60,6 +60,6 @@ function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,o
 		lines(x=l.x,y=l.y,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
 	}
 	
-	dev.off()
+	if (do.close.device) {dev.off()}
 	
 }

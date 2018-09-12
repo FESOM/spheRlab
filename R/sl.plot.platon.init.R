@@ -1,5 +1,5 @@
 sl.plot.platon.init <-
-function(file.name="~/sl.plot.pdf",body.type="hexahedron",width=60,skip.faces=NULL) {
+function(body.type="hexahedron",width=60,skip.faces=NULL,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.platon.",device)) {
 	
 	if (body.type == "hexahedron") {
 		print("initialising hexahedron (cube) plot")
@@ -70,9 +70,14 @@ function(file.name="~/sl.plot.pdf",body.type="hexahedron",width=60,skip.faces=NU
 	pir.list$projection = "platon"
 	pir.list$body.type = body.type
 	pir.list$deltaxy = deltaxy
-	pdf(file.name,width=width,height=height)
-	par(mar=rep(0,4))
-	plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
+	if (do.init.device) {
+	  dev.fun = match.fun(device,descend=FALSE)
+	  dev.fun(file.name,width=width,height=height)
+	}
+	if (do.init) {
+	  par(mar=rep(0,4))
+	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
+	}
 	return(pir.list)
 	
 }

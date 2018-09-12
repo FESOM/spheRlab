@@ -1,14 +1,18 @@
 sl.plot.colbar <-
-function (colbar,breaks,vertical=TRUE,labels.at=rep(TRUE,length(breaks)),labels=as.character(signif(breaks,3)),labels.side="bottom",labels.cex=1,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,file.name="~/sl.plot.colbar.pdf",width=6) {
+function (colbar,breaks,vertical=TRUE,labels.at=rep(TRUE,length(breaks)),labels=as.character(signif(breaks,3)),labels.side="bottom",labels.cex=1,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",do.init.device=TRUE,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6) {
 	
 	if (length(breaks) != length(colbar) - 1) {
 		stop("'breaks' must be shorter by exactly one element compared to 'colbar'")
 	}
 	
-	pdf(file.name,width=width,height=width)
-	par(mar=rep(0,4))
+  if (do.init.device) {
+    dev.fun = match.fun(device,descend=FALSE)
+    dev.fun(file.name,width=width,height=width)
+  }
 	
+	par(mar=rep(0,4))
 	plot(NA,xlim=c(-0.5,0.5),ylim=c(-0.5,0.5),bty="n",xaxt="n",yaxt="n")
+	
 	if (vertical) {
 		
 		ymin = -0.3
@@ -41,6 +45,6 @@ function (colbar,breaks,vertical=TRUE,labels.at=rep(TRUE,length(breaks)),labels=
 		
 	}
 	
-	dev.off()
+	if (do.close.device) {dev.off()}
 	
 }

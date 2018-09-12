@@ -88,7 +88,7 @@ sl.trackingshot <-
       }
       filename = file.path(imgdir, sprintf(paste0("img_%0", floor(log10(imagecount))+1, "d.png"), i))
       
-      pir = sl.plot.init(projection = projection, lonlat.lonrange = w$lonlat.lonrange, lonlat.latrange = w$lonlat.latrange, polar.lonlatrot = w$polar.lonlatrot, polar.latbound = w$polar.latbound, regpoly.lonlatrot = w$regpoly.lonlatrot, regpoly.N = w$regpoly.N, regpoly.lat0 = w$regpoly.lat0, regpoly.rotfrac = w$regpoly.rotfrac, col.background="white",main="",xshift=0,yshift=0,do.init=TRUE,file.name=sprintf(filename, i),width=width,png=TRUE)
+      pir = sl.plot.init(projection = projection, lonlat.lonrange = w$lonlat.lonrange, lonlat.latrange = w$lonlat.latrange, polar.lonlatrot = w$polar.lonlatrot, polar.latbound = w$polar.latbound, regpoly.lonlatrot = w$regpoly.lonlatrot, regpoly.N = w$regpoly.N, regpoly.lat0 = w$regpoly.lat0, regpoly.rotfrac = w$regpoly.rotfrac, col.background="white",main="",xshift=0,yshift=0,device="png",do.init=TRUE,file.name=sprintf(filename, i),width=width)
       sl.plot.field.elem(plot.init.res=pir, num=num, lon=lon, lat=lat, elem=elem, col.fill = col.fill, col.border = col.border, colbar = colbar, colbar.breaks = colbar.breaks, border.lwd = border.lwd, border.lty = border.lty)
       sl.plot.end(plot.init.res=pir)
       

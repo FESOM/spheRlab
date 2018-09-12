@@ -1,5 +1,5 @@
 sl.plot.end <-
-function(plot.init.res, line.border=TRUE, col.border="black", precision=1, lwd.border=1, lty.border=1) {
+function(plot.init.res, line.border=TRUE, col.border="black", precision=1, lwd.border=1, lty.border=1, do.close.device=TRUE) {
 	
 	projection = plot.init.res$projection
 	
@@ -36,6 +36,6 @@ function(plot.init.res, line.border=TRUE, col.border="black", precision=1, lwd.b
 	
 	}
 	
-	dev.off()
+	if (do.close.device) {dev.off()}
 	
 }

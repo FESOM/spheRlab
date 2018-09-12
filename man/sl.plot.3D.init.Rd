@@ -8,13 +8,10 @@
 Initialise a spheRlab 3D polar plot. Two panels are drawn next to each other, rotated slightly such that a 3D effect occurs when the panels are overlaid, by aiming with the eyes at a point either before or behind the plane where the figure is displayed.
 }
 \usage{
-sl.plot.3D.init(file.name = "~/sl.plot.pdf", projection = "polar", width = 30, lonlatrot.left = c(10, 0, 0), lonlatrot.right = c(-10, 0, 0), gap.frac = 0.1)
+sl.plot.3D.init(projection = "polar", width = 30, lonlatrot.left = c(10, 0, 0), lonlatrot.right = c(-10, 0, 0), gap.frac = 0.1, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.3D.",device))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{file.name}{
-  a character specifying the output file.
-}
   \item{projection}{
   a character specifying the plot projection to be used. At the moment only 'polar' is implemented (the default).
 }
@@ -29,6 +26,18 @@ sl.plot.3D.init(file.name = "~/sl.plot.pdf", projection = "polar", width = 30, l
 }
   \item{gap.frac}{
   a scalar specifying the relative width of the gap between the two panels.
+}
+  \item{device}{
+a character specifying which graphics device to use. Default is \code{device='pdf'}. Ignored if \code{do.init.device=FALSE}.
+}
+  \item{do.init}{
+a logical value indicating whether or not an initial call of \code{plot} shall be executed. Default is \code{do.init=TRUE}.
+}
+  \item{do.init.device}{
+a logical value indicating whether or not initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
+}
+  \item{file.name}{
+a character specifying the output file. Only used if \code{do.init.device=TRUE}. Default is \code{file.name=paste0('~/sl.plot.3D.',device)}.
 }
 }
 \details{

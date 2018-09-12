@@ -8,7 +8,7 @@ Finish Plot
 Finish a spheRlab plot.
 }
 \usage{
-sl.plot.end(plot.init.res, line.border = TRUE, col.border = "black", precision = 1, lwd.border = 1, lty.border = 1)
+sl.plot.end(plot.init.res, line.border = TRUE, col.border = "black", precision = 1, lwd.border = 1, lty.border = 1, do.close.device = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,6 +29,9 @@ a scalar specifying the line width of the boundaries.
 }
   \item{lty.border}{
 the line type of the boundaries.
+}
+  \item{do.close.device}{
+a logical value specifying whether to call \code{dev.off()} to close the corresponding device in the end. Default is \code{do.close.device=TRUE}.
 }
 }
 \details{

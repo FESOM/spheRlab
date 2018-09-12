@@ -8,7 +8,7 @@ Plot Colourbar
 Plot a spheRlab colourbar, vertically or horizontally, with a number of options.
 }
 \usage{
-sl.plot.colbar(colbar, breaks, vertical = FALSE, labels.at = rep(TRUE, length(breaks)), labels = as.character(signif(breaks, 3)), labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, file.name = "~/sl.plot.colbar.pdf", width = 6)
+sl.plot.colbar(colbar, breaks, vertical = FALSE, labels.at = rep(TRUE, length(breaks)), labels = as.character(signif(breaks, 3)), labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -45,8 +45,17 @@ sl.plot.colbar(colbar, breaks, vertical = FALSE, labels.at = rep(TRUE, length(br
   \item{triag.ends}{
   a logical value indicating whether the ends of the colourbar shall be triangular. By default \code{triag.ends=FALSE}. TRIANGULAR ENDS ARE NOT YET IMPLEMENTED!
 }
+  \item{device}{
+a character specifying which graphics device to use. Default is \code{device='pdf'}. Ignored if \code{do.init.device=FALSE}.
+}
+  \item{do.init.device}{
+a logical value indicating whether or not initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
+}
+  \item{do.close.device}{
+a logical value specifying whether to call \code{dev.off()} to close the corresponding device in the end. Default is \code{do.close.device=do.init.device}.
+}
   \item{file.name}{
-  a character specifying the output file name of the figure. By default \code{file.name="~/sl.plot.colbar.pdf"}.
+  a character specifying the output file name of the figure. By default \code{file.name=paste0("~/sl.plot.colbar.",device)}.
 }
   \item{width}{
   a scalar specifying the width of the figure.
@@ -76,7 +85,7 @@ NOTE THAT SO FAR THIS FUNCTION HAS UNUSED ARGUMENTS AND OTHER GAPS (INCLUDING HO
 \examples{
 cb = sl.colbar(cols=list(c(1,0,0),c(.5,.5,.5),c(0,0,1)),N=10)
 breaks = seq(.1,.9,.1)
-## sl.plot.colbar(colbar=cb,breaks=breaks,file.name="~/sl.plot.colbar.pdf")
+## sl.plot.colbar(colbar=cb,breaks=breaks)
 ## Should result in a corresponding figure stored in the file '~/sl.plot.colbar.pdf'
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
