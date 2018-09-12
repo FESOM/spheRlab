@@ -1,5 +1,5 @@
 sl.plot.init <-
-function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background="white",main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12) {
+function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12) {
 	
 	pir = list(projection=projection)
 	
@@ -61,13 +61,28 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 	}
 	if (do.init) {
 	  par(mar=rep(0,4))
-	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,main=main,xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg=col.background)
+	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,main=main,xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n")
 	}
 	
 	pir$xlim = xlim
 	pir$ylim = ylim
 	pir$xshift = xshift
 	pir$yshift = yshift
+	
+	if (!is.null(col.background)) {
+	  if (projection == "polar") {
+	    xyrad = sin(pi*(90-polar.latbound)/180)
+	    x = c(-cos(seq(0,2*pi,2*pi*precision/360))) * xyrad
+	    y = c(sin(seq(0,2*pi,2*pi*precision/360))) * xyrad
+	    polygon(x+xshift,y+yshift,col=col.background,border=NA)
+	  } else if (projection == "lonlat") {
+	    rect(lonlat.lonrange[1]+xshift,lonlat.latrange[1]+yshift,lonlat.lonrange[2]+xshift,lonlat.latrange[2]+yshift,col=col.background,border=NA)
+	  } else if (projection == "regpoly") {
+	    lon.ext = c(rot.inv$lon,rot.inv$lon[1])
+	    lat.ext = c(rot.inv$lat,rot.inv$lat[1])
+	    sl.plot.polygon(pir,lon.ext,lat.ext,col.fill=col.background,border=FALSE,ignore.visibility=TRUE)
+	  }
+	}
 	
 	return(pir)
 	

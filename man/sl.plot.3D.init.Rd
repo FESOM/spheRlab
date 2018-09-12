@@ -8,7 +8,7 @@
 Initialise a spheRlab 3D polar plot. Two panels are drawn next to each other, rotated slightly such that a 3D effect occurs when the panels are overlaid, by aiming with the eyes at a point either before or behind the plane where the figure is displayed.
 }
 \usage{
-sl.plot.3D.init(projection = "polar", width = 30, lonlatrot.left = c(10, 0, 0), lonlatrot.right = c(-10, 0, 0), gap.frac = 0.1, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.3D.",device))
+sl.plot.3D.init(projection = "polar", width = 30, lonlatrot.left = c(10, 0, 0), lonlatrot.right = c(-10, 0, 0), gap.frac = 0.1, col.background = NULL, precision = 1, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.3D.",device))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,6 +26,12 @@ sl.plot.3D.init(projection = "polar", width = 30, lonlatrot.left = c(10, 0, 0), 
 }
   \item{gap.frac}{
   a scalar specifying the relative width of the gap between the two panels.
+}
+  \item{col.background}{
+a background colour. Default is \code{col.background=NULL}, meaning that no background is drawn. Note that this parameter determines only the backgound colour of the map(s). To set the background colour of the whole plot, use \code{par(bg=...)} before calling \code{sl.plot.3D.init}.
+}
+  \item{precision}{
+a scalar specifying the precision (in degrees) at which the backgound polygon boundary is broken into straight line segments. Used only if \code{col.background != NULL}.
 }
   \item{device}{
 a character specifying which graphics device to use. Default is \code{device='pdf'}. Ignored if \code{do.init.device=FALSE}.

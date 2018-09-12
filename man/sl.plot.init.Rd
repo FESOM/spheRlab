@@ -8,12 +8,12 @@ Initialise spheRlab Plot
 Initialise a standard spheRlab plot. Returns a plot specifics list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.end}}.
 }
 \usage{
-sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = "white", main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.",device), width = 12)
+sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = NULL, precision = 1, main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.",device), width = 12)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{projection}{
-a character specifing the plot projection type. Currently possible projections are \code{"polar"} (orthographic), \code{"lonlat"}, and \code{"regpoly"} (to be extended).
+a character specifing the plot projection type. Currently possible projections are \code{"polar"} (orthographic), \code{"lonlat"}, and \code{"regpoly"} (gnomonic) (to be extended).
 }
   \item{lonlat.lonrange}{
 a vector of length 2 specifying the plot longitude range in ascending order. Only used if \code{projection="lonlat"}.
@@ -40,7 +40,10 @@ a scalar in the range (0,90) specifying the latitude (post-rotation) at which th
 a scalar in the range [0,1) specifying at which longitude (post-rotation) the 'first' vertex of the regular polygon shall be placed. The argument is not the longitude itself, but the fraction by which the vertex shall be rotated from \code{0 degrees} to \code{360/regpoly.N degrees}. Default is \code{regpoly.rotfrac=0}.
 }
   \item{col.background}{
-a background colour. Default is \code{col.background="white"}.
+a background colour. Default is \code{col.background=NULL}, meaning that no background is drawn. Note that this parameter determines only the backgound colour of the map. To set the background colour of the whole plot, use \code{par(bg=...)} before calling \code{sl.plot.init}.
+}
+  \item{precision}{
+a scalar specifying for projections with curved boundaries the precision (in degrees) at which the backgound polygon boundary is broken into straight line segments. Used only if \code{col.background != NULL}.
 }
   \item{main}{
 a character specifying the main plot title.

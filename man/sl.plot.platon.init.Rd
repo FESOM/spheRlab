@@ -8,7 +8,7 @@ Initialise Platon Plot
 Initialise a Platonian-type body plot. Currently possible are hexahedrons (cubes) and icosahedrons. The plot is composed of faces arranged in a net that can be crafted into a 3-dimensional platonian-type body. Returns a list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.platon.end}}.
 }
 \usage{
-sl.plot.platon.init(body.type = "hexahedron", width = 60, skip.faces = NULL, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.platon.",device))
+sl.plot.platon.init(body.type = "hexahedron", width = 60, skip.faces = NULL, col.background = NULL, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.platon.",device))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,9 @@ sl.plot.platon.init(body.type = "hexahedron", width = 60, skip.faces = NULL, dev
 }
   \item{skip.faces}{
    an integer (vector) specifying the index (or indices) of faces to omit from the plot. Can be used e.g. for plotting a colourbar and/or other descriptive information onto one or more of the faces. If \code{skip.faces=NULL} (default), all faces are drawn.
+}
+  \item{col.background}{
+a background colour. Default is \code{col.background=NULL}, meaning that no background is drawn. Note that this parameter determines only the background colour of the map, for faces that are not skipped. To set the background colour of the whole plot, use \code{par(bg=...)} before calling \code{sl.plot.platon.init}.
 }
   \item{device}{
 a character specifying which graphics device to use. Default is \code{device='pdf'}. Ignored if \code{do.init.device=FALSE}.

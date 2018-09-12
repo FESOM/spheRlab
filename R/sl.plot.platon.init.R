@@ -1,5 +1,5 @@
 sl.plot.platon.init <-
-function(body.type="hexahedron",width=60,skip.faces=NULL,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.platon.",device)) {
+function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.platon.",device)) {
 	
 	if (body.type == "hexahedron") {
 		print("initialising hexahedron (cube) plot")
@@ -50,9 +50,20 @@ function(body.type="hexahedron",width=60,skip.faces=NULL,device="pdf",do.init=TR
 	} else {
 		stop("unknown body")
 	}
+  
+  if (do.init.device) {
+    dev.fun = match.fun(device,descend=FALSE)
+    dev.fun(file.name,width=width,height=height)
+  }
+  if (do.init) {
+    par(mar=rep(0,4))
+    plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n")
+  }
 	
 	for (n in 1:faces.N) {
-		pir.list[[n]] = sl.plot.init(projection="regpoly",regpoly.lat0=lat0,main="",regpoly.lonlatrot=faces.list[[n]]$lonlatrot,regpoly.N=regpoly.N,regpoly.rotfrac=faces.list[[n]]$rotfrac,xshift=faces.list[[n]]$xshift,yshift=faces.list[[n]]$yshift,do.init=FALSE)
+	  col.bg = col.background
+	  if (!is.null(skip.faces) && n %in% skip.faces) {col.bg = NULL}
+		pir.list[[n]] = sl.plot.init(projection="regpoly",regpoly.lat0=lat0,main="",regpoly.lonlatrot=faces.list[[n]]$lonlatrot,regpoly.N=regpoly.N,regpoly.rotfrac=faces.list[[n]]$rotfrac,col.background=col.bg,xshift=faces.list[[n]]$xshift,yshift=faces.list[[n]]$yshift,do.init=FALSE)
 	}
 	
 	if (!is.null(skip.faces)) {
@@ -70,14 +81,7 @@ function(body.type="hexahedron",width=60,skip.faces=NULL,device="pdf",do.init=TR
 	pir.list$projection = "platon"
 	pir.list$body.type = body.type
 	pir.list$deltaxy = deltaxy
-	if (do.init.device) {
-	  dev.fun = match.fun(device,descend=FALSE)
-	  dev.fun(file.name,width=width,height=height)
-	}
-	if (do.init) {
-	  par(mar=rep(0,4))
-	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
-	}
+	
 	return(pir.list)
 	
 }
