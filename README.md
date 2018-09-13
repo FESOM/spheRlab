@@ -20,25 +20,23 @@ What follows is a list of what needs and/or could be done to improve spheRlab:
 
 ## NEXT
 
-* Make background colour functioning properly.
-
-* Improve handling of ‘bad nodes’.
-
 * Finish sl.polygon.polygon.intersect and sl.polygon.rotdir (or omit?).
 
 * Update sl.plot.polygon to handle polygons truncated into multiple visible parts also in polar and regpoly projections.
 
-* Add function that writes filter information into a CDO-readable file (see corresponding script).
-
-* Add more predefined colourbars, e.g., the one mentioned by Nikolay and ColorBrewer ones, and write a documentation for the pre-defined colourbars.
+* Implement horizontal colourbars.
 
 * Add other projections (robin, mercator, other?).
 
+* Add function that writes filter information into a CDO-readable file (see corresponding script).
+
 * Group function index: plotting; spherical geometry; mostly internal functions; …
+
+* Add a function sl.plot.3D.end.
 
 ## WISHLIST
 
-* Split sl.read.FESOM into a more basic read function and multiple grid analysis functions.
+* Split sl.readFESOM into a more basic read function and multiple grid analysis functions.
 
 * Add grid generation capabilities.
 
