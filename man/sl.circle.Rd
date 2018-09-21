@@ -58,10 +58,12 @@ pir = sl.plot.init(projection="lonlat",do.init.device=FALSE)
 res = sl.plot.naturalearth(pir,resolution="coarse")
 
 circ = sl.circle(90,-30,40)
-sl.plot.lines(pir,circ$lon,circ$lat,col="green")
+sl.plot.lines(pir,circ$lon,circ$lat,col="blue")
 
 circ = sl.circle(-30,70,25)
 sl.plot.lines(pir,circ$lon,circ$lat,col="red")
+
+sl.plot.end(pir,do.close.device=FALSE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
