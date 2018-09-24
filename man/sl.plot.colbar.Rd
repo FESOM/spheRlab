@@ -8,7 +8,7 @@ Plot Colourbar
 Plot a spheRlab colourbar, vertically or horizontally, with a number of options.
 }
 \usage{
-sl.plot.colbar(colbar, breaks, vertical = FALSE, labels.at = rep(TRUE, length(breaks)), labels = as.character(signif(breaks, 3)), labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
+sl.plot.colbar(colbar, breaks, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),9), labels = as.character(signif(breaks, 3)), labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,10 +22,13 @@ sl.plot.colbar(colbar, breaks, vertical = FALSE, labels.at = rep(TRUE, length(br
   a logical value specifying whether the colourbar is to be plotted vertically (default). If \code{vertical=FALSE}, a horizontal colourbar is plotted.
 }
   \item{labels.at}{
-  a vector of length \code{N-1} with logical values specifying which breaks are to be labelled. By default all breaks are labelled (which can result in unwanted overlap).
+  \code{NULL} or a vector of length \code{N-1} with logical values specifying which breaks are to be labelled. If \code{NULL} (default), the argument \code{labels.num} is used to place labels automatically in a quasi equidistant manner.
+}
+  \item{labels.num}{
+  a scalar specifiying how many labels are to be drawn in a quasi equidistant manner. Used only if \code{labels.at=NULL}. Default is \code{labels.num=min(length(breaks),9)}.
 }
   \item{labels}{
-  a vector of length \code{N-1} with characters specifying the break labels. By default, labels are derived from \code{breaks}.
+  a vector of length \code{N-1} with characters specifying the break labels. By default, labels are derived from \code{breaks}. Note that this vector has the same length as \code{breaks}, meaning that it must include pseudo entries even for breaks that are not labelled.
 }
   \item{labels.side}{
   NOT YET USED! - a character specifying the side of the colourbar at which the labels are to be placed.
