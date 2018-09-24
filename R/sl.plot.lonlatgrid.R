@@ -2,7 +2,7 @@ sl.plot.lonlatgrid <-
 function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distance,pole.hole=FALSE,precision=1,
           lty=1,lwd=.25,col="black",labels=FALSE,labels.lat.every=3,labels.lat.first=ceiling(labels.lat.every/2),
           labels.lat.offsetlatlon=c(0,0),labels.lon.every=labels.lat.every,labels.lon.first=ceiling(labels.lon.every/2),
-          labels.lon.offsetlatlon=c(0,0),labels.col="grey",labels.cex=1) {
+          labels.lon.offsetlatlon=c(0,0),labels.col="grey",labels.round.digits=NULL,labels.cex=1) {
 	
 	lon.distance = abs(lon.distance)
 	lat.distance = abs(lat.distance)
@@ -64,7 +64,7 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distanc
 	  lon.lats = lats.medians[seq(labels.lat.first.x,Nlat-1,labels.lat.every)]
 	  sl.plot.lonlatlabels(plot.init.res,lat.lons=lat.lons,lat.lats=lat.lats,lat.offsetlatlon=labels.lat.offsetlatlon,
 	                       lon.lons=lon.lons,lon.lats=lon.lats,lon.offsetlatlon=labels.lon.offsetlatlon,
-	                       col=labels.col,cex=labels.cex)
+	                       col=labels.col,labels.round.digits=labels.round.digits,cex=labels.cex)
 	}
 	
 }
