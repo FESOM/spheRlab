@@ -1,5 +1,5 @@
 sl.plot.colbar <-
-function (colbar,breaks,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),9),labels=as.character(signif(breaks,3)),labels.side="bottom",labels.cex=1,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",do.init.device=TRUE,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6) {
+function (colbar,breaks,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),5),labels=as.character(signif(breaks,3)),labels.side="bottom",labels.cex=1,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",do.init.device=TRUE,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6) {
   
   if (length(breaks) != length(colbar) - 1) {
     stop("'breaks' must be shorter by exactly one element compared to 'colbar'")
@@ -46,7 +46,29 @@ function (colbar,breaks,vertical=TRUE,labels.at=NULL,labels.num=min(length(break
 		
 	} else {
 		
-		stop("horizontal colbar not yet implemented!")
+	  xmin = -0.3
+	  xmax = 0.3
+	  xstp = (xmax - xmin) / (length(breaks) + 1)
+	  ymax = (xmax - xmin) * ratio / 2
+	  ymin = -ymax
+	  
+	  xmi = xmin
+	  xma = xmi + xstp
+	  polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[1]],border=colbar[[1]],lwd=.01)
+	  for (i in 2:length(colbar)) {
+	    xmi = xmi + xstp
+	    xma = xmi + xstp
+	    polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[i]],border=colbar[[i]],lwd=.01)
+	    if (labels.at[i-1]) {
+	      text(x=xmi,y=1.25*ymin,labels=labels[i-1],pos=1,cex=labels.cex)
+	    }
+	  }
+	  
+	  if (!triag.ends) {
+	    polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymin,ymin,ymax,ymax))
+	  } else {
+	    stop("triangular ends not yet implemented")
+	  }
 		
 	}
 	

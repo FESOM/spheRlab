@@ -77,13 +77,13 @@ An integer giving the device into which the figure was plotted.
 Helge Goessling
 }
 \note{
-NOTE THAT SO FAR THIS FUNCTION HAS UNUSED ARGUMENTS AND OTHER GAPS (INCLUDING HORIZONTAL PLOTTING) THAT NEED TO BE FILLED ASAP!
+NOTE THAT SO FAR THIS FUNCTION HAS UNUSED ARGUMENTS AND OTHER GAPS THAT NEED TO BE FILLED ASAP!
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}
+\code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}, \code{\link{sl.view.colbar}}
 }
 \examples{
 cb = sl.colbar(cols=list(c(1,0,0),c(.5,.5,.5),c(0,0,1)),N=10)
