@@ -52,13 +52,16 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distanc
 	}
 	
 	if (labels) {
-	  lons.medians = (lons[1:(Nlon-1)] + lons[2:Nlon]) / 2
+	  lons.medians = c()
+	  for (i in 1:Nlon) {
+	    lons.medians = c(lons.medians, sl.p2p(lons[i],0,lons[i%%Nlon + 1],0,frac=0.5)$lon)
+	  }
 	  lats.medians = (lats[1:(Nlat-1)] + lats[2:Nlat]) / 2
 	  labels.lat.first.x = labels.lat.first - ceiling(labels.lat.every/2)
 	  if (labels.lat.first.x < 1) {labels.lat.first.x = labels.lat.first.x + labels.lat.every}
 	  labels.lon.first.x = labels.lon.first - ceiling(labels.lon.every/2)
 	  if (labels.lon.first.x < 1) {labels.lon.first.x = labels.lon.first.x + labels.lon.every}
-	  lat.lons = lons.medians[seq(labels.lon.first.x,Nlon-1,labels.lon.every)]
+	  lat.lons = lons.medians[seq(labels.lon.first.x,Nlon,labels.lon.every)]
 	  lat.lats = lats[seq(labels.lat.first,Nlat,labels.lat.every)]
 	  lon.lons = lons[seq(labels.lon.first,Nlon,labels.lon.every)]
 	  lon.lats = lats.medians[seq(labels.lat.first.x,Nlat-1,labels.lat.every)]
