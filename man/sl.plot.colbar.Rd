@@ -8,27 +8,30 @@ Plot Colourbar
 Plot a spheRlab colourbar, vertically or horizontally, with a number of options.
 }
 \usage{
-sl.plot.colbar(colbar, breaks, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),9), labels = as.character(signif(breaks, 3)), labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
+sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{colbar}{
-  A spheRlab colourbar of length \code{N} (as returned by \code{\link{sl.colbar}}).
+  a spheRlab colourbar of length \code{N} (as returned by \code{\link{sl.colbar}}), or a list including such a colourbar as an element named 'colbar'. In the latter case, the arguments \code{categorical}, \code{breaks}, and \code{labels} are ignored and taken from \code{colbar} if \code{colbar} also includes accordingly named elements.
+}
+  \item{categorical}{
+  a logical value specifying whether the colourbar is categorical. If \code{TRUE}, labels are placed at colour centres. Default is \code{FALSE}. Ignored if \code{colbar} is a list with elements 'colbar' as well as 'categorical'.
 }
   \item{breaks}{
-  a vector of length \code{N-1} specifying the breaks corresponding to \code{colbar}.
+  a vector of length \code{N-1} specifying the breaks corresponding to \code{colbar}. Ignored if \code{categorical=TRUE}. Ignored if \code{colbar} is a list with elements 'colbar' as well as 'breaks'.
 }
   \item{vertical}{
   a logical value specifying whether the colourbar is to be plotted vertically (default). If \code{vertical=FALSE}, a horizontal colourbar is plotted.
 }
   \item{labels.at}{
-  \code{NULL} or a vector of length \code{N-1} with logical values specifying which breaks are to be labelled. If \code{NULL} (default), the argument \code{labels.num} is used to place labels automatically in a quasi equidistant manner.
+  \code{NULL} or a vector of length \code{N-1} (or \code{N} if \code{categorical=TRUE}) with logical values specifying which breaks (or colours) are to be labelled. If \code{NULL} (default) and \code{categorical=FALSE}, the argument \code{labels.num} is used to place labels automatically in a quasi equidistant manner. If \code{NULL} (default) and \code{categorical=TRUE}, each colour is labelled.
 }
   \item{labels.num}{
-  a scalar specifiying how many labels are to be drawn in a quasi equidistant manner. Used only if \code{labels.at=NULL}. Default is \code{labels.num=min(length(breaks),9)}.
+  a scalar specifiying how many labels are to be drawn in a quasi equidistant manner. Used only if \code{labels.at=NULL} and \code{categorical=FALSE}. Default is \code{labels.num=min(length(breaks),9)}.
 }
   \item{labels}{
-  a vector of length \code{N-1} with characters specifying the break labels. By default, labels are derived from \code{breaks}. Note that this vector has the same length as \code{breaks}, meaning that it must include pseudo entries even for breaks that are not labelled.
+  \code{NULL} or a vector specifying the labels. If \code{categorical=FALSE}, the length must be \code{N-1} and the labels correspond to the colour breaks; if \code{NULL} (default), labels are derived from \code{breaks}. If \code{categorical=TRUE}, the length must be \code{N} and the labels correspond to colour centres; if \code{NULL} (default), labels are \code{1:N}. Note that this vector has the same length as \code{breaks} (or \code{colbar}), meaning that it must include pseudo entries even for breaks (or colours) that are not labelled. Ignored if \code{colbar} is a list with elements 'colbar' as well as 'labels'.
 }
   \item{labels.side}{
   NOT YET USED! - a character specifying the side of the colourbar at which the labels are to be placed.
