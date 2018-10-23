@@ -61,7 +61,7 @@ a character specifying which graphics device to use. Default is \code{device='pd
 a logical value indicating whether or not an initial call of \code{plot} shall be executed. Default is \code{do.init=TRUE}. When called by \code{\link{sl.plot.platon.init}} or \code{\link{sl.plot.3D.init}}, this argument is set \code{FALSE} as only one initial call of \code{plot} is wanted.
 }
   \item{do.init.device}{
-a logical value indicating whether or not initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
+a logical value indicating whether or not to initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
 }
   \item{file.name}{
 a character specifying the output file. Only used if \code{do.init.device=TRUE}. Default is \code{file.name=paste0('~/sl.plot.',device)}.
