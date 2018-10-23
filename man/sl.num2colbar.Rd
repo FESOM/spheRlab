@@ -2,10 +2,10 @@
 \alias{sl.num2colbar}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Convert Numerics to Integers (Colourbar Breaks)
+Convert Numerics to Integers Corresponding to Colourbar Breaks
 }
 \description{
-Convert a numerical vector or array to integers corresponding to discrete intervals defined by \code{breaks}. The latter can be provided as argument, or they are computed by calling \code{\link{sl.num2colbarbreaks}}). This function is used for plotting numerical fields where polygons are coloured according to a colourbar with colours assigned to discrete intervals.
+Convert a numerical vector or array to integers corresponding to discrete intervals defined by colourbar breaks. If the latter are not provided (as argument \code{breaks} or as an element of \code{colbar} named 'breaks'), they are computed by calling \code{\link{sl.num2colbarbreaks}}). This function is used by various plotting functions.
 }
 \usage{
 sl.num2colbar(num, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = FALSE)
@@ -13,16 +13,16 @@ sl.num2colbar(num, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{num}{
-%%     ~~Describe \code{num} here~~
+a numerical scalar, vector, or array that shall be mapped to colourbar breaks
 }
   \item{colbar}{
-%%     ~~Describe \code{colbar} here~~
+a spheRlab colourbar of length \code{N} (as returned by \code{\link{sl.colbar}}), or a list including such a colourbar as an element named 'colbar'. In the latter case, if \code{colbar} also includes an element named 'breaks', the argument \code{breaks} is ignored and taken from \code{colbar}.
 }
   \item{breaks}{
-%%     ~~Describe \code{breaks} here~~
+a vector of length \code{N-1} specifying the breaks corresponding to \code{colbar}. Ignored if \code{colbar} is a list with elements 'colbar' as well as 'breaks'.
 }
   \item{breaks.log}{
-%%     ~~Describe \code{breaks.log} here~~
+a logical value indicating whether the breaks shall be placed in logarithmic steps. Default is \code{breaks.log=FALSE}. Only used if \code{breaks} is not provided, neither directly nor as part of \code{colbar}.
 }
 }
 \details{
