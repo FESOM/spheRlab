@@ -131,7 +131,7 @@ a spheRlab grid list with the following elements:
 Helge Goessling
 }
 \note{
-It would probably make sense to split this function further as it consists of a number of well-defined blocks that might also be useful in other circumstances where the remainder of this function is not needed. The separate functions could be named consistenty \code{\link{sl.grid.SOMETHING}}.
+It would probably make sense to split this function further as it consists of a number of well-defined blocks that might also be useful in other circumstances where the remainder of this function is not needed. The separate functions could be named consistenty sl.grid.SOMETHING.
 
 The 3D functionality is incomplete; e.g., no 3d-element information is considered. The functionality can be extended when needed.
 }
