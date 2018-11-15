@@ -43,7 +43,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\link{\code{sl.plot.fld.curvilin}}
+\code{\link{sl.plot.fld.curvilin}}
 }
 \examples{
 ## To be provided ...
