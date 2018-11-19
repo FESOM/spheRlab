@@ -1,8 +1,8 @@
 Package: spheRlab
 Type: Package
 Title: Spherical Geometry, Analysis, and Plotting of Geoscientific Data on Arbitrary Grids
-Version: 1.1.3
-Date: 2018-09-12
+Version: 1.1.4
+Date: 2018-11-19
 Author: Helge Goessling, Lorenzo Zampieri, Lukas Mueller
 Maintainer: Helge Goessling <helge.goessling@awi.de>
 Description: An R package for spherical geometry, analysis, and plotting of geoscientific data on arbitrary grids.
@@ -10,9 +10,6 @@ LazyData: true
 Suggests:
     ncdf4,
     rgdal,
-    knitr,
-    rmarkdown,
     doMC,
     RColorBrewer
 License: GPL-3
-VignetteBuilder: knitr
