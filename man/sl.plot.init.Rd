@@ -8,7 +8,7 @@ Initialise spheRlab Plot
 Initialise a standard spheRlab plot. Returns a plot specifics list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.end}}.
 }
 \usage{
-sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = NULL, precision = 1, main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.",device), width = 12)
+sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), lonlat.lonlatrot = NULL, polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = NULL, precision = 1, main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.",device), width = 12)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,9 @@ a vector of length 2 specifying the plot longitude range in ascending order. Onl
 }
   \item{lonlat.latrange}{
 a vector of length 2 specifying the plot latitude range in ascending order. Absolute values above 89 degrees are forbidden. Only used if \code{projection="lonlat"}.
+}
+  \item{lonlat.lonlatrot}{
+\code{NULL} (default, implying no rotation) or a vector of length 3 specifying the projection North Pole and rotation. See the documentation of \code{\link{sl.lonlatrot2abg}} for details. Only used if \code{projection="lonlat"}.
 }
   \item{polar.lonlatrot}{
 a vector of length 3 specifying the projection North Pole and rotation. See the documentation of \code{\link{sl.lonlatrot2abg}} for details. Only used if \code{projection="polar"}.
@@ -100,6 +103,9 @@ see the corresponding argument.
 }
   \item{lonlat.latrange}{
 see the corresponding argument.
+}
+  \item{lonlat.lonlatrot}{
+(only if lonlat.lonlatrot is not \code{NULL}), as well as \code{alpha,beta,gamma}, as below.
 }
 For \code{projection="polar"}:
   \item{polar.lonlatrot}{

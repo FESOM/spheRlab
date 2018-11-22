@@ -1,5 +1,5 @@
 sl.plot.init <-
-function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12) {
+function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12) {
 	
 	pir = list(projection=projection)
 	
@@ -16,6 +16,13 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 		ylim = extendrange(lonlat.latrange,f=0.1)
 		pir$lonlat.lonrange = lonlat.lonrange
 		pir$lonlat.latrange = lonlat.latrange
+		pir$lonlat.lonlatrot = lonlat.lonlatrot
+		if (!is.null(lonlat.lonlatrot)) {
+		  abg = sl.lonlatrot2abg(lonlat.lonlatrot)
+		  pir$alpha = abg[1]
+		  pir$beta = abg[2]
+		  pir$gamma = abg[3]
+		}
 	} else if (projection == "polar") {
 		xlab = ""
 		ylab = ""

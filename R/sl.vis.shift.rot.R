@@ -9,6 +9,16 @@ function (plot.init.res,lon,lat) {
 	if (projection == "lonlat") {
 		lonlat.lonrange = plot.init.res$lonlat.lonrange
 		lonlat.latrange = plot.init.res$lonlat.latrange
+		if (!is.null(plot.init.res$lonlat.lonlatrot)) {
+		  alpha = plot.init.res$alpha
+		  beta = plot.init.res$beta
+		  gamma = plot.init.res$gamma
+		  rot.res = sl.rot(lon,lat,alpha,beta,gamma,return.xyz=FALSE)
+		  rot.lon = rot.res$lon
+		  rot.lat = rot.res$lat
+		  lon = rot.lon
+		  lat = rot.lat
+		}
 		while (min(lon) < -180) {
 			lon[lon < -180] = lon[lon < -180] + 360
 		}
