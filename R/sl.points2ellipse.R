@@ -8,7 +8,7 @@ function (lon = NULL, lat = NULL, prob.within = 0.95, npoints = 360) {
   rot.res = sl.rot(lon, lat, alpha=abg[1], beta=abg[2], gamma=abg[3], return.xyz = TRUE)
   mat = matrix(c(rot.res$x,rot.res$y),ncol=2)
   
-  elli = ellipse(mu = colMeans(mat), sigma = cov(mat), alpha = 1-prob.within, draw = FALSE)
+  elli = ellipse(mu = colMeans(mat), sigma = cov(mat), alpha = 1-prob.within, npoints = npoints, draw = FALSE)
   elli.xysqsum = elli[,1]^2 + elli[,2]^2
   if (any(elli.xysqsum > 1)) {
     stop("ellipse is too wide for back-projection from xy-plane to sphere, try smaller 'prob.within'")
