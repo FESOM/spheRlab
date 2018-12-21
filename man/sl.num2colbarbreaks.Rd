@@ -8,7 +8,7 @@ Auto-Define Colourbar Breaks
 Automatically define a discrete number of breaks given a numerical vector or matrix for application with a discrete colourbar.
 }
 \usage{
-sl.num2colbarbreaks(num, colbar = NA, Nbreaks = NA, breaks.log = FALSE)
+sl.num2colbarbreaks(num, colbar = NULL, Nbreaks = NULL, breaks.log = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,7 +19,7 @@ sl.num2colbarbreaks(num, colbar = NA, Nbreaks = NA, breaks.log = FALSE)
   a spheRlab colourbar of length \code{N}, that is, a list of characters giving colours as produced by \code{\link{sl.colbar}} (which uses the function \code{rgb} to generate the individual colours). This argument is optional; instead, just the number of breaks can be specified via \code{Nbreaks}.
 }
   \item{Nbreaks}{
-  an integer giving the number of breaks to be generated. Note that \code{Nbreaks} corresponds to \code{N-1}. Used only if \code{colbar} is not specified.
+  an integer giving the number of breaks to be generated. Note that \code{Nbreaks} corresponds to \code{N-1}. If \code{NULL}, \code{colbar} is used to determine \code{Nbreaks} if \code{colbar} is provided, otherwise a default of 10 is used for \code{Nbreaks}.
 }
   \item{breaks.log}{
   a logical value indicating whether the breaks shall be placed in logarithmic steps. Default is \code{breaks.log=FALSE}.

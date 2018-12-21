@@ -1,9 +1,13 @@
 sl.num2colbarbreaks <-
-function (num,colbar=NA,Nbreaks=NA,breaks.log=FALSE) {
+function (num,colbar=NULL,Nbreaks=NULL,breaks.log=FALSE) {
 	
-	if (!anyNA(colbar)) {
-		Nbreaks = length(colbar) - 1
-	}
+  if (is.null(Nbreaks)) {
+	  if (!is.null(colbar)) {
+		  Nbreaks = length(colbar) - 1
+	  } else {
+	    Nbreaks = 10
+	  }
+  }
 	max.num = max(num,na.rm=TRUE)
 	min.num = min(num,na.rm=TRUE)
 	if (breaks.log) {
