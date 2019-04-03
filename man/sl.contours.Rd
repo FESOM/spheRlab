@@ -8,7 +8,8 @@ Compute Contours
 Compute contour lines of a 2-dimensional field on an unstructured triangular mesh on a sphere.
 }
 \usage{
-sl.contours(var = NULL, var.nc = NULL, varid = NULL, levels = 0, neighmat = NULL, lat, lon, elem, CDOgriddes = NULL, verbose = FALSE)
+sl.contours(var = NULL, var.nc = NULL, varid = NULL, levels = 0, neighmat = NULL, lat, lon, elem, return.edge.info = FALSE, verbose = FALSE)
+            
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -36,6 +37,9 @@ a numeric vector of length \code{N} providing the latitudes of each node (point)
   \item{elem}{
 an \code{Ne}x\code{3} matrix providing the vertex indices of each triangular element spanned by the nodes (points) in \code{var} (or \code{var.nc}). Note that \code{Ne} ~= 2x\code{N}.
 }
+  \item{return.edge.info}{
+a logical value specifiying whether information on end points of, and relative positions on, the edges corresponding to each point of the contour(s) shall be returned. Default is \code{FALSE}.
+}
   \item{verbose}{
 a logical value specifiying whether additional statements shall be printed to document progress. Default is \code{FALSE}.
 }
@@ -49,7 +53,7 @@ The algorithm implemented here does not work element-wise, but builds up contigu
   	a scalar giving the level of the contour.
   }
   \item{segments}{
-  	a list of lists for each segment with elements \code{lat} (vector with latitudes of the points forming the segment), \code{lon} (vector with longitudes of the points forming the segment), and \code{length} (scalar giving the length of the segment).
+  	a list of lists for each segment with elements \code{lat} (vector with latitudes of the \code{Ns} points forming the segment), \code{lon} (vector with longitudes of the \code{Ns} points forming the segment), and \code{length} (scalar giving the length of the segment). If \code{return.edge.info=TRUE}, the additional elements \code{edge.endpoints} (\code{Ns}x\code{2} integer matrix providing the end points of the edges corresponding to each point on the contour) and \code{edge.relpos} (vector giving the relative positions of the \code{Ns} contour points on the respective edge) are included.
   }
   \item{length}{
   	a scalar giving the length of the contour, summing all segments.

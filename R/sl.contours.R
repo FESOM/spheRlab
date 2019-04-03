@@ -1,5 +1,5 @@
 sl.contours <-
-function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,verbose=FALSE) {
+function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,return.edge.info=FALSE,verbose=FALSE) {
 	
 	require(ncdf4)
 	
@@ -109,6 +109,10 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,ve
 			if (verbose) {print("initialising segment")}
 			contour.lat = NULL
 			contour.lon = NULL
+			if (return.edge.info) {
+			  edge.endpoints = NULL
+			  edge.relpos = NULL
+			}
 			s = s + 1
 			
 			# determine start edge
@@ -180,6 +184,10 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,ve
 			crosspoint = sl.p2p(lon[n1],lat[n1],lon[n2],lat[n2],crossfrac)
 			contour.lat = c(contour.lat,crosspoint$lat)
 			contour.lon = c(contour.lon,crosspoint$lon)
+			if (return.edge.info) {
+			  edge.endpoints = rbind(edge.endpoints,c(n1,n2))
+			  edge.relpos = c(edge.relpos,crossfrac)
+			}
 				
 			n1.0 = n1
 			n2.0 = n2
@@ -207,6 +215,10 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,ve
 				crosspoint = sl.p2p(lon[n1],lat[n1],lon[n2],lat[n2],crossfrac)
 				contour.lat = c(contour.lat,crosspoint$lat)
 				contour.lon = c(contour.lon,crosspoint$lon)
+				if (return.edge.info) {
+				  edge.endpoints = rbind(edge.endpoints,c(n1,n2))
+				  edge.relpos = c(edge.relpos,crossfrac)
+				}
 				
 				if (edge.done[n1,n1n2]) {
 					if (!((n1 == n1.0 && n2 == n2.0) || (n1 == n2.0 && n2 == n1.0))) {
@@ -231,6 +243,10 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,ve
 			if (cont.dir == -1) {
 				contour.lat = contour.lat[length(contour.lat):1]
 				contour.lon = contour.lon[length(contour.lon):1]
+				if (return.edge.info) {
+				  edge.endpoints = edge.endpoints[length(contour.lon):1,]
+				  edge.relpos = edge.relpos[length(contour.lon):1]
+				}
 			}
 			
 			#compute segment length
@@ -239,7 +255,11 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,ve
 				segment.length = segment.length + sl.gc.dist(contour.lon[(i-1):i],contour.lat[(i-1):i])
 			}
 			
-			segments[[s]] = list(lat=contour.lat,lon=contour.lon,length=segment.length)
+			if (return.edge.info) {
+			  segments[[s]] = list(lat=contour.lat,lon=contour.lon,edge.endpoints=edge.endpoints,edge.relpos=edge.relpos,length=segment.length)
+			} else {
+			  segments[[s]] = list(lat=contour.lat,lon=contour.lon,length=segment.length)
+			}
 			
 		}
 		
