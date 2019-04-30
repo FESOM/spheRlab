@@ -81,7 +81,7 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	    var.list[[length(var.list)+1]] = depth_lev.var
 	  }
 	  
-	  ofl = nc_create(filename = ofile, vars = var.list)
+	  ofl = nc_create(filename = ofile, vars = var.list, force_v4 = TRUE)
 	  
 	  if (!fesom2velocities) {
 	    ncvar_put(ofl,"lon",vals=grid$lon)
