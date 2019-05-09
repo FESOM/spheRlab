@@ -5,10 +5,10 @@
 Read FESOM Grid
 }
 \description{
-Read and analyse a FESOM grid from ascii '.out' files.
+Read and analyse a FESOM1 or FESOM2 grid from ascii '.out' files.
 }
 \usage{
-sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = TRUE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, basicreadonly = FALSE, verbose = TRUE)
+sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = TRUE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, basicreadonly = FALSE, fesom2 = FALSE, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -60,12 +60,15 @@ a scalar specifying the radius of the sphere - in case of FESOM the Earth. Used 
   \item{basicreadonly}{
 a logical value indicating whether or not only to read grid data without analysing neighborhood information etc. Reading is even faster with rot, reorder.ccw, and threeD all set to FALSE.
 }
+  \item{fesom2}{
+a logical value indicating whether the grid to be read is a FESOM2 grid. If FALSE (default), the grid is assumed to be a FESOM1 grid.
+}
   \item{verbose}{
 a logical value indicating whether or not print statements shall report on the function progess.
 }
 }
 \details{
-This is a FESOM-specific function to read grid information from the standard FESOM ascii '.out' files.
+This is a FESOM-specific function to read grid information from the standard FESOM1 and FESOM2 ascii '.out' files.
 }
 \value{
 a spheRlab grid list with the following elements:
@@ -121,7 +124,7 @@ a spheRlab grid list with the following elements:
 	an integer vector of length \code{N} with the depth underneath each surface node in terms of vertical levels.
 }
 \item{boundary}{
-	an integer vector of length \code{N3D} specifying which 3D nodes are located at boundaries: the first digit encodes the vertical dimension (1=surface, 2=interior, 3=bottom), and the second digit encodes the horizontal dimension (0=interior, 1=coast). Note that this information is retrieved directly from 'nod3d.out' rather than derived from 3d element information.
+	an integer vector of length \code{N3D} specifying which 3D nodes are located at boundaries: the first digit encodes the vertical dimension (1=surface, 2=interior, 3=bottom), and the second digit encodes the horizontal dimension (0=interior, 1=coast). Note that this information is retrieved directly from 'nod3d.out' rather than derived from 3d element information. Not yet implemented for FESOM2; in this case \code{NULL} is returned.
 }
 }
 \references{
@@ -144,10 +147,7 @@ The 3D functionality is incomplete; e.g., no 3d-element information is considere
 \examples{
 \dontrun{
 grid = sl.grid.readFESOM(griddir="PATH-TO-YOUR-FESOM-GRID",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90))
-ofile = "~/sl.grid.CDO"
-sl.grid.writeCDO(grid,ofile=ofile)
-system(paste0("cdo -f nc const,0,",ofile," ",ofile,".nc"))
-sl.grid.addinfo(grid,ncdf.file.in=paste0(ofile,".nc"))
+sl.grid.writeCDO(grid,ofile="~/sl.grid.CDO.nc")
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -1,5 +1,5 @@
 sl.grid.readFESOM <-
-function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev=TRUE,read.boundary=TRUE,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,basicreadonly=FALSE,verbose=TRUE) {
+function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev=TRUE,read.boundary=TRUE,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,basicreadonly=FALSE,fesom2=FALSE,verbose=TRUE) {
 	
   if (basicreadonly) {
     print("Reading only basic grid data without further computation of neighbourhood etc.")
@@ -13,8 +13,15 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
   }
   
   if (threeD) {
-    if (!file.exists(paste(griddir,"/aux3d.out",sep="")) || !file.exists(paste(griddir,"/nod3d.out",sep=""))) {
-      stop("3D information (files aux3d.out and nod3d.out) seems to be missing or incomplete. To read 2D only, rerun with threeD=FALSE")
+    if (!file.exists(paste(griddir,"/aux3d.out",sep=""))) {
+      stop("3D information (file aux3d.out) missing. To read 2D only, rerun with threeD=FALSE")
+    }
+    if (!fesom2 && !file.exists(paste(griddir,"/nod3d.out",sep=""))) {
+      stop("3D information (file nod3d.out) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM2 grid, set fesom2=TRUE.")
+    } else {
+      if (!file.exists(paste(griddir,"/nlvls.out",sep=""))) {
+        stop("3D information (file nlvls.out) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM1 grid, set fesom2=FALSE.")
+      }
     }
   }
   
@@ -79,27 +86,46 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	if (threeD) {
 	  if (verbose) {print("reading 3D information ...")}
 	  Nlev = scan(paste(griddir,"/aux3d.out",sep=""),n=1,what=integer())
-	  aux3d.mat = matrix(scan(paste(griddir,"/aux3d.out",sep=""),na.strings="-999",skip=1,n=Nlev*N,what=integer()),ncol=Nlev,byrow=TRUE)
-	  depth.lev = rep(Nlev,N)
-    for (lev in Nlev:1) {
-      isna.lev = is.na(aux3d.mat[,lev])
-      if (remove.emptylev && sum(isna.lev) == N) {
-        if (verbose) {print(paste("removing empty level",lev,"from data"))}
-        Nlev = Nlev - 1
-        aux3d.mat = aux3d.mat[,1:Nlev]
+	  if (fesom2) {
+	    depth.bounds = scan(paste(griddir,"/aux3d.out",sep=""),skip=1,n=Nlev) * -1
+	    depth = (depth.bounds[1:(Nlev-1)] + depth.bounds[2:Nlev]) / 2
+	    depth.lev = scan(paste(griddir,"/nlvls.out",sep=""),skip=0,n=N) - 1
+	    #depth.raw = scan(paste(griddir,"/aux3d.out",sep=""),skip=1+Nlev,n=N)  * -1
+	    #depth.lev = rep(1,N)
+	    #for (lev in 2:Nlev) {
+	    #  depth.larger = (depth.raw > depth.midpoints[lev-1])
+	    #  depth.lev[depth.larger] = depth.lev[depth.larger] + 1
+	    #}
+	    if (remove.emptylev && max(depth.lev) < Nlev) {
+	      if (verbose) {print(paste("removing",Nlev-max(depth.lev),"empty levels from data"))}
+	      Nlev = max(depth.lev)
+	      depth.bounds = depth[1:(Nlev+1)]
+	      depth = depth[1:Nlev]
+	    }
+	    N3D = sum(depth.lev)
+	  } else {
+	    aux3d.mat = matrix(scan(paste(griddir,"/aux3d.out",sep=""),na.strings="-999",skip=1,n=Nlev*N,what=integer()),ncol=Nlev,byrow=TRUE)
+	    depth.lev = rep(Nlev,N)
+      for (lev in Nlev:1) {
+        isna.lev = is.na(aux3d.mat[,lev])
+        if (remove.emptylev && sum(isna.lev) == N) {
+          if (verbose) {print(paste("removing empty level",lev,"from data"))}
+          Nlev = Nlev - 1
+          aux3d.mat = aux3d.mat[,1:Nlev]
+        }
+        depth.lev[isna.lev] = depth.lev[isna.lev] - 1
+	    }
+	    N3D = sum(!is.na(aux3d.mat))
+      if (verbose) {print("retrieving depth information from nod3d.out ...")}
+	    nod3d.scan = scan(paste(griddir,"/nod3d.out",sep=""))
+      depth = unique(nod3d.scan[seq(5,N3D*5+1,5)]) * -1
+	    if (length(depth) != Nlev) { stop("data in aux3d.out is inconsistent with the number of depth levels") }
+      if (read.boundary) {
+        if (verbose) {print("retrieving 'coast/bottom' information from nod3d.out ...")}
+        boundary = as.integer(nod3d.scan[seq(6,N3D*5+1,5)])
       }
-      depth.lev[isna.lev] = depth.lev[isna.lev] - 1
+      rm(nod3d.scan)
 	  }
-	  N3D = sum(!is.na(aux3d.mat))
-    if (verbose) {print("retrieving depth information from nod3d.out ...")}
-	  nod3d.scan = scan(paste(griddir,"/nod3d.out",sep=""))
-    depth = unique(nod3d.scan[seq(5,N3D*5+1,5)]) * -1
-	  if (length(depth) != Nlev) { stop("data in aux3d.out is inconsistent with the number of depth levels") }
-    if (read.boundary) {
-      if (verbose) {print("retrieving 'coast/bottom' information from nod3d.out ...")}
-      boundary = as.integer(nod3d.scan[seq(6,N3D*5+1,5)])
-    }
-    rm(nod3d.scan)
 	}
 	
 	if (basicreadonly) {
