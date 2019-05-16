@@ -63,13 +63,29 @@ sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linea
     weights.left[weights.left <= .5] = 0
   }
   
-  newlat = rep(NA,new.N)
-  newlon = rep(NA,new.N)
-  for (i in 1:new.N) {
-    newlonlat = sl.p2p(lon1=oldlon[weights.left.ind[i]],lat1=oldlat[weights.left.ind[i]],
-                       lon2=oldlon[weights.left.ind[i]+1],lat2=oldlat[weights.left.ind[i]+1],frac=1-weights.left[i])
-    newlat[i] = newlonlat$lat
-    newlon[i] = newlonlat$lon
+  if (is.null(dim(oldlat))) {
+    newlat = rep(NA,new.N)
+    newlon = rep(NA,new.N)
+    for (i in 1:new.N) {
+      newlonlat = sl.p2p(lon1=oldlon[weights.left.ind[i]],lat1=oldlat[weights.left.ind[i]],
+                         lon2=oldlon[weights.left.ind[i]+1],lat2=oldlat[weights.left.ind[i]+1],
+                         frac=1-weights.left[i])
+      newlat[i] = newlonlat$lat
+      newlon[i] = newlonlat$lon
+    }
+  } else {
+    nTraj = ncol(oldlat)
+    newlat = matrix(nrow=new.N,ncol=nTraj)
+    newlon = matrix(nrow=new.N,ncol=nTraj)
+    for (j in 1:nTraj) {
+      for (i in 1:new.N) {
+        newlonlat = sl.p2p(lon1=oldlon[weights.left.ind[i],j],lat1=oldlat[weights.left.ind[i],j],
+                           lon2=oldlon[weights.left.ind[i]+1,j],lat2=oldlat[weights.left.ind[i]+1,j],
+                           frac=1-weights.left[i])
+        newlat[i,j] = newlonlat$lat
+        newlon[i,j] = newlonlat$lon
+      }
+    }
   }
   
   if (return.remapinfo) {

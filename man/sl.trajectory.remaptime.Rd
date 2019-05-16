@@ -2,10 +2,10 @@
 \alias{sl.trajectory.remaptime}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Remap Times of Trajectory on Sphere
+Remap Times of Trajectories on Sphere
 }
 \description{
-Remap longitudes and latitudes of a trajectory on a sphere to a new time axis.
+Remap longitudes and latitudes of one or more trajectories on a sphere to a new time axis.
 }
 \usage{
 sl.trajectory.remaptime(oldtime, oldlat, oldlon, newtime, method = "linear", extrapolate = FALSE, return.remapinfo = FALSE)
@@ -16,10 +16,10 @@ sl.trajectory.remaptime(oldtime, oldlat, oldlon, newtime, method = "linear", ext
 a numeric vector of length \code{N} specifying the original time axis; must increase strict monotonously.
 }
   \item{oldlat}{
-a numeric vector of length \code{N} specifying the original latitudes of the trajectory.
+a numeric vector of length \code{N} or a numeric \code{NxL} matrix specifying the original latitudes of one or more trajectories.
 }
   \item{oldlon}{
-a numeric vector of length \code{N} specifying the original longitudes of the trajectory.
+a numeric vector of length \code{N} or a numeric \code{NxL} matrix specifying the original longitudes of one or more trajectories.
 }
   \item{newtime}{
 a numeric vector of length \code{M} specifying the new time axis; must increase strict monotonously.
@@ -31,18 +31,18 @@ a character specifying the interpolation method. Must be one of \code{"linear"} 
 a logical value specifying whether or not to extrapolate to times outside the original time range. Default is \code{FALSE} which implies that corresponding locations will be \code{NA}. If \code{TRUE}, the method specified in the argument \code{method} will be used also for the extrapolation.
 }
   \item{return.remapinfo}{
-a logical value specifying whether or not to return information on the remapping (left-neighbour indices and weights). Default is \code{FALSE}. 
+a logical value specifying whether or not to return information on the remapping (nearest-neighbour-before indices and weights). Default is \code{FALSE}. 
 }
 }
 %\details{
 %The angle is computed at the second vertex.
 %}
 \value{
-	\item{Lat }{a numeric vector of length \code{M} with the latitudes of the trajectory at the times specified in \code{newtime}.}
-	\item{Lon }{a numeric vector of length \code{M} with the longitudes of the trajectory at the times specified in \code{newtime}.}
+	\item{Lat }{a numeric vector of length \code{M} or a numeric \code{NxL} matrix with the latitudes of the trajectory/trajectories at the times specified in \code{newtime}.}
+	\item{Lon }{a numeric vector of length \code{M} or a numeric \code{NxL} matrix with the longitudes of the trajectory/trajectories at the times specified in \code{newtime}.}
 	
 	If \code{return.remapinfo=TRUE}, an additional list element \code{remapinfo} is returned, with the following sub-elements:
-	\item{weights.left.ind }{an integer vector of length \code{M} with the indices of the original points directly before the corresponding new point.}
+	\item{weights.left.ind }{an integer vector of length \code{M} with the indices of the original points directly before the corresponding new points.}
 	\item{weights.left }{an numeric vector of length \code{M} with the weights given to the points provided in \code{weights.left.ind}; the respective subsequent points were given the weights \code{(1-weights.left)}.}
 }
 \references{
