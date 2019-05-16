@@ -7,8 +7,11 @@ sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linea
   old.N = length(oldtime)
   new.N = length(newtime)
   
+  if (old.N <= 1) {stop("'oldtime' must have at least two elements")}
   if (any(oldtime[2:old.N] <= oldtime[1:(old.N-1)])) {stop("'oldtime' must increase strict monotonously")}
-  if (any(newtime[2:new.N] <= newtime[1:(new.N-1)])) {stop("'newtime' must increase strict monotonously")}
+  if (new.N > 1) {
+    if (any(newtime[2:new.N] <= newtime[1:(new.N-1)])) {stop("'newtime' must increase strict monotonously")}
+  }
   
   if (newtime[new.N] > oldtime[old.N]) {
     if (newtime[1] > oldtime[old.N]) {

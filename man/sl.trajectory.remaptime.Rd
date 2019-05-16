@@ -13,7 +13,7 @@ sl.trajectory.remaptime(oldtime, oldlat, oldlon, newtime, method = "linear", ext
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{oldtime}{
-a numeric vector of length \code{N} specifying the original time axis; must increase strict monotonously.
+a numeric vector of length \code{N > 1} specifying the original time axis; must increase strict monotonously.
 }
   \item{oldlat}{
 a numeric vector of length \code{N} or a numeric \code{NxL} matrix specifying the original latitudes of one or more trajectories.
@@ -22,7 +22,7 @@ a numeric vector of length \code{N} or a numeric \code{NxL} matrix specifying th
 a numeric vector of length \code{N} or a numeric \code{NxL} matrix specifying the original longitudes of one or more trajectories.
 }
   \item{newtime}{
-a numeric vector of length \code{M} specifying the new time axis; must increase strict monotonously.
+a numeric vector of length \code{M} specifying the new time axis; must increase strict monotonously if \code{M > 1}.
 }
   \item{method}{
 a character specifying the interpolation method. Must be one of \code{"linear"} (default) and \code{"nearestneighbour"}.
@@ -35,7 +35,6 @@ a logical value specifying whether or not to return information on the remapping
 }
 }
 %\details{
-%The angle is computed at the second vertex.
 %}
 \value{
 	\item{Lat }{a numeric vector of length \code{M} or a numeric \code{NxL} matrix with the latitudes of the trajectory/trajectories at the times specified in \code{newtime}.}
