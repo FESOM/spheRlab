@@ -1,14 +1,43 @@
 sl.barycenter <-
-function(x=NA,y=NA,z=NA,lon=NA,lat=NA,weights=NA) {
+function(x=NULL,y=NULL,z=NULL,lon=NULL,lat=NULL,weights=NULL,rm.na=TRUE) {
 	rad = pi / 180
-	if (is.na(x[1])) {
+	if (is.null(x)) {
+	  if (is.null(lon) || is.null(lat)) {stop("Please provide x,y,z or lon,lat")}
+	  if (rm.na) {
+	    if (is.null(weights) && any(is.na(c(lon,lat)))) {
+	      inds = which(!is.na(lon) & !is.na(lat))
+	      lon = lon[inds]
+	      lat = lat[inds]
+	    } else if (any(is.na(c(lon,lat,weights)))) {
+	      inds = which(!is.na(lon) & !is.na(lat) & !is.na(weights))
+	      lon = lon[inds]
+	      lat = lat[inds]
+	      weights = weights[inds]
+	    }
+	  }
 		lon = lon * rad
 		lat = lat * rad
 		x = cos(lat) * cos(lon)
 		y = cos(lat) * sin(lon)
 		z = sin(lat)
+	} else {
+	  if (is.null(y) || is.null(z)) {stop("Please provide x,y,z or lon,lat")}
+	  if (rm.na) {
+	    if (is.null(weights) && any(is.na(c(x,y,z)))) {
+	      inds = which(!is.na(x) & !is.na(y) & !is.na(z))
+	      x = x[inds]
+	      y = y[inds]
+	      z = z[inds]
+	    } else if (any(is.na(c(x,y,z,weights)))) {
+	      inds = which(!is.na(x) & !is.na(y) & !is.na(z) & !is.na(weights))
+	      x = x[inds]
+	      y = y[inds]
+	      z = z[inds]
+	      weights = weights[inds]
+	    }
+	  }
 	}
-	if (is.na(weights[1])) {
+	if (is.null(weights)) {
 		x.m = mean(x)
 		y.m = mean(y)
 		z.m = mean(z)

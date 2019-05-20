@@ -8,7 +8,7 @@
 Compute the barycenter of points on a unit sphere. The locations of the points can be provided in x-y-z or lon-lat coordinates. Can be used directly to compute the barycenter (centroid) of a triangle using its vertices, but NOT FOR POLYGONS WITH MORE THAN 3 VERTICES! To that end, use \code{\link{sl.centroid}}.
 }
 \usage{
-sl.barycenter(x = NA, y = NA, z = NA, lon = NA, lat = NA, weights = NA)
+sl.barycenter(x = NULL, y = NULL, z = NULL, lon = NULL, lat = NULL, weights = NULL, rm.na = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,6 +29,9 @@ a vector of the same length as \code{lon} with the latitudes of the points. Used
 }
   \item{weights}{
 a vector of the length corresponding to the number of points with optional weights of the points.
+}
+  \item{rm.na}{
+a logical values specifying whether or not to remove NAs. Default is \code{TRUE}. If \code{FALSE} and NAs are present, the result will be NA.
 }
 }
 \details{
