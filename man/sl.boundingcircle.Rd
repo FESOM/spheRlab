@@ -26,8 +26,9 @@ a logical value specifying whether or not to warn about the approximate 'Ritter'
   }
 }
 \value{
-  \item{lon}{Longitudes of the points on the circle}
-  \item{lat}{Latitudes of the points on the circle}
+  \item{center_lon}{central longitude of the bounding circle}
+  \item{center_lat}{central latitude of the bounding circle}
+  \item{radius}{radius of the bounding circle (in degrees)}
 }
 \references{
 %% ~put references to the literature/web site here ~
