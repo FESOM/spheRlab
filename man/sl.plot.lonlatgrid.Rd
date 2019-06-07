@@ -8,7 +8,7 @@ Plot Longitude-Latitude Grid
 Plot a simple longitude-latitude grid over a spheRlab plot.
 }
 \usage{
-sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = 10, lat.distance = lon.distance, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black", labels = FALSE, labels.lat.every = 3, labels.lat.first = ceiling(labels.lat.every/2), labels.lat.offsetlatlon = c(0,0), labels.lon.every = 3, labels.lon.first = ceiling(labels.lon.every/2), labels.lon.offsetlatlon = c(0,0), labels.col = "grey", labels.cex = 1)
+sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = NULL, lat.distance = NULL, autodensity.f = 1, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black", labels = FALSE, labels.lat.every = 3, labels.lat.first = ceiling(labels.lat.every/2), labels.lat.offsetlatlon = c(0,0), labels.lon.every = 3, labels.lon.first = ceiling(labels.lon.every/2), labels.lon.offsetlatlon = c(0,0), labels.col = "grey", labels.cex = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,10 +22,13 @@ a scalar specifying one of the longitudes (degrees east) to be drawn.
 a scalar specifying one of the latitudes (degrees north) to be drawn.
 }
   \item{lon.distance}{
-a scalar specifying the distance (degrees) between adjacent longitudes.
+a scalar specifying the distance (degrees) between adjacent longitudes. Default is \code{NULL}, in which case a reasonable value is found automatically (can be further adjusted with the argument \code{autodensity.f}.)
 }
   \item{lat.distance}{
-a scalar specifying the distance (degrees) between adjacent latitudes.
+a scalar specifying the distance (degrees) between adjacent longitudes. Default is \code{NULL}, in which case a reasonable value is found automatically (can be further adjusted with the argument \code{autodensity.f}.)
+}
+  \item{autodensity.f}{
+a scalar that can be used to adjust the density of automatically derived values for \code{lat.distance} and/or \code{lon.distance} (used only if the latter are \code{NULL}). Default is \code{autodensity.f=1}.
 }
   \item{pole.hole}{
 a logical value indicating whether or not to let longitudinal lines end at the last latitude(s) before the pole(s).

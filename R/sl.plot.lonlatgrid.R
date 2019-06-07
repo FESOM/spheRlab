@@ -1,9 +1,51 @@
 sl.plot.lonlatgrid <-
-function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distance,pole.hole=FALSE,precision=1,
+function (plot.init.res,lon.0=0,lat.0=0,lon.distance=NULL,lat.distance=NULL,autodensity.f=1,pole.hole=FALSE,precision=1,
           lty=1,lwd=.25,col="black",labels=FALSE,labels.lat.every=3,labels.lat.first=ceiling(labels.lat.every/2),
           labels.lat.offsetlatlon=c(0,0),labels.lon.every=labels.lat.every,labels.lon.first=ceiling(labels.lon.every/2),
           labels.lon.offsetlatlon=c(0,0),labels.col="grey",labels.round.digits=NULL,labels.cex=1) {
-	
+  
+  if (is.null(lat.distance)) {
+    if (plot.init.res$projection == "polar") {
+      radius = 90 - plot.init.res$polar.latbound
+    } else if (plot.init.res$projection == "regpoly") {
+      radius = 90 - plot.init.res$regpoly.lat0
+    } else if (plot.init.res$projection == "lonlat") {
+      radius = abs(diff(plot.init.res$lonlat.latrange)/2)
+    } else if (plot.init.res$projection == "platon") {
+      radius = 90 - plot.init.res[[1]]$regpoly.lat0
+    } else if (plot.init.res$projection == "3D") {
+      radius = 90 - plot.init.res[[1]]$polar.latbound
+    }
+    lat.distance = 2^(round(log2(radius / 4 / autodensity.f)))
+    if (lat.distance > 1) {
+      latlist = c(1.5,2,2.5,3,4.5,5,6,7.5,10,15,18,22.5,45)
+      lat.distance = latlist[which.min(abs(log(latlist)-log(lat.distance)))]
+    }
+  }
+  if (is.null(lon.distance)) {
+    if (plot.init.res$projection == "polar") {
+      radius = 90 - plot.init.res$polar.latbound
+      latref = abs(plot.init.res$polar.lonlatrot[2])
+    } else if (plot.init.res$projection == "regpoly") {
+      radius = 90 - plot.init.res$regpoly.lat0
+      latref = abs(plot.init.res$regpoly.lonlatrot[2])
+    } else if (plot.init.res$projection == "lonlat") {
+      radius = abs(diff(plot.init.res$lonlat.latrange)/2)
+      latref = 0
+    } else if (plot.init.res$projection == "platon") {
+      radius = 90 - plot.init.res[[1]]$regpoly.lat0
+      latref = 45
+    } else if (plot.init.res$projection == "3D") {
+      radius = 90 - plot.init.res[[1]]$polar.latbound
+      latref = abs(plot.init.res[[1]]$polar.lonlatrot[2])
+    }
+    if (latref + radius > 90) {latref = abs(latref - ((latref+radius-90) / 2))}
+    lon.distance = 2^(round(log2(radius / 4 / autodensity.f / cos(2*pi*latref/360))))
+    if (lon.distance > 1) {
+      lonlist = c(1.5,2,2.5,3,4,5,6,7.5,8,10,12,15,20,24,30,40,45,60,90)
+      lon.distance = lonlist[which.min(abs(log(lonlist)-log(lon.distance)))]
+    }
+  }
 	lon.distance = abs(lon.distance)
 	lat.distance = abs(lat.distance)
 	
@@ -61,10 +103,20 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=10,lat.distance=lon.distanc
 	  if (labels.lat.first.x < 1) {labels.lat.first.x = labels.lat.first.x + labels.lat.every}
 	  labels.lon.first.x = labels.lon.first - ceiling(labels.lon.every/2)
 	  if (labels.lon.first.x < 1) {labels.lon.first.x = labels.lon.first.x + labels.lon.every}
-	  lat.lons = lons.medians[seq(labels.lon.first.x,Nlon,labels.lon.every)]
-	  lat.lats = lats[seq(labels.lat.first,Nlat,labels.lat.every)]
-	  lon.lons = lons[seq(labels.lon.first,Nlon,labels.lon.every)]
-	  lon.lats = lats.medians[seq(labels.lat.first.x,Nlat-1,labels.lat.every)]
+	  if (Nlon < labels.lon.first.x || Nlat < labels.lat.first) {
+	    lat.lons = NULL
+	    lat.lats = NULL
+	  } else {
+	    lat.lons = lons.medians[seq(labels.lon.first.x,Nlon,labels.lon.every)]
+	    lat.lats = lats[seq(labels.lat.first,Nlat,labels.lat.every)]
+	  }
+	  if (Nlon < labels.lon.first || (Nlat-1) < labels.lat.first.x) {
+	    lon.lons = NULL
+	    lon.lats = NULL
+	  } else {
+	    lon.lons = lons[seq(labels.lon.first,Nlon,labels.lon.every)]
+	    lon.lats = lats.medians[seq(labels.lat.first.x,Nlat-1,labels.lat.every)]
+	  }
 	  sl.plot.lonlatlabels(plot.init.res,lat.lons=lat.lons,lat.lats=lat.lats,lat.offsetlatlon=labels.lat.offsetlatlon,
 	                       lon.lons=lon.lons,lon.lats=lon.lats,lon.offsetlatlon=labels.lon.offsetlatlon,
 	                       col=labels.col,labels.round.digits=labels.round.digits,cex=labels.cex)
