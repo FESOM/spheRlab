@@ -8,7 +8,7 @@ Remap Times of Trajectories on Sphere
 Remap longitudes and latitudes of one or more trajectories on a sphere to a new time axis.
 }
 \usage{
-sl.trajectory.remaptime(oldtime, oldlat, oldlon, newtime, method = "linear", extrapolate = FALSE, return.remapinfo = FALSE)
+sl.trajectory.remaptime(oldtime, oldlat, oldlon, newtime, method = "linear", extrapolate = FALSE, return.remapinfo = FALSE, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,6 +32,9 @@ a logical value specifying whether or not to extrapolate to times outside the or
 }
   \item{return.remapinfo}{
 a logical value specifying whether or not to return information on the remapping (nearest-neighbour-before indices and weights). Default is \code{FALSE}. 
+}
+  \item{verbose}{
+a logical value specifying whether to produce warnings, in particular when the new time axis reaches outside the original time axis. Default is \code{TRUE}. 
 }
 }
 %\details{

@@ -1,4 +1,4 @@
-sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linear",extrapolate=FALSE,return.remapinfo=FALSE) {
+sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linear",extrapolate=FALSE,return.remapinfo=FALSE,verbose=TRUE) {
   
   if (method != "nearestneighbour" && method != "linear") {
     stop("'method' must be one of 'nearestneighbour' and 'linear'.")
@@ -15,35 +15,35 @@ sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linea
   
   if (newtime[new.N] > oldtime[old.N]) {
     if (newtime[1] > oldtime[old.N]) {
-      warning("New time axis completely out of original time range.")
+      if (verbose) {warning("New time axis completely out of original time range.")}
       if (extrapolate) {
-        warning("All values will be extrapolated.")
+        if (verbose) {warning("All values will be extrapolated.")}
       } else {
-        warning("All values will be 'NA'.")
+        if (verbose) {warning("All values will be 'NA'.")}
       }
     } else {
-      warning("New time axis ends later than original time range.")
+      if (verbose) {warning("New time axis ends later than original time range.")}
       if (extrapolate) {
-        warning("Values after original time range will be extrapolated.")
+        if (verbose) {warning("Values after original time range will be extrapolated.")}
       } else {
-        warning("Values after original time range will be 'NA'.")
+        if (verbose) {warning("Values after original time range will be 'NA'.")}
       }
     }
   }
   if (newtime[1] < oldtime[1]) {
     if (newtime[new.N] < oldtime[1]) {
-      warning("New time axis completely out of original time range.")
+      if (verbose) {warning("New time axis completely out of original time range.")}
       if (extrapolate) {
-        warning("All values will be extrapolated.")
+        if (verbose) {warning("All values will be extrapolated.")}
       } else {
-        warning("All values will be 'NA'.")
+        if (verbose) {warning("All values will be 'NA'.")}
       }
     } else {
-      warning("New time axis begins earlier than original time range.")
+      if (verbose) {warning("New time axis begins earlier than original time range.")}
       if (extrapolate) {
-        warning("Values before original time range will be extrapolated.")
+        if (verbose) {warning("Values before original time range will be extrapolated.")}
       } else {
-        warning("Values before original time range will be 'NA'.")
+        if (verbose) {warning("Values before original time range will be 'NA'.")}
       }
     }
   }
