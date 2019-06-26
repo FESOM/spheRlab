@@ -28,11 +28,12 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,byrow=TRUE,x.swap=FALSE,y.
 				stop("ups")
 			}
 		} else if (length(sl.dim(lon))==2) {
+		  if (!identical(sl.dim(lat), sl.dim(lon))) {stop("given that 'lon' is a matrix, 'lat' must have the same shape")}
 			Nx = ncol(lon)
 			if (!is.null(Ny)) {"deriving 'Ny' from 'lon', ignoring argument 'Ny'"}
 			Ny = nrow(lon)
 			lon = as.vector(t(lon))
-			if (sl.dim(lat) != sl.dim(lon)) {stop("given that 'lon' is a matrix, 'lat' must have the same shape")}
+			lat = as.vector(t(lat))
 			if (!is.null(lat)) {lat = as.vector(t(lat))}
 		} else {stop("'lon' must be a vector or a matrix")}
 	} else {
@@ -151,6 +152,10 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,byrow=TRUE,x.swap=FALSE,y.
 			neighnodes[n,(Nneighs[n]+1):maxneigh] = NA
 		}
 	}
+	
+	elem.N.notna = rowSums(!is.na(elem))
+	if (any(c(1,2) %in% elem.N.notna)) {warning("grid contains elements with only one or two vertices, something went wrong")}
+	elem = elem[elem.N.notna > 0, ]
 	
 	return(list(lon=lon,lat=lat,elem=elem,coast=NULL,openbound=NULL,neighnodes=neighnodes,neighelems=NULL,vars=vars))
 	
