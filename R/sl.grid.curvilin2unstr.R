@@ -1,16 +1,16 @@
 sl.grid.curvilin2unstr <-
-function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,byrow=TRUE,x.swap=FALSE,y.swap=FALSE,neighnodes=TRUE,elem=TRUE,quad2triag=TRUE,quad2triag.mode="zigzag",close.north=FALSE,close.south=FALSE,close.ns.triags=TRUE,close.zonal=TRUE,landseamask=NULL) {
+function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems=TRUE,quad2triag=TRUE,quad2triag.mode="zigzag",close.top=FALSE,close.bottom=FALSE,close.sides=FALSE) {
 	
-	elem.arg = elem
+	elem.arg = TRUE
 	elem = NULL
 	neighnodes.arg = neighnodes
 	neighnodes = NULL
+	neighelems.arg = neighelems
+	neighelems = NULL
 	
-	#if (!quad2triag) {stop("only 'quad2triag=TRUE' implemented so far")}
+	if (!quad2triag) {stop("only 'quad2triag=TRUE' implemented so far")}
 	if (quad2triag && quad2triag.mode!="zigzag") {stop("only 'quad2triag.mode='zigzag'' implemented so far")}
-	if (!is.null(landseamask)) {stop("using a 'landseamask' not yet implemented; must be set to NULL")}
-	if (close.north || close.south) {"closing north and south boundaries (encompassing poles) not yet implemented"}
-	if (!byrow) {stop("only 'byrow=TRUE' implemented so far")}
+	if (close.top || close.bottom) {"closing top and bottom boundaries (encompassing poles) not yet implemented"}
 	
 	if (!is.null(lon)) {
 		if (!is.null(Nx)) {warning("deriving 'Nx' from 'lon', ignoring argument 'Nx'")}
@@ -19,14 +19,10 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,byrow=TRUE,x.swap=FALSE,y.
 			if (length(sl.dim(lat))!=1) {stop("given that 'lon' is a vector, 'lat' must be a vector as well")}
 			if (!is.null(Ny)) {warning("deriving 'Ny' from 'lat', ignoring argument 'Ny'")}
 			Ny = length(lat)
-			if (byrow) {
-				lon = rep(lon,Ny)
-				lat0 = lat
-				lat = c()
-				for (i in 1:Ny) {lat = c(lat,rep(lat0[i],Nx))}
-			} else {
-				stop("ups")
-			}
+			lon = rep(lon,Ny)
+			lat0 = lat
+			lat = c()
+			for (i in 1:Ny) {lat = c(lat,rep(lat0[i],Nx))}
 		} else if (length(sl.dim(lon))==2) {
 		  if (!identical(sl.dim(lat), sl.dim(lon))) {stop("given that 'lon' is a matrix, 'lat' must have the same shape")}
 			Nx = ncol(lon)
@@ -54,7 +50,7 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,byrow=TRUE,x.swap=FALSE,y.
 		neigh.bottomright = c((Nx+2):(N+1),rep(NA,Nx))
 		neigh.bottomleft = c(Nx:(N-1),rep(NA,Nx))
 	}
-	if (close.zonal) {
+	if (close.sides) {
 		neigh.right[seq(Nx,N,Nx)] = seq(1,N,Nx)
 		neigh.left[seq(1,N,Nx)] = seq(Nx,N,Nx)
 		if (quad2triag) {
@@ -112,7 +108,7 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,byrow=TRUE,x.swap=FALSE,y.
 	}
 	Nneighs = apply(neighnodes,1,function(x) sum(!is.na(x)))
 	
-	#if ((close.north || close.south) && close.ns.triags)
+	#if (close.top || close.bottom)
 	#	maxneigh = max(maxneigh,1+ceiling(log(Nx,base=2)))   # not correct ...
 	#}
 	
@@ -157,6 +153,24 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,byrow=TRUE,x.swap=FALSE,y.
 	if (any(c(1,2) %in% elem.N.notna)) {warning("grid contains elements with only one or two vertices, something went wrong")}
 	elem = elem[elem.N.notna > 0, ]
 	
-	return(list(lon=lon,lat=lat,elem=elem,coast=NULL,openbound=NULL,neighnodes=neighnodes,neighelems=NULL,vars=vars))
+	if (neighnodes.arg || neighelems.arg) {
+	  findneighbours.res = sl.findneighbours(elem = elem)
+	  if (neighnodes.arg) {
+	    neighnodes = findneighbours.res$neighbour.nodes
+	  } else {neighnodes = NULL}
+	  if (neighelems.arg) {
+	    neighelems = findneighbours.res$neighbour.elems
+	  }
+	}
+	
+	if (!is.null(vars)) {
+	  for (i in 1:length(vars)) {
+	    if (sl.dim(vars[[i]]) == 2) {
+	      vars[[i]] = as.vector(t(vars[[i]]))
+	    }
+	  }
+	}
+	
+	return(list(lon=lon,lat=lat,elem=elem,coast=NULL,openbound=NULL,neighnodes=neighnodes,neighelems=neighelems,vars=vars))
 	
 }
