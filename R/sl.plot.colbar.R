@@ -1,7 +1,7 @@
 sl.plot.colbar <-
 function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),5),labels=NULL,
           labels.side="bottom",labels.cex=1,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",
-          do.init.device=TRUE,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6) {
+          do.init=TRUE,do.init.device=TRUE,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6) {
 
   if (!is.null(names(colbar)) && "colbar" %in% names(colbar)) {
     if ("categorical" %in% names(colbar)) {categorical = colbar$categorical}
@@ -42,8 +42,10 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
     dev.fun(file.name,width=width,height=width)
   }
 
-	par(mar=rep(0,4))
-	plot(NA,xlim=c(-0.5,0.5),ylim=c(-0.5,0.5),bty="n",xaxt="n",yaxt="n")
+  if (do.init) {
+	  par(mar=rep(0,4))
+	  plot(NA,xlim=c(-0.5,0.5),ylim=c(-0.5,0.5),bty="n",xaxt="n",yaxt="n")
+  }
 
 	if (vertical) {
 

@@ -8,7 +8,7 @@ Plot Colourbar
 Plot a spheRlab colourbar, vertically or horizontally, with a number of options.
 }
 \usage{
-sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
+sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init = TRUE, do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -53,6 +53,9 @@ sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labe
 }
   \item{device}{
 a character specifying which graphics device to use. Default is \code{device='pdf'}. Ignored if \code{do.init.device=FALSE}.
+}
+  \item{do.init}{
+a logical value indicating whether or not an initial call of \code{plot} shall be executed. Default is \code{do.init=TRUE}.
 }
   \item{do.init.device}{
 a logical value indicating whether or not initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
