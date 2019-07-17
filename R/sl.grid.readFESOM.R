@@ -81,25 +81,26 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	N3D = NULL
 	Nlev = NULL
 	depth = NULL
+	depth.bounds = NULL
 	depth.lev = NULL
 	boundary = NULL
 	if (threeD) {
 	  if (verbose) {print("reading 3D information ...")}
-	  Nlev = scan(paste(griddir,"/aux3d.out",sep=""),n=1,what=integer())
+	  Nlev = scan(paste(griddir,"/aux3d.out",sep=""),n=1,what=integer()) - 1
 	  if (fesom2) {
-	    depth.bounds = scan(paste(griddir,"/aux3d.out",sep=""),skip=1,n=Nlev) * -1
-	    depth = (depth.bounds[1:(Nlev-1)] + depth.bounds[2:Nlev]) / 2
+	    depth.bounds = scan(paste(griddir,"/aux3d.out",sep=""),skip=1,n=(Nlev+1)) * -1
+	    depth = (depth.bounds[1:Nlev] + depth.bounds[2:(Nlev+1)]) / 2
 	    depth.lev = scan(paste(griddir,"/nlvls.out",sep=""),skip=0,n=N) - 1
-	    #depth.raw = scan(paste(griddir,"/aux3d.out",sep=""),skip=1+Nlev,n=N)  * -1
+	    #depth.raw = scan(paste(griddir,"/aux3d.out",sep=""),skip=1+(Nlev+1),n=N)  * -1
 	    #depth.lev = rep(1,N)
-	    #for (lev in 2:Nlev) {
+	    #for (lev in 2:(Nlev+1)) {
 	    #  depth.larger = (depth.raw > depth.midpoints[lev-1])
 	    #  depth.lev[depth.larger] = depth.lev[depth.larger] + 1
 	    #}
 	    if (remove.emptylev && max(depth.lev) < Nlev) {
 	      if (verbose) {print(paste("removing",Nlev-max(depth.lev),"empty levels from data"))}
 	      Nlev = max(depth.lev)
-	      depth.bounds = depth[1:(Nlev+1)]
+	      depth.bounds = depth.bounds[1:(Nlev+1)]
 	      depth = depth[1:Nlev]
 	    }
 	    N3D = sum(depth.lev)
@@ -120,6 +121,7 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	    nod3d.scan = scan(paste(griddir,"/nod3d.out",sep=""))
       depth = unique(nod3d.scan[seq(5,N3D*5+1,5)]) * -1
 	    if (length(depth) != Nlev) { stop("data in aux3d.out is inconsistent with the number of depth levels") }
+      depth.bounds = c(depth[1], (depth[1:(Nlev-1)]+depth[2:Nlev])/2, depth[Nlev])
       if (read.boundary) {
         if (verbose) {print("retrieving 'coast/bottom' information from nod3d.out ...")}
         boundary = as.integer(nod3d.scan[seq(6,N3D*5+1,5)])
@@ -239,6 +241,6 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 		if (verbose) {print("... done.")}
 	}
 	
-	return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=neighnodes,neighelems=neighelems,stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,baryc.lon=baryc.lon,baryc.lat=baryc.lat,cellareas=cellareas,elemareas=elemareas,depth=depth,depth.lev=depth.lev,boundary=boundary))
+	return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=neighnodes,neighelems=neighelems,stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,baryc.lon=baryc.lon,baryc.lat=baryc.lat,cellareas=cellareas,elemareas=elemareas,depth=depth,depth.bounds=depth.bounds,depth.lev=depth.lev,boundary=boundary))
 	
 }

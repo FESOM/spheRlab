@@ -120,6 +120,9 @@ a spheRlab grid list with the following elements:
 \item{depth}{
 	a vector of length \code{Nlev} with the depth of the vertical levels (commonly in meters).
 }
+\item{depth.bounds}{
+	a vector of length \code{Nlev+1} with the depth bounds of the vertical levels (commonly in meters).
+}
 \item{depth.lev}{
 	an integer vector of length \code{N} with the depth underneath each surface node in terms of vertical levels.
 }

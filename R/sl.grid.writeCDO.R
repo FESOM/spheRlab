@@ -76,8 +76,11 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	  if (depth) {
 	    nlev.dim = ncdim_def(name="nlev",units="",vals=1:Nlev,create_dimvar=FALSE)
 	    depth.var = ncvar_def(name="depth",units="m",dim=nlev.dim,missval=-1,longname="depth of model levels in metres (positive downwards)",prec=netcdf.prec)
+	    nlev_bnds.dim = ncdim_def(name="nlev_bnds",units="",vals=1:(Nlev+1),create_dimvar=FALSE)
+	    depth_bnds.var = ncvar_def(name="depth_bnds",units="m",dim=nlev_bnds.dim,missval=-1,longname="depth of model level bounds in metres (positive downwards)",prec=netcdf.prec)
 	    depth_lev.var = ncvar_def(name="depth_lev",units="",dim=ncells.dim,missval=-1,longname="depth in terms of number of active levels beneath each ocean surface grid point",prec="integer")
 	    var.list[[length(var.list)+1]] = depth.var
+	    var.list[[length(var.list)+1]] = depth_bnds.var
 	    var.list[[length(var.list)+1]] = depth_lev.var
 	  }
 	  
@@ -133,6 +136,7 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	  }
 	  if (depth) {
 	    ncvar_put(ofl,"depth",vals=grid$depth)
+	    ncvar_put(ofl,"depth_bnds",vals=grid$depth.bounds)
 	    ncvar_put(ofl,"depth_lev",vals=grid$depth.lev)
 	    ncatt_put(ofl,"depth_lev","grid_type","unstructured")
 	    ncatt_put(ofl,"depth_lev","coordinates","lat lon")
