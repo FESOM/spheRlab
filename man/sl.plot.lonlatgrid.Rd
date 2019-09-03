@@ -8,7 +8,7 @@ Plot Longitude-Latitude Grid
 Plot a simple longitude-latitude grid over a spheRlab plot.
 }
 \usage{
-sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = NULL, lat.distance = NULL, autodensity.f = 1, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black", labels = FALSE, labels.lat.every = 3, labels.lat.first = ceiling(labels.lat.every/2), labels.lat.offsetlatlon = c(0,0), labels.lon.every = 3, labels.lon.first = ceiling(labels.lon.every/2), labels.lon.offsetlatlon = c(0,0), labels.col = "grey", labels.cex = 1)
+sl.plot.lonlatgrid(plot.init.res, lon.0 = 0, lat.0 = 0, lon.distance = NULL, lat.distance = NULL, lon.range = c(-180,180), lat.range = c(-90,90), autodensity.f = 1, pole.hole = FALSE, precision = 1, lty = 1, lwd = 0.25, col = "black", labels = FALSE, labels.lat.every = 3, labels.lat.first = ceiling(labels.lat.every/2), labels.lat.offsetlatlon = c(0,0), labels.lon.every = 3, labels.lon.first = ceiling(labels.lon.every/2), labels.lon.offsetlatlon = c(0,0), labels.col = "grey", labels.cex = 1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,6 +26,12 @@ a scalar specifying the distance (degrees) between adjacent longitudes. Default 
 }
   \item{lat.distance}{
 a scalar specifying the distance (degrees) between adjacent longitudes. Default is \code{NULL}, in which case a reasonable value is found automatically (can be further adjusted with the argument \code{autodensity.f}.)
+}
+  \item{lon.range}{
+a two-element numeric vector specifying the longitude range in which grid lines are to be drawn. Default is \code{c(-180,180)}.
+}
+  \item{lat.range}{
+a two-element numeric vector specifying the latitude range in which grid lines are to be drawn. Default is \code{c(-90,90)}.
 }
   \item{autodensity.f}{
 a scalar that can be used to adjust the density of automatically derived values for \code{lat.distance} and/or \code{lon.distance} (used only if the latter are \code{NULL}). Default is \code{autodensity.f=1}.
@@ -93,6 +99,8 @@ Helge Goessling
 Some standard lon-lat grids can also be plotted using \code{\link{sl.plot.naturalearth}}.
 
 If you set \code{labels=TRUE}, note that the placement of labels is determined automatically based on the lon-lat-grid, with few arguments to control the behaviour. For more flexibility, use \code{sl.plot.lonlatlabels} directly.
+
+If grid lines are very dense, this function can be quite slow even if only a small map section is actually plotted. In such cases, the arguments \code{lon.range} and \code{lat.range} can be used to considerably speed up the process.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
