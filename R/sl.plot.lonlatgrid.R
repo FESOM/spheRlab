@@ -49,6 +49,9 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=NULL,lat.distance=NULL,lon.
 	lon.distance = abs(lon.distance)
 	lat.distance = abs(lat.distance)
 	
+	lat.range[1] = max(lat.range[1], -90)
+	lat.range[2] = min(lat.range[2], 90)
+	
 	lon.start = lon.0
 	while (lon.start < lon.range[1]) {
 	  lon.start = lon.start + lon.distance
