@@ -1,7 +1,11 @@
 sl.points2ellipse <-
 function (lon = NULL, lat = NULL, prob.within = 0.95, npoints = 360) {
-	
+  
   require(mixtools)
+  
+  if (sum(!(is.na(lon) | is.na(lat))) < 2) {
+    return(list(lon=rep(NA,npoints), lat=rep(NA,npoints)))
+  }
   
   baryc = sl.barycenter(lon = lon, lat = lat)
   abg = sl.lonlatrot2abg(c(baryc$lon,baryc$lat,0))
