@@ -4,6 +4,14 @@ function (plot.init.res,lon,lat) {
 	projection = plot.init.res$projection
 	rot.lon = NULL
 	rot.lat = NULL
+	
+	Norig = NULL
+	if (anyNA(lon) || anyNA(lat)) {
+	  Norig = length(lon)
+	  which.notna = which(!(is.na(lon) | is.na(lat)))
+	  lon = lon[which.notna]
+	  lat = lat[which.notna]
+	}
 
 	# determine visibility, shift longitudes (if necessary), and rotate (if necessary)
 	if (projection == "lonlat") {
@@ -69,6 +77,26 @@ function (plot.init.res,lon,lat) {
 		y[pos.hem] = rot.res$y[pos.hem] * stretch.fac[pos.hem]
 	} else {
 		stop("projections other than 'lonlat', 'polar', and 'regpoly' not yet implemented")
+	}
+	
+	if (!is.null(Norig)) {
+	  x.nona = x
+	  y.nona = y
+	  visible.nona = visible
+	  x = rep(NA,Norig)
+	  y = rep(NA,Norig)
+	  visible = rep(NA,Norig)
+	  x[which.notna] = x.nona
+	  y[which.notna] = y.nona
+	  visible[which.notna] = visible.nona
+	  if (!is.null(rot.lon)) {
+	    rot.lon.nona = rot.lon
+	    rot.lat.nona = rot.lat
+	    rot.lon = rep(NA,Norig)
+	    rot.lat = rep(NA,Norig)
+	    rot.lon[which.notna] = rot.lon.nona
+	    rot.lat[which.notna] = rot.lat.nona
+	  }
 	}
 	
 	return(list(x=x,y=y,rot.lon=rot.lon,rot.lat=rot.lat,visible=visible))
