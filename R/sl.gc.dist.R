@@ -1,7 +1,7 @@
 sl.gc.dist <-
   function(lon,lat,Rsphere=1,sequential=TRUE) {
     
-    if (is.vector(lon)) {
+    if (is.vector(lon) || length(dim(lon)) == 1) {
       
       if (sequential) {
         
