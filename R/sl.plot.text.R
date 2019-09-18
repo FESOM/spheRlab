@@ -10,12 +10,23 @@ function (plot.init.res,lon,lat,labels=seq(1,length(lon)),col="black",ignore.vis
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
+			if (!is.null(pir$transform.function)) {
+			  lonlat.trans = pir$transform.function(lon,lat)
+			  lon = lonlat.trans$lon
+			  lat = lonlat.trans$lat
+			}
 			sl.plot.text(pir,lon,lat,labels,col,ignore.visibility,adj,pos,offset,vfont,cex,font)
 			npir = npir + 1
 		}
 		
 	}
-			
+	
+	if (!is.null(pir$transform.function)) {
+	  lonlat.trans = pir$transform.function(lon,lat)
+	  lon = lonlat.trans$lon
+	  lat = lonlat.trans$lat
+	}
+	
 	vsr.res = sl.vis.shift.rot(plot.init.res,lon,lat)
 	x = vsr.res$x
 	y = vsr.res$y

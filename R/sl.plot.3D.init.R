@@ -1,5 +1,5 @@
 sl.plot.3D.init <-
-function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(-10,0,0),gap.frac=.1,col.background=NULL,precision=1,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.3D.",device)) {
+function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(-10,0,0),gap.frac=.1,col.background=NULL,precision=1,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.3D.",device),transform.function=NULL) {
 	
 	if (projection != "polar") {stop("projections other than 'polar' not yet implemented!")}
 	
@@ -24,6 +24,7 @@ function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(
 	pir.list[[2]] = sl.plot.init(projection="polar",polar.lonlatrot=lonlatrot.right,polar.latbound=0,col.background=col.background,precision=precision,do.init=FALSE,xshift=xshift,yshift=0)
 	
 	pir.list$projection = "3D"
+	pir.list$transform.function = transform.function
   
 	return(pir.list)
 	

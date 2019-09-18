@@ -1,7 +1,27 @@
 sl.plot.platon.init <-
-function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.platon.",device)) {
+function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.platon.",device),transform.function=NULL,extra.face=FALSE) {
 	
-	if (body.type == "hexahedron") {
+  if (body.type == "tetrahedron") {
+    print("initialising tetrahedron plot")
+    faces.N = 4
+    regpoly.N = 3
+    lat0 = -sl.xyz2lonlat(c(sqrt(8/9), 0, -1/3))[2]
+    deltaxy = sl.cart.dist(c(sqrt(8/9), 0, -1/3),c(0,0,1))
+    xlim = extendrange(deltaxy*c(-1,1),f=0.1)
+    ylim = extendrange(deltaxy*sin(pi/3)*c(-2/3-1/10,4/3),f=0.1)
+    height = width * (ylim[2]-ylim[1]) / (xlim[2]-xlim[1])
+    faces.list = vector("list",faces.N)
+    pir.list = vector("list",faces.N)
+    lonlatrot.lon.vec = c(0,40,160,-80)
+    lonlatrot.lat.vec = c(-90,lat0,lat0,lat0)
+    lonlatrot.rot.vec = c(-160,-120,0,120)
+    rotfrac.vec = c(0.25,rep(-0.25,3))
+    xshift.vec = deltaxy/2 * c(0,-1,0,1)
+    yshift.vec = deltaxy*sin(pi/3) * c(0,-1/3,2/3,-1/3)
+    for (n in 1:faces.N) {
+      faces.list[[n]] = list(lonlatrot=c(lonlatrot.lon.vec[n],lonlatrot.lat.vec[n],lonlatrot.rot.vec[n]),rotfrac=rotfrac.vec[n],xshift=xshift.vec[n],yshift=yshift.vec[n])
+    }
+  } else if (body.type == "hexahedron") {
 		print("initialising hexahedron (cube) plot")
 		faces.N = 6
 		regpoly.N = 4
@@ -12,12 +32,15 @@ function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,dev
 		height = width * (ylim[2]-ylim[1]) / (xlim[2]-xlim[1])
 		faces.list = vector("list",faces.N)
 		pir.list = vector("list",faces.N)
-		faces.list[[1]] = list(   lonlatrot=c(0,90,0),rotfrac=.5,        xshift=0,       yshift=0)
-		faces.list[[2]] = list( lonlatrot=c(90,0,-90),rotfrac=.5,  xshift=deltaxy,       yshift=0)
-		faces.list[[3]] = list(lonlatrot=c(0,-90,180),rotfrac=.5,xshift=2*deltaxy,       yshift=0)
-		faces.list[[4]] = list( lonlatrot=c(-90,0,90),rotfrac=.5, xshift=-deltaxy,       yshift=0)
-		faces.list[[5]] = list(    lonlatrot=c(0,0,0),rotfrac=.5,        xshift=0,yshift=-deltaxy)
-		faces.list[[6]] = list(lonlatrot=c(180,0,180),rotfrac=.5,        xshift=0, yshift=deltaxy)
+		lonlatrot.lon.vec = c(0,90,0,-90,0,180)
+		lonlatrot.lat.vec = c(90,0,-90,0,0,0)
+		lonlatrot.rot.vec = c(0,-90,180,90,0,180)
+		rotfrac.vec = rep(0.5,6)
+		xshift.vec = c(0,deltaxy,2*deltaxy,-deltaxy,0,0)
+		yshift.vec = c(0,0,0,0,-deltaxy,deltaxy)
+		for (n in 1:faces.N) {
+		  faces.list[[n]] = list(lonlatrot=c(lonlatrot.lon.vec[n],lonlatrot.lat.vec[n],lonlatrot.rot.vec[n]),rotfrac=rotfrac.vec[n],xshift=xshift.vec[n],yshift=yshift.vec[n])
+		}
 	} else if (body.type == "icosahedron") {
 		print("initialising icosahedron plot")
 		faces.N = 20
@@ -81,6 +104,8 @@ function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,dev
 	pir.list$projection = "platon"
 	pir.list$body.type = body.type
 	pir.list$deltaxy = deltaxy
+	pir.list$transform.function = transform.function
+	pir.list$extra.face = extra.face
 	
 	return(pir.list)
 	

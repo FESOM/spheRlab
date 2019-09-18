@@ -20,6 +20,11 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
+			if (!is.null(pir$transform.function)) {
+			  lonlat.trans = pir$transform.function(lon,lat)
+			  lon = lonlat.trans$lon
+			  lat = lonlat.trans$lat
+			}
 			sl.plot.polygon(pir,lon,lat,fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours=FALSE,refine.boundary,refine.boundary.precision)
 			npir = npir + 1
 		}
@@ -27,6 +32,12 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 	}
 		
 	if (!border) {col.border=NA}
+	
+	if (!is.null(pir$transform.function)) {
+	  lonlat.trans = pir$transform.function(lon,lat)
+	  lon = lonlat.trans$lon
+	  lat = lonlat.trans$lat
+	}
 	
 	vsr.res = sl.vis.shift.rot(plot.init.res,lon,lat)
 	visible = vsr.res$visible

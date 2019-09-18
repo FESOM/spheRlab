@@ -3,10 +3,31 @@ function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,o
 	
 	deltaxy = plot.platon.init.res$deltaxy
 	
-	if (plot.platon.init.res$body.type == "hexahedron") {
+	if (plot.platon.init.res$body.type == "tetrahedron") {
+	  if (adhes.surf) {
+	    l.x = deltaxy *             c(  -1, -1.1,-0.7,-0.5,NA,  0,0.2, 0.6,0.5,NA,   1,   0.9,   0.1,   0)
+	    l.y = deltaxy * sin(pi/3) * c(-2/3,-7/15, 1/3, 1/3,NA,4/3,4/3,8/15,1/3,NA,-2/3,-13/15,-13/15,-2/3)
+	    lines(x=l.x,y=l.y,col=col.adh,lty=lty.adh,lwd=lwd.adh)
+	  }
+	  l.x.ib = deltaxy *             c(-1/2,1/2,   0,-1/2)
+	  l.y.ib = deltaxy * sin(pi/3) * c( 1/3,1/3,-2/3, 1/3)
+	  if (inner.boundaries) {
+	    lines(x=l.x.ib,y=l.y.ib,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
+	  }
+	  l.x.ob = deltaxy *             c(  -1,  0,   1,  -1)
+	  l.y.ob = deltaxy * sin(pi/3) * c(-2/3,4/3,-2/3,-2/3)
+	  if (outer.boundaries) {
+	    lines(x=l.x.ob,y=l.y.ob,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
+	  }
+	} else if (plot.platon.init.res$body.type == "hexahedron") {
 		if (adhes.surf) {
-			l.x = deltaxy * c(-0.5,-0.7,-1.3,-1.5,-1.7,-1.7,-1.5,-1.3,-0.7,-0.5,  NA, 0.5, 0.7, 1.3, 1.5, 1.7, 2.3, 2.5,  NA, 2.5, 2.3, 1.7, 1.5, 1.3, 0.7, 0.5)
-			l.y = deltaxy * c(-0.5,-0.7,-0.7,-0.5,-0.3, 0.3, 0.5, 0.7, 0.7, 0.5,  NA, 0.5, 0.7, 0.7, 0.5, 0.7, 0.7, 0.5,  NA,-0.5,-0.7,-0.7,-0.5,-0.7,-0.7,-0.5)
+		  if (plot.platon.init.res$extra.face) {
+			  l.x = deltaxy * c(-0.5,-0.7,-1.3,-1.5,-1.7,-1.7,-1.5,-1.3,-0.7,-0.5, NA, 0.5, 0.7, 1.3, 1.5, 1.7, 2.3, 2.5, NA, 1.5, 1.3, 0.7, 0.5, NA, 0.5, 0.3,-0.3,-0.5)
+			  l.y = deltaxy * c(-0.5,-0.7,-0.7,-0.5,-0.3, 0.3, 0.5, 0.7, 0.7, 0.5, NA, 0.5, 0.7, 0.7, 0.5, 0.7, 0.7, 0.5, NA,-0.5,-0.7,-0.7,-0.5, NA,-1.5,-1.7,-1.7,-1.5)
+		  } else {
+		    l.x = deltaxy * c(-0.5,-0.7,-1.3,-1.5,-1.7,-1.7,-1.5,-1.3,-0.7,-0.5, NA, 0.5, 0.7, 1.3, 1.5, 1.7, 2.3, 2.5, NA, 2.5, 2.3, 1.7, 1.5, 1.3, 0.7, 0.5)
+		    l.y = deltaxy * c(-0.5,-0.7,-0.7,-0.5,-0.3, 0.3, 0.5, 0.7, 0.7, 0.5, NA, 0.5, 0.7, 0.7, 0.5, 0.7, 0.7, 0.5, NA,-0.5,-0.7,-0.7,-0.5,-0.7,-0.7,-0.5)
+		  }
 			lines(x=l.x,y=l.y,col=col.adh,lty=lty.adh,lwd=lwd.adh)
 		}
 		l.x.ib = deltaxy * c(-0.5,-0.5, 0.5, 0.5,-0.5,  NA, 1.5, 1.5)
@@ -18,6 +39,9 @@ function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,o
 		l.y.ob = deltaxy * c( 0.5, 0.5, 1.5, 1.5, 0.5, 0.5, 0.5,-0.5,-0.5,-0.5,-1.5,-1.5,-0.5,-0.5, 0.5)
 		if (outer.boundaries) {
 			lines(x=l.x.ob,y=l.y.ob,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
+		}
+		if (plot.platon.init.res$extra.face) {
+		  lines(x=deltaxy*c(1.5,1.5,2.5,2.5),y=deltaxy*c(-0.5,-1.5,-1.5,-0.5),col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
 		}
 	} else if (plot.platon.init.res$body.type == "icosahedron") {
 		if (adhes.surf) {

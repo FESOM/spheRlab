@@ -10,10 +10,21 @@ function (plot.init.res,lon,lat,col="black",pch=1,cex=1,ignore.visibility=FALSE)
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
+			if (!is.null(pir$transform.function)) {
+			  lonlat.trans = pir$transform.function(lon,lat)
+			  lon = lonlat.trans$lon
+			  lat = lonlat.trans$lat
+			}
 			sl.plot.points(pir,lon,lat,col,pch,cex,ignore.visibility)
 			npir = npir + 1
 		}
 		
+	}
+	
+	if (!is.null(pir$transform.function)) {
+	  lonlat.trans = pir$transform.function(lon,lat)
+	  lon = lonlat.trans$lon
+	  lat = lonlat.trans$lat
 	}
 			
 	vsr.res = sl.vis.shift.rot(plot.init.res,lon,lat)

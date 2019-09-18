@@ -1,5 +1,5 @@
 sl.plot.init <-
-function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12) {
+function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12,transform.function=NULL) {
 	
 	pir = list(projection=projection)
 	
@@ -75,6 +75,7 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 	pir$ylim = ylim
 	pir$xshift = xshift
 	pir$yshift = yshift
+	pir$transform.function = transform.function
 	
 	if (!is.null(col.background)) {
 	  if (projection == "polar") {
