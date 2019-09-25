@@ -8,7 +8,7 @@ Shift Point on Sphere
 Shift a point on a sphere based on zonal and meridional velocities (times dt).
 }
 \usage{
-sl.p2p(lon, lat, udt, vdt, Rsphere)
+sl.shift(lon, lat, udt, vdt, Rsphere)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
