@@ -21,8 +21,8 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 		
 	}
 	
-	if (!is.null(pir$transform.function)) {
-	  lonlat.trans = pir$transform.function(lon,lat)
+	if (!is.null(plot.init.res$transform.function)) {
+	  lonlat.trans = plot.init.res$transform.function(lon,lat)
 	  lon = lonlat.trans$lon
 	  lat = lonlat.trans$lat
 	}

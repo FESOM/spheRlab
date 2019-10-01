@@ -33,8 +33,8 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 		
 	if (!border) {col.border=NA}
 	
-	if (!is.null(pir$transform.function)) {
-	  lonlat.trans = pir$transform.function(lon,lat)
+	if (!is.null(plot.init.res$transform.function)) {
+	  lonlat.trans = plot.init.res$transform.function(lon,lat)
 	  lon = lonlat.trans$lon
 	  lat = lonlat.trans$lat
 	}
