@@ -5,10 +5,10 @@
 Plot Curvilinear Field
 }
 \description{
-Plot a 2-dimensional numerical field on a curvilinear grid.
+Plot a 2-dimensional numerical or RGB(Alpha)-coded field on a curvilinear grid.
 }
 \usage{
-sl.plot.fld.curvilin(plot.init.res, vals, mask = NULL, lon.i, lat.i, border = TRUE, border.lwd = 0.01, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = FALSE, na.col = NULL)
+sl.plot.fld.curvilin(plot.init.res, vals = NULL, rgba = NULL, mask = NULL, lon.i, lat.i, border = TRUE, border.lwd = 0.01, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = FALSE, na.col = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,10 @@ sl.plot.fld.curvilin(plot.init.res, vals, mask = NULL, lon.i, lat.i, border = TR
 a spheRlab plot specifics list as returned by \code{\link{sl.plot.init}} (or a variant thereof).
 }
   \item{vals}{
-an \code{Nlat}x\code{Nlon} matrix specifying a 2-dimensional numerical curvilinear field.
+an \code{Nlat}x\code{Nlon} matrix specifying a 2-dimensional numerical curvilinear field, or \code{NULL} (default), in which case \code{rgba} must be provided.
+}
+  \item{rgba}{
+a list with the elements \code{r}, \code{g}, and \code{b} (and optionally \code{a}), each of which is an \code{Nlat}x\code{Nlon} matrix specifying a 2-dimensional RGB(Alpha)-coded curvilinear field, or \code{NULL} (default), in which case \code{vals} must be provided.
 }
   \item{mask}{
 an \code{Nlat}x\code{Nlon} matrix with logical values specifying which quadrangles to draw. Default is \code{mask=NULL}, equivalent to all matrix elements being \code{TRUE} meaning that all quadrangles (except NA values if \code{na.col=NULL}) are drawn.
@@ -34,13 +37,13 @@ a logical value indicating whether or not to draw lines for the polygon borders.
 the line width of the borders.
 }
   \item{colbar}{
-a spheRlab colourbar (as returned by \code{\link{sl.colbar}}) of length \code{Nc} to be used for the field.
+a spheRlab colourbar (as returned by \code{\link{sl.colbar}}) of length \code{Nc} to be used for the numerical field. Used only if \code{vals} is specified.
 }
   \item{colbar.breaks}{
-a numeric vector of length \code{Nc-1} specifying the breaks between colours.
+a numeric vector of length \code{Nc-1} specifying the breaks between colours. Used only if \code{vals} is specified.
 }
   \item{colbar.breaks.log}{
-a logical value indicating whether colourbar breaks are to be placed logarithmically.
+a logical value indicating whether colourbar breaks are to be placed logarithmically. Used only if \code{vals} is specified.
 }
   \item{na.col}{
 the color to be used for NA values. Default is \code{na.col=NULL}, meaning that no polygons are drawn where \code{vals=NA}.
