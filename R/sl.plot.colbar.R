@@ -1,7 +1,7 @@
 sl.plot.colbar <-
-function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),5),labels=NULL,
+function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),9),labels=NULL,
           labels.side="bottom",labels.cex=1,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",
-          do.init=TRUE,do.init.device=TRUE,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6,
+          do.init=TRUE,do.init.device=do.init,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6,
           xshift=0,yshift=0,len=0.6) {
 
   if (!is.null(names(colbar)) && "colbar" %in% names(colbar)) {
