@@ -9,7 +9,7 @@ function(lon1,lat1,lon2,lat2,frac) {
 		lat1 = lat2
 		lon2 = lon1tmp
 		lat2 = lat1tmp
-		frac = -frac
+		frac = 1 - frac
 	}
 	if (lon1 == lon2 && lat1 == lat2) {
 		warning("points are identical")
