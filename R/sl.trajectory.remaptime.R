@@ -1,4 +1,4 @@
-sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linear",extrapolate=FALSE,return.remapinfo=FALSE,verbose=TRUE) {
+sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linear",extrapolate=FALSE,extrapolate.maxspeed=Inf,return.remapinfo=FALSE,verbose=TRUE) {
   
   if (method != "nearestneighbour" && method != "linear") {
     stop("'method' must be one of 'nearestneighbour' and 'linear'.")
@@ -69,6 +69,20 @@ sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linea
   if (is.null(dim(oldlat))) {
     newlat = rep(NA,new.N)
     newlon = rep(NA,new.N)
+    if (extrapolate && extrapolate.maxspeed < Inf) {
+      if (any(weights.left > 1)) {
+        speed = sl.gc.dist(lon = oldlon[1:2], lat = oldlat[1:2]) / (oldtime[2] - oldtime[1])
+        if (speed > extrapolate.maxspeed) {
+          weights.left[weights.left > 1] = 1 + (weights.left[weights.left > 1] - 1) * extrapolate.maxspeed / speed
+        }
+      }
+      if (any(weights.left < 0)) {
+        speed = sl.gc.dist(lon = oldlon[(old.N-1):old.N], lat = oldlat[(old.N-1):old.N]) / (oldtime[old.N] - oldtime[old.N-1])
+        if (speed > extrapolate.maxspeed) {
+          weights.left[weights.left < 0] = weights.left[weights.left < 0] * extrapolate.maxspeed / speed
+        }
+      }
+    }
     for (i in 1:new.N) {
       newlonlat = sl.p2p(lon1=oldlon[weights.left.ind[i]],lat1=oldlat[weights.left.ind[i]],
                          lon2=oldlon[weights.left.ind[i]+1],lat2=oldlat[weights.left.ind[i]+1],
@@ -80,7 +94,23 @@ sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linea
     nTraj = ncol(oldlat)
     newlat = matrix(nrow=new.N,ncol=nTraj)
     newlon = matrix(nrow=new.N,ncol=nTraj)
+    if (extrapolate && extrapolate.maxspeed < Inf) {weights.left.nomaxspeed = weights.left}
     for (j in 1:nTraj) {
+      if (extrapolate && extrapolate.maxspeed < Inf) {
+        weights.left = weights.left.nomaxspeed
+        if (any(weights.left > 1)) {
+          speed = sl.gc.dist(lon = oldlon[1:2,j], lat = oldlat[1:2,j]) / (oldtime[2] - oldtime[1])
+          if (speed > extrapolate.maxspeed) {
+            weights.left[weights.left > 1] = 1 + (weights.left[weights.left > 1] - 1) * extrapolate.maxspeed / speed
+          }
+        }
+        if (any(weights.left < 0)) {
+          speed = sl.gc.dist(lon = oldlon[(old.N-1):old.N,j], lat = oldlat[(old.N-1):old.N,j]) / (oldtime[old.N] - oldtime[old.N-1])
+          if (speed > extrapolate.maxspeed) {
+            weights.left[weights.left < 0] = weights.left[weights.left < 0] * extrapolate.maxspeed / speed
+          }
+        }
+      }
       for (i in 1:new.N) {
         newlonlat = sl.p2p(lon1=oldlon[weights.left.ind[i],j],lat1=oldlat[weights.left.ind[i],j],
                            lon2=oldlon[weights.left.ind[i]+1,j],lat2=oldlat[weights.left.ind[i]+1,j],
