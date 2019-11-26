@@ -4,17 +4,18 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 	projection = plot.init.res$projection
 	
 	if (projection == "platon" || projection == "3D") {
-		
+	  
+	  if (!is.null(plot.init.res$transform.function)) {
+	    lonlat.trans = plot.init.res$transform.function(lon,lat)
+	    lon = lonlat.trans$lon
+	    lat = lonlat.trans$lat
+	  }
+	  
 		npir = 1
 		repeat {
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
-			if (!is.null(pir$transform.function)) {
-			  lonlat.trans = pir$transform.function(lon,lat)
-			  lon = lonlat.trans$lon
-			  lat = lonlat.trans$lat
-			}
 			sl.plot.lines(pir,lon,lat,col,lwd,lty,ignore.visibility)
 			npir = npir + 1
 		}

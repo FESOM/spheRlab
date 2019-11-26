@@ -15,16 +15,17 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 	
 	if (projection == "platon" || projection == "3D") {
 		
+	  if (!is.null(plot.init.res$transform.function)) {
+	    lonlat.trans = plot.init.res$transform.function(lon,lat)
+	    lon = lonlat.trans$lon
+	    lat = lonlat.trans$lat
+	  }
+	  
 		npir = 1
 		repeat {
 			pir = plot.init.res[[npir]]
 			if (!is.list(pir)) {return()}
 			if (is.null(pir$projection)) {return()}
-			if (!is.null(pir$transform.function)) {
-			  lonlat.trans = pir$transform.function(lon,lat)
-			  lon = lonlat.trans$lon
-			  lat = lonlat.trans$lat
-			}
 			sl.plot.polygon(pir,lon,lat,fill,col.fill,border,col.border,border.lwd,border.lty,ignore.visibility,remove.identical.neighbours=FALSE,refine.boundary,refine.boundary.precision)
 			npir = npir + 1
 		}
