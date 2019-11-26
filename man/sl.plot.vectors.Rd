@@ -67,7 +67,7 @@ a logical value indicating whether automatic colourbar breaks are to be placed l
   a logical value specifying whether or not to fill the arrow-point triangle; default is \code{FALSE}.
 }
   \item{head.fill.line}{
-  a logical value specifying whether or not to add all three lines bordering the arrow-point triangle; used only if \item{head.fill=TRUE}. Default is \code{TRUE}.
+  a logical value specifying whether or not to add all three lines bordering the arrow-point triangle; used only if \code{head.fill=TRUE}. Default is \code{TRUE}.
 }
   \item{head.size}{
   a scalar specifying the size of the arrow-point triangle in terms of length ratio. Default is \code{1/3}.
