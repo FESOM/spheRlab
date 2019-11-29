@@ -8,7 +8,7 @@ Compute Angle between Triangle Edges on Sphere
 Compute the angle between two edges of a triangle on a sphere.
 }
 \usage{
-sl.angle(lon, lat, return.degree = FALSE)
+sl.angle(lon, lat, return.degree = FALSE, left = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -21,9 +21,12 @@ a vector of length 3 specifying the longitudes of the triangle vertices; the ang
   \item{return.degrees}{
 a logical value specifying whether the result shall be provided in degrees instead of radians (default).
 }
+  \item{left}{
+a logical value specifying whether the angle to the left shall be returned. If \code{FALSE} (default), the smaller of the two (left/right) angles is returned.
+}
 }
 \details{
-The angle is computed at the second vertex.
+The angle is computed at the second vertex. If \code{left=FALSE} (default), the smaller of the two (left/right) angles is returned (\code{angle<=pi} or \code{angle<=180}). To get the right-side angle, set \code{left=TRUE} and compute \code{2*pi-angle} (or \code{360-angle}).
 }
 \value{
 A scalar giving the angle (on a unit sphere) in radians (default) or in degrees (if \code{return.degree=TRUE}).
