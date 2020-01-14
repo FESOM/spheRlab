@@ -16,8 +16,10 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
     if (!file.exists(paste(griddir,"/aux3d.out",sep=""))) {
       stop("3D information (file aux3d.out) missing. To read 2D only, rerun with threeD=FALSE")
     }
-    if (!fesom2 && !file.exists(paste(griddir,"/nod3d.out",sep=""))) {
-      stop("3D information (file nod3d.out) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM2 grid, set fesom2=TRUE.")
+    if (!fesom2) {
+      if (!file.exists(paste(griddir,"/nod3d.out",sep=""))) {
+        stop("3D information (file nod3d.out) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM2 grid, set fesom2=TRUE.")
+      }
     } else {
       if (!file.exists(paste(griddir,"/nlvls.out",sep=""))) {
         stop("3D information (file nlvls.out) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM1 grid, set fesom2=FALSE.")
