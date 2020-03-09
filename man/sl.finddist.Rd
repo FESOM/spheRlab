@@ -8,7 +8,7 @@ Find Point Pairs Based on Distance
 Find pairs of points (and their distance) based on a distance function (e.g. nearest or furthest) from two sets of points on a sphere.
 }
 \usage{
-sl.finddist(lon1, lat1, lon2, lat2, fun=min, return.vectors=TRUE, return.alldist=FALSE, exclude.zero=FALSE, return.degree=FALSE, Rsphere=1, reduce.memory=FALSE)
+sl.finddist(lon1, lat1, lon2=NULL, lat2=NULL, fun=min, return.vectors=TRUE, return.alldist=FALSE, exclude.zero=FALSE, return.degree=FALSE, Rsphere=1, reduce.memory=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -19,10 +19,10 @@ a numeric vector of length \code{M} specifying the longitudes of the first set o
 a numeric vector of length \code{M} specifying the latitudes of the first set of points.
 }
   \item{lon2}{
-a numeric vector of length \code{N} specifying the longitudes of the second set of points.
+a numeric vector of length \code{N} specifying the longitudes of the second set of points. If \code{NULL} (default), pairwise distances within the first set of points are computed.
 }
   \item{lat2}{
-a numeric vector of length \code{N} specifying the latitudes of the second set of points.
+a numeric vector of length \code{N} specifying the latitudes of the second set of points. If \code{NULL} (default), pairwise distances within the first set of points are computed.
 }
   \item{fun}{
 a function used to match points. Default is \code{min}, in which case the nearest neighbours are found. See details below.

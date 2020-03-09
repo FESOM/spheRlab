@@ -1,7 +1,11 @@
 sl.finddist <-
-function(lon1,lat1,lon2,lat2,fun=min,return.vectors=TRUE,return.alldist=FALSE,exclude.zero=FALSE,return.degree=FALSE,Rsphere=1,reduce.memory=FALSE) {
+function(lon1,lat1,lon2=NULL,lat2=NULL,fun=min,return.vectors=TRUE,return.alldist=FALSE,exclude.zero=FALSE,return.degree=FALSE,Rsphere=1,reduce.memory=FALSE) {
   
   M = length(lon1)
+  if (is.null(lon2)) {
+    lon2 = lon1
+    lat2 = lat1
+  }
   N = length(lon2)
   
   if (!reduce.memory) {alldist = matrix(NA, nrow=M, ncol=N)}
