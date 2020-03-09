@@ -8,7 +8,7 @@ Convert Curvilinear to Unstructured Grid
 Convert a curvilinear grid, where fields are provided in matrices and lat-lon coordinates are provided either in matrices (general) or vectors (only for lat-lon meshes), into an identical unstructured grid. The conversion allows to apply all the unstructured-grid algorithms also to curvilinear-grid data, without remapping.
 }
 \usage{
-sl.grid.curvilin2unstr(lon = NULL, lat = NULL, Nx = NULL, Ny = NULL, vars = NULL, neighnodes = TRUE, neighelems = TRUE, quad2triag = TRUE, quad2triag.mode = "zigzag", close.top = FALSE, close.bottom = FALSE, close.sides = FALSE)
+sl.grid.curvilin2unstr(lon = NULL, lat = NULL, Nx = NULL, Ny = NULL, vars = NULL, neighnodes = TRUE, neighelems = TRUE, quad2triag = TRUE, quad2triag.mode = "zigzag", transpose = FALSE, cut.top = 0, cut.bottom = 0, cut.left = 0, cut.right = 0, close.sides = FALSE, close.top = FALSE, close.bottom = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -39,23 +39,40 @@ sl.grid.curvilin2unstr(lon = NULL, lat = NULL, Nx = NULL, Ny = NULL, vars = NULL
   \item{quad2triag.mode}{
     a character specifying how to cut rectangles into triangles (if \code{quad2triag=TRUE}). Default is \code{'zigzag'} (and currently only that option is implemented).
 }
-  \item{close.top}{
-    a logical value specifying whether to close the 'pole hole' at the top by connecting the first row of nodes across the pole. NOT YET IMPLEMENTED.
+  \item{transpose}{
+    a logical value specifying whether to transpose the input matrices. This will affect the order of nodes in the output mesh and which sides of the matrix are considered as 'sides', 'top', and 'bottom', which is relevant for boundary cut-offs and closure (see further arguments). Default is \code{FALSE}.
 }
-  \item{close.bottom}{
-    a logical value specifying whether to close the 'pole hole' at the bottom by connecting the last row of nodes across the pole. NOT YET IMPLEMENTED.
+  \item{cut.top}{
+    an integer specifying how many rows at the top (first rows) are removed. Default is \code{0}.
+}
+  \item{cut.bottom}{
+    an integer specifying how many rows at the bottom (last rows) are removed. Default is \code{0}.
+}
+  \item{cut.left}{
+    an integer specifying how many columns at the left (first columns) are removed. Default is \code{0}.
+}
+  \item{cut.right}{
+    an integer specifying how many columns at the right (last columns) are removed. Default is \code{0}.
 }
   \item{close.sides}{
-    a logical value specifying whether to close the gap at the sides by connecting the first and last columns of nodes across the 'zonal' gap. Default is \code{FALSE}.
+    a logical value specifying whether to close the gap at the sides by connecting the first and last columns (or rows if \code{transpose = TRUE}) of nodes across the 'zonal' gap. Default is \code{FALSE}.
+}
+  \item{close.top}{
+    a logical value specifying whether to close the 'pole hole' at the top by connecting the first row (or column if \code{transpose = TRUE}) of nodes across the grid pole. Note that 'top' and 'bottom' do not necessarity correspond with the North and South Pole!
+}
+  \item{close.bottom}{
+    a logical value specifying whether to close the 'pole hole' at the bottom by connecting the last row (or column if \code{transpose = TRUE}) of nodes across the grid pole. Note that 'top' and 'bottom' do not necessarity correspond with the North and South Pole!
 }
 }
 \details{
-This function is so far only partly implemented ,as revealed by the argument description. Functionality will be added when needed.
-
 To remove land points from the grid, use \code{\link{sl.grid.reduce}}, see the example below.
+
+Closing the top and/or bottom boundaries works only with an even number of columns.
+
+If the input is based on matrices (rather than lon/lat vectors), the returned element \code{curvilin2unstr.fun} is a function that can be used to convert data from the original curvilinear grid to the unstructured grid.
 }
 \value{
-a list with the elements \code{lon}, \code{lat}, \code{elem}, \code{coast}, \code{openbound}, \code{neighnodes}, \code{neighelems}, and \code{vars}. Some of these may be \code{NULL}, depending on the input arguments and on which options have already been implemented.
+a list with the elements \code{lon}, \code{lat}, \code{elem}, \code{coast}, \code{openbound}, \code{neighnodes}, \code{neighelems}, \code{vars}, and \code{curvilin2unstr.fun}. Some of these may be \code{NULL}, depending on the input arguments and on which options have already been implemented.
 }
 \references{
 %% ~put references to the literature/web site here ~
