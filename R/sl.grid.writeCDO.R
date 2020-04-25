@@ -81,6 +81,8 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	  else {
 	    ncells.dim.name = "ncells"
 	    vertices.dim.name = "vertices"
+	    ntriags.dim.name = "ntriags"
+	    Three.dim.name = "Three"
 	    lon.var.name = "lon"
 	    lon_bnds.var.name = "lon_bnds"
 	    lon.units.name = "degrees_east"
