@@ -8,7 +8,7 @@ Write Grid for CDO
 Write a spheRlab grid to a grid description file that makes unstructured-mesh data readable by the Climate Data Operators (CDO).
 }
 \usage{
-sl.grid.writeCDO(grid, ofile = "~/sl.grid.CDO", netcdf = TRUE, netcdf.prec = "double", ascii.digits = Inf, overwrite = FALSE, verbose = TRUE, cell_area = TRUE, node_node_links = TRUE, triag_nodes = TRUE, coast = TRUE, depth = TRUE, fesom2velocities = FALSE)
+sl.grid.writeCDO(grid, ofile = "~/sl.grid.CDO", netcdf = TRUE, netcdf.prec = "double", ascii.digits = Inf, overwrite = FALSE, verbose = TRUE, cell_area = TRUE, node_node_links = TRUE, triag_nodes = TRUE, coast = TRUE, depth = TRUE, fesom2velocities = FALSE, conventions = "original")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -51,9 +51,12 @@ a logical value indicating whether or not to add a vector with the depth of each
   \item{fesom2velocities}{
 a logical value indicating whether or not a grid description for values defined at the centroids of the triangular elements (like horizontal velocities in FESOM2) instead of at the vertices shall be generated. Implemented only for \code{netcdf=TRUE}.
 }
+  \item{conventions}{
+a character influencing the variable, dimension, and unit naming conventions. Set this to \code{"IFS"} to generate files readable by ECMWF's 'prepIFS' tool. Default is \code{"original"}.
+}
 }
 \details{
-This is a special function that is typically used when converting FESOM grid information to a CDO-readable format, see the example below.
+This is a special function that is typically used when converting FESOM grid information to a CDO-readable format. To use the resulting file with CDOs, use the operator 'setgrid', e.g., 'CDO setgrid,gridfile.nc ifile.nc ofile.nc', where 'gridfile.nc' is the file generated with \code{sl.grid.writeCDO()} and 'ifile.nc' is a FESOM output file.
 }
 \value{
 %
