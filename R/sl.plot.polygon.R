@@ -32,7 +32,8 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 		
 	}
 		
-	if (!border) {col.border=NA}
+	if (!border) {col.border=NA} else {col.border=col.border}
+	if (!fill) {col.fill=NA}
 	
 	if (!is.null(plot.init.res$transform.function)) {
 	  lonlat.trans = plot.init.res$transform.function(lon,lat)
