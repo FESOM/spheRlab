@@ -1,6 +1,6 @@
 sl.plot.colbar <-
 function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),9),labels=NULL,
-          labels.side="bottom",labels.cex=1,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",
+          labels.side="bottom",labels.cex=1,labels.signif=3,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",
           do.init=TRUE,do.init.device=do.init,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6,
           xshift=0,yshift=0,len=0.6) {
 
@@ -34,7 +34,7 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
     if (categorical) {
       labels = as.character(1:length(colbar))
     } else {
-      labels = as.character(signif(breaks,3))
+      labels = as.character(signif(breaks,labels.signif))
     }
   }
 

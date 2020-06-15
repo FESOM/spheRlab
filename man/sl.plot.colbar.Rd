@@ -8,7 +8,7 @@ Plot Colourbar
 Plot a spheRlab colourbar, vertically or horizontally, with a number of options.
 }
 \usage{
-sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init = TRUE, do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
+sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, labels.signif = 3, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init = TRUE, do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -38,6 +38,9 @@ sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labe
 }
   \item{labels.cex}{
   a scalar specifying the relative size of the labels.
+}
+  \item{labels.signif}{
+  an integer specifying the number of significant digits to be printed for the labels. Used only if \code{categorical=FALSE}. Default is \code{labels.signif=3}.
 }
   \item{ticks.length}{
   NOT YET USED!
