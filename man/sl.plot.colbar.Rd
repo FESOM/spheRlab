@@ -28,7 +28,7 @@ sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labe
   \code{NULL} or a vector of length \code{N-1} (or \code{N} if \code{categorical=TRUE}) with logical values specifying which breaks (or colours) are to be labelled. If \code{NULL} (default) and \code{categorical=FALSE}, the argument \code{labels.num} is used to place labels automatically in a quasi equidistant manner. If \code{NULL} (default) and \code{categorical=TRUE}, each colour is labelled.
 }
   \item{labels.num}{
-  a scalar specifiying how many labels are to be drawn in a quasi equidistant manner. Used only if \code{labels.at=NULL} and \code{categorical=FALSE}. Default is \code{labels.num=min(length(breaks),9)}.
+  a scalar specifiying how many labels are to be drawn in a quasi equidistant manner. Used only if \code{labels.at=NULL} and \code{categorical=FALSE}. Default is \code{labels.num=min(length(breaks),9)}. To plot labels at all breaks, set \code{labels.num=NULL} (as well as \code{labels.at=NULL}).
 }
   \item{labels}{
   \code{NULL} or a vector specifying the labels. If \code{categorical=FALSE}, the length must be \code{N-1} and the labels correspond to the colour breaks; if \code{NULL} (default), labels are derived from \code{breaks}. If \code{categorical=TRUE}, the length must be \code{N} and the labels correspond to colour centres; if \code{NULL} (default), labels are \code{1:N}. Note that this vector has the same length as \code{breaks} (or \code{colbar}), meaning that it must include pseudo entries even for breaks (or colours) that are not labelled. Ignored if \code{colbar} is a list with elements 'colbar' as well as 'labels'.

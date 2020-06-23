@@ -25,8 +25,12 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
     if (categorical) {
       labels.at = rep(TRUE,length(colbar))
     } else {
-      labels.at = rep(FALSE,length(breaks))
-      labels.at[round(seq(1,length(breaks),(length(breaks)-1)/(labels.num-1)))] = TRUE
+      if (is.null(labels.num)) {
+        labels.at = rep(TRUE,length(breaks))
+      } else {
+        labels.at = rep(FALSE,length(breaks))
+        labels.at[round(seq(1,length(breaks),(length(breaks)-1)/(labels.num-1)))] = TRUE
+      }
     }
   }
 
