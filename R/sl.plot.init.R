@@ -62,6 +62,7 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 	}
 	
 	if (do.init.device) {
+	  if (device %in% c("bmp","jpeg","png","tiff")) {width = width * 100}
 		height = width * (ylim[2]-ylim[1]) / (xlim[2]-xlim[1])
 		dev.fun = match.fun(device,descend=FALSE)
 		dev.fun(file.name, width, height)

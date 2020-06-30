@@ -70,7 +70,7 @@ a logical value indicating whether or not to initialise a device as specified by
 a character specifying the output file. Only used if \code{do.init.device=TRUE}. Default is \code{file.name=paste0('~/sl.plot.',device)}.
 }
   \item{width}{
-a scalar giving the width of the resulting figure. The height will be derived according to the chosen projection and other relevant plotting parameters. Only used if \code{do.init.device=TRUE}. Default is \code{width=12}.
+a scalar giving the width of the resulting figure. The height will be derived according to the chosen projection and other relevant plotting parameters. Only used if \code{do.init.device=TRUE}. Default is \code{width=12}. Note that for \code{device \%in\% c("bmp","jpeg","png","tiff")}, \code{width} is multiplied by \code{100} to ensure a reasonable default size.
 }
 }
 \details{
