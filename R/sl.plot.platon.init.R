@@ -143,6 +143,7 @@ function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,dev
 	}
   
   if (do.init.device) {
+    if (device %in% c("bmp","jpeg","png","tiff")) {width = width * 100}
     dev.fun = match.fun(device,descend=FALSE)
     dev.fun(file.name,width=width,height=height)
   }

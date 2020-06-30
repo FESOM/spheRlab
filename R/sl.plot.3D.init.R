@@ -11,6 +11,7 @@ function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(
 	height = width * (ylim[2]-ylim[1]) / (xlim[2]-xlim[1])
 	
 	if (do.init.device) {
+	  if (device %in% c("bmp","jpeg","png","tiff")) {width = width * 100}
 	  dev.fun = match.fun(device,descend=FALSE)
 	  dev.fun(file.name,width=width,height=height)
 	}
