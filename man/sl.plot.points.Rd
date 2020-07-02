@@ -65,7 +65,7 @@ pir = sl.plot.init(projection = "polar", polar.latbound = 30, do.init.device = F
 # plot some geographical info
 sl.plot.lonlatgrid(pir, col = "grey", labels = TRUE, pole.hole = TRUE, labels.col = "darkgrey")
 # use the following line (or similar) to plot coastlines (or other geo data); if the corresponding naturalearth
-# dataset has not yet been loaded to the computer, this will invoke a download from \code{naturalearthdata.com}
+# dataset has not yet been loaded to the computer, this will invoke a download from naturalearthdata.com
 # sl.plot.naturalearth(pir, what = "coastline", lines.col = "darkgrey", resolution = "coarse")
 
 # generate evenly distributed random points on the sphere and plot them
