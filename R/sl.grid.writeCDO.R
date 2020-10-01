@@ -1,6 +1,8 @@
 sl.grid.writeCDO <-
 function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.digits=Inf,overwrite=FALSE,verbose=TRUE,cell_area=TRUE,node_node_links=TRUE,triag_nodes=TRUE,coast=TRUE,depth=TRUE,fesom2velocities=FALSE,conventions="original") {
 	
+  fun.call = deparse(sys.call(),width.cutoff=500)
+  
 	if (netcdf) {require("ncdf4")}
   if (cell_area && is.null(grid$cellareas)) {
     warning("'grid' does not contain an element 'cell_area'; setting 'cell_area' FALSE")
@@ -14,9 +16,18 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
     warning("'grid' does not contain an element 'elem'; setting 'triag_nodes' FALSE")
     triag_nodes = FALSE
   }
-  if (coast && is.null(grid$coast)) {
-    warning("'grid' does not contain an element 'coast'; setting 'coast' FALSE")
-    coast = FALSE
+  if (coast) {
+    if (fesom2velocities) {
+      if (is.null(grid$elemcoast)) {
+        warning("'grid' does not contain an element 'elemcoast'; setting 'coast' FALSE")
+        coast = FALSE
+      }
+    } else {
+      if (is.null(grid$coast)) {
+        warning("'grid' does not contain an element 'coast'; setting 'coast' FALSE")
+        coast = FALSE
+      }
+    }
   }
   if (depth) {
     if (is.null(grid$Nlev)) {
@@ -25,8 +36,11 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
     } else if (is.null(grid$depth.bounds)) {
       warning("'grid' does not contain an element 'depth.bounds'; setting 'depth' FALSE")
       depth = FALSE
-    } else if (is.null(grid$depth.lev)) {
+    } else if (!fesom2velocities && is.null(grid$depth.lev)) {
       warning("'grid' does not contain an element 'depth.lev'; setting 'depth' FALSE")
+      depth = FALSE
+    } else if (fesom2velocities && is.null(grid$elemdepth.lev)) {
+      warning("'grid' does not contain an element 'elemdepth.lev'; setting 'depth' FALSE")
       depth = FALSE
     }
   }
@@ -146,7 +160,11 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	  }
 	  
 	  if (coast) {
-	    coast.var = ncvar_def(name="coast",units="",dim=ncells.dim,missval=-1,longname="Indicates coastal nodes: coast=1, internal=0",prec="integer")
+	    if (!fesom2velocities) {
+	      coast.var = ncvar_def(name="coast",units="",dim=ncells.dim,missval=-1,longname="Indicates coastal nodes: coast=1, internal=0",prec="integer")
+	    } else {
+	      coast.var = ncvar_def(name="coast",units="",dim=ntriags.dim,missval=-1,longname="Indicates coastal triangles: coast=1, internal=0",prec="integer")
+	    }
 	    var.list[[length(var.list)+1]] = coast.var
 	  }
 	  
@@ -155,7 +173,11 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	    depth.var = ncvar_def(name="depth",units="m",dim=nlev.dim,missval=-1,longname="depth of model levels in metres (positive downwards)",prec=netcdf.prec)
 	    nlev_bnds.dim = ncdim_def(name="nlev_bnds",units="",vals=1:(Nlev+1),create_dimvar=FALSE)
 	    depth_bnds.var = ncvar_def(name="depth_bnds",units="m",dim=nlev_bnds.dim,missval=-1,longname="depth of model level bounds in metres (positive downwards)",prec=netcdf.prec)
-	    depth_lev.var = ncvar_def(name="depth_lev",units="",dim=ncells.dim,missval=-1,longname="depth in terms of number of active levels beneath each ocean surface grid point",prec="integer")
+	    if (!fesom2velocities) {
+	      depth_lev.var = ncvar_def(name="depth_lev",units="",dim=ncells.dim,missval=-1,longname="depth in terms of number of active levels beneath each ocean surface grid point",prec="integer")
+	    } else {
+	      depth_lev.var = ncvar_def(name="depth_lev",units="",dim=ntriags.dim,missval=-1,longname="depth in terms of number of active levels beneath each ocean surface element",prec="integer")
+	    }
 	    var.list[[length(var.list)+1]] = depth.var
 	    var.list[[length(var.list)+1]] = depth_bnds.var
 	    var.list[[length(var.list)+1]] = depth_lev.var
@@ -225,23 +247,33 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	    ncvar_put(ofl,"triag_nodes",vals=t(grid$elem))
 	  }
 	  if (coast) {
-	    ncvar_put(ofl,"coast",vals=grid$coast)
+	    if (!fesom2velocities) {
+	      ncvar_put(ofl,"coast",vals=grid$coast)
+	    } else {
+	      ncvar_put(ofl,"coast",vals=grid$elemcoast)
+	    }
 	    ncatt_put(ofl,"coast","grid_type","unstructured")
 	    ncatt_put(ofl,"coast","coordinates","lat lon")
 	  }
 	  if (depth) {
 	    ncvar_put(ofl,"depth",vals=grid$depth)
 	    ncvar_put(ofl,"depth_bnds",vals=grid$depth.bounds)
-	    ncvar_put(ofl,"depth_lev",vals=grid$depth.lev)
+	    if (!fesom2velocities) {
+	      ncvar_put(ofl,"depth_lev",vals=grid$depth.lev)
+	    } else {
+	      ncvar_put(ofl,"depth_lev",vals=grid$elemdepth.lev)
+	    }
 	    ncatt_put(ofl,"depth_lev","grid_type","unstructured")
 	    ncatt_put(ofl,"depth_lev","coordinates","lat lon")
 	  }
 	  
 	  ncatt_put(ofl,0,"Conventions","CF-1.4")
-	  ncatt_put(ofl,0,"history","Grid description file generated with spheRlab sl.grid.writeCDO")
-	  if (fesom2velocities) {
-	    ncatt_put(ofl,0,"history","Grid description for values defined at the centroids of the triangular elements instead of at the vertices.")
+	  history.att = paste0(strftime(Sys.time(),tz = "GMT",usetz=T),"; Grid description file generated with spheRlab version ",packageVersion("spheRlab"))
+	  if (!is.null(grid$fun.call)) {
+	    history.att = paste0(history.att,"; Grid read and converted with: ",grid$fun.call)
 	  }
+	  history.att = paste0(history.att,"; Grid written with: ",fun.call)
+	  ncatt_put(ofl,0,"history",history.att)
 	  
 	  nc_close(ofl)
 	  

@@ -1,6 +1,8 @@
 sl.grid.readFESOM <-
 function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev=TRUE,read.boundary=TRUE,reorder.ccw=TRUE,maxmaxneigh=12,findneighbours.maxiter=10,repeatlastpoint=TRUE,onlybaryc=FALSE,omitcoastnds=FALSE,calcpolyareas=TRUE,Rearth=6371000,basicreadonly=FALSE,fesom2=FALSE,verbose=TRUE) {
 	
+  fun.call = deparse(sys.call(),width.cutoff=500)
+  
   if (basicreadonly) {
     print("Reading only basic grid data without further computation of neighbourhood etc.")
     if (rot || threeD || reorder.ccw) {
@@ -21,8 +23,15 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
         stop("3D information (file nod3d.out) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM2 grid, set fesom2=TRUE.")
       }
     } else {
-      if (!file.exists(paste(griddir,"/nlvls.out",sep=""))) {
-        stop("3D information (file nlvls.out) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM1 grid, set fesom2=FALSE.")
+      use.nlvls.out = FALSE
+      if (!file.exists(paste(griddir,"/fesom.mesh.diag.nc",sep=""))) {
+        if (!file.exists(paste(griddir,"/nlvls.out",sep=""))) {
+          stop("3D information (file nlvls.out and fesom.mesh.diag.nc) missing. To read 2D only, rerun with threeD=FALSE. To read FESOM1 grid, set fesom2=FALSE.")
+        }
+        use.nlvls.out = TRUE
+        warning("File fesom.mesh.diag.nc missing, nlvls.out is used to derive depths only for nodes, not for elements. To read 2D only, rerun with threeD=FALSE. To read FESOM1 grid, set fesom2=FALSE.")
+      } else {
+        require("ncdf4")
       }
     }
   }
@@ -85,6 +94,7 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	depth = NULL
 	depth.bounds = NULL
 	depth.lev = NULL
+	elemdepth.lev = NULL
 	boundary = NULL
 	if (threeD) {
 	  if (verbose) {print("reading 3D information ...")}
@@ -92,13 +102,14 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	  if (fesom2) {
 	    depth.bounds = scan(paste(griddir,"/aux3d.out",sep=""),skip=1,n=(Nlev+1)) * -1
 	    depth = (depth.bounds[1:Nlev] + depth.bounds[2:(Nlev+1)]) / 2
-	    depth.lev = scan(paste(griddir,"/nlvls.out",sep=""),skip=0,n=N) - 1
-	    #depth.raw = scan(paste(griddir,"/aux3d.out",sep=""),skip=1+(Nlev+1),n=N)  * -1
-	    #depth.lev = rep(1,N)
-	    #for (lev in 2:(Nlev+1)) {
-	    #  depth.larger = (depth.raw > depth.midpoints[lev-1])
-	    #  depth.lev[depth.larger] = depth.lev[depth.larger] + 1
-	    #}
+	    if (use.nlvls.out) {
+	      depth.lev = scan(paste(griddir,"/nlvls.out",sep=""),skip=0,n=N) - 1
+	    } else {
+	      mesh.diag.fl = nc_open(paste(griddir,"/fesom.mesh.diag.nc",sep=""))
+	      depth.lev = ncvar_get(mesh.diag.fl,"nlevels_nod2D") - 1
+	      elemdepth.lev = ncvar_get(mesh.diag.fl,"nlevels") - 1
+	      nc_close(mesh.diag.fl)
+	    }
 	    if (remove.emptylev && max(depth.lev) < Nlev) {
 	      if (verbose) {print(paste("removing",Nlev-max(depth.lev),"empty levels from data"))}
 	      Nlev = max(depth.lev)
@@ -153,6 +164,12 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	rm(findneighbours.res)
 	if (verbose) {print(paste0("... done. number of neighbours ranges from ",min(Nneighs)," to ",max(Nneighs)," nodes and is ",signif(mean(Nneighs),digits=4)," on average."))}
 	if (!is.null(badnodes)) {warning(paste0("if 'findneighbours.maxiter' was not set too low, the grid contains ",length(badnodes)," 'bad nodes'. consider increasing 'findneighbours.maxiter'. if the problem remains, the grid indeed contains bad nodes that should not exist in the first place. for such nodes only one part of the corresponding ocean patches will be returned by this function (which introduces a slight grid inaccuracy)."))}
+	
+	if (verbose) {print("determining which elements include coastal nodes ...")}
+	elemcoast = rep(FALSE,Ne)
+	for (ie in 1:Ne) {
+	  elemcoast[ie] = (sum(coast[elem[ie,]]) > 1)
+	}
 	
 	if (verbose) {print("computing barycenters (centroids) for all triangular elements ...")}
 	baryc.lon = numeric(Ne)
@@ -243,6 +260,12 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 		if (verbose) {print("... done.")}
 	}
 	
-	return(list(N=N,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,neighnodes=neighnodes,neighelems=neighelems,stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,baryc.lon=baryc.lon,baryc.lat=baryc.lat,cellareas=cellareas,elemareas=elemareas,depth=depth,depth.bounds=depth.bounds,depth.lev=depth.lev,boundary=boundary))
+	return(list(N=N,Nelem=Ne,Nlev=Nlev,N3D=N3D,lon=lon,lat=lat,elem=elem,coast=coast,
+	            elemcoast=elemcoast,neighnodes=neighnodes,neighelems=neighelems,
+	            stamppoly.lon=stampmat.lon,stamppoly.lat=stampmat.lat,
+	            baryc.lon=baryc.lon,baryc.lat=baryc.lat,cellareas=cellareas,
+	            elemareas=elemareas,depth=depth,depth.bounds=depth.bounds,
+	            depth.lev=depth.lev,elemdepth.lev=elemdepth.lev,boundary=boundary,
+	            fun.call=fun.call))
 	
 }
