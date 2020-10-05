@@ -8,7 +8,7 @@ Read FESOM Grid
 Read and analyse a FESOM1 or FESOM2 grid from ascii '.out' files.
 }
 \usage{
-sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = TRUE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, basicreadonly = FALSE, fesom2 = FALSE, verbose = TRUE)
+sl.grid.readFESOM(griddir, rot = FALSE, rot.invert = FALSE, rot.abg, threeD = TRUE, remove.emptylev = TRUE, read.boundary = TRUE, reorder.ccw = TRUE, maxmaxneigh = 12, findneighbours.maxiter = 10, repeatlastpoint = TRUE, onlybaryc = FALSE, omitcoastnds = FALSE, calcpolyareas = TRUE, Rearth = 6371000, basicreadonly = FALSE, fesom2 = TRUE, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,7 +28,7 @@ a vector of length 3 specifying the \code{alpha}, \code{beta}, and \code{gamma} 
 a logical value indicating whether or not to read 3D grid information. If \code{FALSE}, only surface information is read. Default is \code{TRUE}.
 }
   \item{remove.emptylev}{
-a logical value indicating whether or not to remove empty bottom levels from the 3D grid. Only used if \code{threeD=TRUE}.
+a logical value indicating whether or not to remove empty bottom levels from the 3D grid. Only used if \code{threeD=TRUE}. Default is \code{FALSE}.
 }
   \item{read.boundary}{
 a logical value indicating whether or not to read info on which 3D nodes are at horizontal or vertical boundaries. Only used if \code{threeD=TRUE}.
@@ -61,7 +61,7 @@ a scalar specifying the radius of the sphere - in case of FESOM the Earth. Used 
 a logical value indicating whether or not only to read grid data without analysing neighborhood information etc. Reading is even faster with rot, reorder.ccw, and threeD all set to FALSE.
 }
   \item{fesom2}{
-a logical value indicating whether the grid to be read is a FESOM2 grid. If FALSE (default), the grid is assumed to be a FESOM1 grid.
+a logical value indicating whether the grid to be read is a FESOM2 grid. If FALSE, the grid is assumed to be a FESOM1 grid. Default is \code{TRUE}.
 }
   \item{verbose}{
 a logical value indicating whether or not print statements shall report on the function progess.
@@ -145,12 +145,19 @@ The 3D functionality is incomplete; e.g., no 3d-element information is considere
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{sl.grid.writeFESOM}}, \code{\link{sl.grid.writeCDO}}, \code{\link{sl.grid.addinfo}}
+\code{\link{sl.grid.writeFESOM}}, \code{\link{sl.grid.writeCDO}}, \code{\link{sl.grid.writeZAXIS}}
 }
 \examples{
 \dontrun{
+# In this example a 'backward rotation' is performed, assuming that the original mesh coordinates are rotated;
+# if that's not the case (which is now default), set 'rot=FALSE' or leave it unspecified (default is FALSE).
 grid = sl.grid.readFESOM(griddir="PATH-TO-YOUR-FESOM-GRID",rot=TRUE,rot.invert=TRUE,rot.abg=c(50,15,-90))
-sl.grid.writeCDO(grid,ofile="~/sl.grid.CDO.nc")
+
+# Write a grid description that is valid for quantities defined at nodes:
+sl.grid.writeCDO(grid,ofile="~/sl.grid.scalars.nc")
+
+# Write a grid description that is valid for quantities defined at element centers (or representative for elements):
+sl.grid.writeCDO(grid,ofile="~/sl.grid.vectors.nc",fesom2velocities=TRUE)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

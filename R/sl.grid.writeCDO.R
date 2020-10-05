@@ -1,5 +1,5 @@
 sl.grid.writeCDO <-
-function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.digits=Inf,overwrite=FALSE,verbose=TRUE,cell_area=TRUE,node_node_links=TRUE,triag_nodes=TRUE,coast=TRUE,depth=TRUE,fesom2velocities=FALSE,conventions="original") {
+function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.digits=Inf,overwrite=FALSE,verbose=TRUE,cell_area=TRUE,node_node_links=TRUE,triag_nodes=TRUE,coast=TRUE,depth=TRUE,ofile.ZAXIS=paste0(ofile,"_zaxis.txt"),fesom2velocities=FALSE,conventions="original") {
 	
   fun.call = deparse(sys.call(),width.cutoff=500)
   
@@ -289,9 +289,9 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	  write(paste("gridsize  =",N,sep=" "),ofile,append=TRUE)
 	  write(paste("nvertex   =",maxNstamp,sep=" "),ofile,append=TRUE)
 	  if (verbose) {print("writing node longitudes ...")}
-	  write(paste("xvals   =",round(grid$lon[1],write.precision)),ofile,append=TRUE)
+	  write(paste("xvals   =",round(grid$lon[1],ascii.digits)),ofile,append=TRUE)
 	  for (i in 2:N) {
-	    write(paste("         ",round(grid$lon[i],write.precision),sep=" "),ofile,append=TRUE)
+	    write(paste("         ",round(grid$lon[i],ascii.digits),sep=" "),ofile,append=TRUE)
 	  }
 	  if (verbose) {print("...done.")}
 	  if (verbose) {print("writing stamp polygon vertex longitudes ...")}
@@ -302,15 +302,15 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	      strvec = "         "
 	    }
 	    for (j in 1:maxNstamp) {
-	      strvec = paste(strvec,round(grid$stamppoly.lon[i,j],write.precision),sep=" ")
+	      strvec = paste(strvec,round(grid$stamppoly.lon[i,j],ascii.digits),sep=" ")
 	    }
 	    write(strvec,ofile,append=TRUE)
 	  }
 	  if (verbose) {print("...done.")}
 	  if (verbose) {print("writing node latitudes ...")}
-	  write(paste("yvals   =",round(grid$lat[1],write.precision)),ofile,append=TRUE)
+	  write(paste("yvals   =",round(grid$lat[1],ascii.digits)),ofile,append=TRUE)
 	  for (i in 2:N) {
-	    write(paste("         ",round(grid$lat[i],write.precision),sep=" "),ofile,append=TRUE)
+	    write(paste("         ",round(grid$lat[i],ascii.digits),sep=" "),ofile,append=TRUE)
 	  }
 	  if (verbose) {print("...done.")}
 	  if (verbose) {print("writing stamp polygon vertex latitudes ...")}
@@ -321,13 +321,18 @@ function (grid,ofile="~/sl.grid.CDO.nc",netcdf=TRUE,netcdf.prec="double",ascii.d
 	      strvec = "         "
 	    }
 	    for (j in 1:maxNstamp) {
-	      strvec = paste(strvec,round(grid$stamppoly.lat[i,j],write.precision),sep=" ")
+	      strvec = paste(strvec,round(grid$stamppoly.lat[i,j],ascii.digits),sep=" ")
 	    }
 	    write(strvec,ofile,append=TRUE)
 	  }
-	  if (verbose) {print("...done. CDO grid description file complete.")}
-	  if (verbose) {print(paste0("you can now convert the file to NetCDF running from the command line e.g. 'cdo -f nc const,0,",ofile," ",ofile,".nc'. Thereafter you may add grid information using 'sl.grid.addinfo'."))}
     
+	}
+	
+	if (verbose) {print("horizontal grid description file complete.")}
+	if (verbose) {print(paste0("you can use this file to set the horizontal grid of a corresponding NetCDF file with 'cdo setgrid,",ofile," ifile.nc ofile.nc'."))}
+	
+	if (depth && !is.null(ofile.ZAXIS)) {
+	  res = sl.grid.writeZAXIS(grid,ofile=ofile.ZAXIS,overwrite=overwrite,verbose=verbose)
 	}
 	
 }
