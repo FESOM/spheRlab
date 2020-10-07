@@ -1,5 +1,5 @@
 sl.rot.vec <- function(al, be, ga, lon, lat, urot, vrot, flag){
-  #   first get another coordinate
+  # first get another coordinate
   if (flag==1){
     rlola = sl.rot(lon, lat, al, be, ga) # formerly (rlon,rlat)=scalar_g2r(al, be, ga, lon, lat)
     rlon = rlola$lon
@@ -15,20 +15,19 @@ sl.rot.vec <- function(al, be, ga, lon, lat, urot, vrot, flag){
   }
   
   rotate_matrix = sl.assemble.eulermatrix(al, be, ga, do.d2r=TRUE)
-  rotate_matrix=t(rotate_matrix)
-
+  
   #   vector in rotated Cartesian
-  gU = sl.uv2uvw(urot, vrot, rlon, rlat, F)
+  gU = sl.uv2uvw(urot, vrot, rlon, rlat, T)
   txg = gU$u; tyg = gU$v; tzg = gU$w
-   
+  
   #   vector in geo Cartesian (matrix multiplication)
   txr=rotate_matrix[1,1]*txg + rotate_matrix[1,2]*tyg + rotate_matrix[1,3]*tzg 
   tyr=rotate_matrix[2,1]*txg + rotate_matrix[2,2]*tyg + rotate_matrix[2,3]*tzg 
   tzr=rotate_matrix[3,1]*txg + rotate_matrix[3,2]*tyg + rotate_matrix[3,3]*tzg 
   
   #   vector in geo coordinate
-  rU = sl.uvw2uv(txr, tyr, tzr, lon, lat, F)
+  rU = sl.uvw2uv(txr, tyr, tzr, lon, lat, T)
   u = rU$u; v = rU$v
-
+  
   return(list(u=u,v=v))
 }
