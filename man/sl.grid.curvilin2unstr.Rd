@@ -8,7 +8,7 @@ Convert Curvilinear to Unstructured Grid
 Convert a curvilinear grid, where fields are provided in matrices and lat-lon coordinates are provided either in matrices (general) or vectors (only for lat-lon meshes), into an identical unstructured grid. The conversion allows to apply all the unstructured-grid algorithms also to curvilinear-grid data, without remapping.
 }
 \usage{
-sl.grid.curvilin2unstr(lon = NULL, lat = NULL, Nx = NULL, Ny = NULL, vars = NULL, neighnodes = TRUE, neighelems = TRUE, quad2triag = TRUE, quad2triag.mode = "zigzag", transpose = FALSE, cut.top = 0, cut.bottom = 0, cut.left = 0, cut.right = 0, close.sides = FALSE, close.top = FALSE, close.bottom = FALSE)
+sl.grid.curvilin2unstr(lon = NULL, lat = NULL, Nx = NULL, Ny = NULL, vars = NULL, neighnodes = TRUE, neighelems = TRUE, quad2triag = TRUE, quad2triag.mode = "zigzag", transpose = FALSE, cut.top = 0, cut.bottom = 0, cut.left = 0, cut.right = 0, close.sides = FALSE, close.top = FALSE, close.bottom = FALSE, close.topbottom.skip = "none")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -62,6 +62,9 @@ sl.grid.curvilin2unstr(lon = NULL, lat = NULL, Nx = NULL, Ny = NULL, vars = NULL
 }
   \item{close.bottom}{
     a logical value specifying whether to close the 'pole hole' at the bottom by connecting the last row (or column if \code{transpose = TRUE}) of nodes across the grid pole. Note that 'top' and 'bottom' do not necessarity correspond with the North and South Pole!
+}
+  \item{close.topbottom.skip}{
+    a character, one of \code{"none"}, \code{"left"}, and \code{"right"}. Affects the way the top and/or bottom rows are closed. If \code{"none"} (default), the first an last node of the first row are considered vis-a-vis, the second and second-last, and so forth. If \code{"left"}, the first node (and the first node of the second half) of the row is skipped, that is, the second and last nodes are considered vis-a-vis, the this and second-last, and so forth. If \code{"right"}, the first and second-last nodes are considered vis-a-vis, and so forth.
 }
 }
 \details{

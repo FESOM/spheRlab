@@ -1,6 +1,6 @@
 sl.grid.curvilin2unstr <-
 function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems=TRUE,quad2triag=TRUE,quad2triag.mode="zigzag",transpose=FALSE,
-          cut.top=0,cut.bottom=0,cut.left=0,cut.right=0,close.sides=FALSE,close.top=FALSE,close.bottom=FALSE) {
+          cut.top=0,cut.bottom=0,cut.left=0,cut.right=0,close.sides=FALSE,close.top=FALSE,close.bottom=FALSE,close.topbottom.skip="none") {
 	
 	elem.arg = TRUE
 	elem = NULL
@@ -55,16 +55,32 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems
 	neigh.top = c(rep(NA,Nx),1:(N-Nx))
 	if (close.top) {
 	  if (Nx%%2 != 0) {stop("top boundary can not be closed with uneven number of columns")}
-	  neigh.top[1:(Nx/2-1)] = Nx:(Nx/2+2)
-	  neigh.top[Nx:(Nx/2+2)] = 1:(Nx/2-1)
-	  if (close.sides) {neigh.top[c(1,Nx)] = NA}
+	  if (close.topbottom.skip == "none") {
+	    neigh.top[1:(Nx/2-1)] = Nx:(Nx/2+2)
+	    neigh.top[Nx:(Nx/2+2)] = 1:(Nx/2-1)
+	    if (close.sides) {neigh.top[c(1,Nx)] = NA}
+	  } else if (close.topbottom.skip == "left") {
+	    neigh.top[2:(Nx/2)] = Nx:(Nx/2+2)
+	    neigh.top[Nx:(Nx/2+2)] = 2:(Nx/2)
+	  } else if (close.topbottom.skip == "right") {
+	    neigh.top[1:(Nx/2-1)] = (Nx-1):(Nx/2+1)
+	    neigh.top[(Nx-1):(Nx/2+1)] = 1:(Nx/2-1)
+	  } else {stop("'close.topbottom.skip' must be one of 'none', 'left', and 'right'")}
 	}
 	neigh.bottom = c((Nx+1):N,rep(NA,Nx))
 	if (close.bottom) {
 	  if (Nx%%2 != 0) {stop("bottom boundary can not be closed with uneven number of columns")}
-	  neigh.bottom[(N-Nx+1):(N-Nx/2-1)] = N:(N-Nx/2+2)
-	  neigh.bottom[N:(N-Nx/2+2)] = (N-Nx+1):(N-Nx/2-1)
-	  if (close.sides) {neigh.bottom[c(N-Nx+1,N)] = NA}
+	  if (close.topbottom.skip == "none") {
+	    neigh.bottom[(N-Nx+1):(N-Nx/2-1)] = N:(N-Nx/2+2)
+	    neigh.bottom[N:(N-Nx/2+2)] = (N-Nx+1):(N-Nx/2-1)
+	    if (close.sides) {neigh.bottom[c(N-Nx+1,N)] = NA}
+	  } else if (close.topbottom.skip == "left") {
+	    neigh.bottom[(N-Nx+2):(N-Nx/2)] = N:(N-Nx/2+2)
+	    neigh.bottom[N:(N-Nx/2+2)] = (N-Nx+2):(N-Nx/2)
+	  } else if (close.topbottom.skip == "right") {
+	    neigh.bottom[(N-Nx+1):(N-Nx/2-1)] = (N-1):(N-Nx/2+1)
+	    neigh.bottom[(N-1):(N-Nx/2+1)] = (N-Nx+1):(N-Nx/2-1)
+	  } else {stop("'close.topbottom.skip' must be one of 'none', 'left', and 'right'")}
 	}
 	if (quad2triag) {
 		neigh.topright = c(rep(NA,Nx),2:(N-Nx+1))
@@ -72,16 +88,40 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems
 		neigh.bottomright = c((Nx+2):(N+1),rep(NA,Nx))
 		neigh.bottomleft = c(Nx:(N-1),rep(NA,Nx))
 		if (close.top) {
-		  neigh.topright[1:(Nx/2-1)] = (Nx-1):(Nx/2+1)
-		  neigh.topright[(Nx/2+1):(Nx-1)] = (Nx/2-1):1
-		  neigh.topleft[2:(Nx/2)] = Nx:(Nx/2+2)
-		  neigh.topleft[(Nx/2+2):Nx] = (Nx/2):2
+		  if (close.topbottom.skip == "none") {
+		    neigh.topright[1:(Nx/2-1)] = (Nx-1):(Nx/2+1)
+		    neigh.topright[(Nx/2+1):(Nx-1)] = (Nx/2-1):1
+		    neigh.topleft[2:(Nx/2)] = Nx:(Nx/2+2)
+		    neigh.topleft[(Nx/2+2):Nx] = (Nx/2):2
+		  } else if (close.topbottom.skip == "left") {
+		    neigh.topright[2:(Nx/2-1)] = (Nx-1):(Nx/2+2)
+		    neigh.topright[(Nx/2+2):(Nx-1)] = (Nx/2-1):2
+		    neigh.topleft[3:(Nx/2)] = Nx:(Nx/2+3)
+		    neigh.topleft[(Nx/2+3):Nx] = (Nx/2):3
+		  } else {
+		    neigh.topright[1:(Nx/2-2)] = (Nx-2):(Nx/2+1)
+		    neigh.topright[(Nx/2+1):(Nx-2)] = (Nx/2-2):1
+		    neigh.topleft[2:(Nx/2-1)] = (Nx-1):(Nx/2+2)
+		    neigh.topleft[(Nx/2+2):(Nx-1)] = (Nx/2-1):2
+		  }
 		}
 		if (close.bottom) {
-		  neigh.bottomright[(N-Nx)+(1:(Nx/2-1))] = (N-Nx)+((Nx-1):(Nx/2+1))
-		  neigh.bottomright[(N-Nx)+((Nx/2+1):(Nx-1))] = (N-Nx)+((Nx/2-1):1)
-		  neigh.bottomleft[(N-Nx)+(2:(Nx/2))] = (N-Nx)+(Nx:(Nx/2+2))
-		  neigh.bottomleft[(N-Nx)+((Nx/2+2):Nx)] = (N-Nx)+((Nx/2):2)
+		  if (close.topbottom.skip == "none") {
+		    neigh.bottomright[(N-Nx)+(1:(Nx/2-1))] = (N-Nx)+((Nx-1):(Nx/2+1))
+		    neigh.bottomright[(N-Nx)+((Nx/2+1):(Nx-1))] = (N-Nx)+((Nx/2-1):1)
+		    neigh.bottomleft[(N-Nx)+(2:(Nx/2))] = (N-Nx)+(Nx:(Nx/2+2))
+		    neigh.bottomleft[(N-Nx)+((Nx/2+2):Nx)] = (N-Nx)+((Nx/2):2)
+		  } else if (close.topbottom.skip == "left") {
+		    neigh.bottomright[(N-Nx)+(2:(Nx/2-1))] = (N-Nx)+((Nx-1):(Nx/2+2))
+		    neigh.bottomright[(N-Nx)+((Nx/2+2):(Nx-1))] = (N-Nx)+((Nx/2-1):2)
+		    neigh.bottomleft[(N-Nx)+(3:(Nx/2))] = (N-Nx)+(Nx:(Nx/2+3))
+		    neigh.bottomleft[(N-Nx)+((Nx/2+3):Nx)] = (N-Nx)+((Nx/2):3)
+		  } else {
+		    neigh.bottomright[(N-Nx)+(1:(Nx/2-2))] = (N-Nx)+((Nx-2):(Nx/2+1))
+		    neigh.bottomright[(N-Nx)+((Nx/2+1):(Nx-2))] = (N-Nx)+((Nx/2-2):1)
+		    neigh.bottomleft[(N-Nx)+(2:(Nx/2-1))] = (N-Nx)+((Nx-1):(Nx/2+2))
+		    neigh.bottomleft[(N-Nx)+((Nx/2+2):(Nx-1))] = (N-Nx)+((Nx/2-1):2)
+		  }
 		}
 	}
 	if (close.sides) {
@@ -106,10 +146,24 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems
 	if (quad2triag) {
 		if (quad2triag.mode == "zigzag") {
 			for (ny in 0:(Ny-1)) {
-				neigh.topright[seq(Nx*ny+1,Nx*ny+Nx,2)] = NA
-				neigh.topleft[seq(Nx*ny+3,Nx*ny+Nx,2)] = NA
-				neigh.bottomright[seq(Nx*ny+2,Nx*ny+Nx,2)] = NA
-				neigh.bottomleft[seq(Nx*ny+2,Nx*ny+Nx,2)] = NA
+			  if (ny == 0 && close.top && close.topbottom.skip != "none") {
+			    neigh.topright[seq(Nx*ny+1,Nx*ny+Nx/2,2)] = NA
+			    neigh.topleft[seq(Nx*ny+3,Nx*ny+Nx/2,2)] = NA
+			    neigh.topright[seq(Nx*ny+Nx,Nx*ny+Nx/2+1,-2)] = NA
+			    neigh.topleft[seq(Nx*ny+Nx,Nx*ny+Nx/2+1,-2)] = NA
+			  } else {
+				  neigh.topright[seq(Nx*ny+1,Nx*ny+Nx,2)] = NA
+				  neigh.topleft[seq(Nx*ny+3,Nx*ny+Nx,2)] = NA
+			  }
+			  if (ny == (Ny-1) && close.bottom & close.topbottom.skip != "none") {
+			    neigh.bottomright[seq(Nx*ny+2,Nx*ny+Nx/2,2)] = NA
+			    neigh.bottomleft[seq(Nx*ny+2,Nx*ny+Nx/2,2)] = NA
+			    neigh.bottomright[seq(Nx*ny+Nx-1,Nx*ny+Nx/2+1,-2)] = NA
+			    neigh.bottomleft[seq(Nx*ny+Nx-1,Nx*ny+Nx/2+1,-2)] = NA
+			  } else {
+				  neigh.bottomright[seq(Nx*ny+2,Nx*ny+Nx,2)] = NA
+				  neigh.bottomleft[seq(Nx*ny+2,Nx*ny+Nx,2)] = NA
+			  }
 			}
 			if (Nx%%2 == 0) {
 				neigh.topleft[seq(1,N,Nx)] = NA
@@ -149,6 +203,17 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems
 			elem = matrix(nrow=Ne,ncol=3)
 			ne = 0
 			if (close.top) {
+			  if (close.topbottom.skip == "left") {
+			    ne = ne + 1
+			    elem[ne,] = c(1,2,Nx)
+			    ne = ne + 1
+			    elem[ne,] = Nx/2 + c(1,2,0)
+			  } else if (close.topbottom.skip == "right") {
+			    ne = ne + 1
+			    elem[ne,] = c(Nx,1,Nx-1)
+			    ne = ne + 1
+			    elem[ne,] = Nx/2 + c(0,1,-1)
+			  }
 			  for (n in 1:Nx) {
 			    for (nn in 5:8) {
 			      if (!anyNA(neighnodes[n,c(nn,(nn%%8)+1)])) {
@@ -174,6 +239,17 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems
 			}
 			if (close.bottom) {
 			  ne.nobot = ne
+			  if (close.topbottom.skip == "left") {
+			    ne = ne + 1
+			    elem[ne,] = N-Nx + c(1,Nx,2)
+			    ne = ne + 1
+			    elem[ne,] = N-Nx/2 + c(1,0,2)
+			  } else if (close.topbottom.skip == "right") {
+			    ne = ne + 1
+			    elem[ne,] = N-Nx + c(Nx,Nx-1,1)
+			    ne = ne + 1
+			    elem[ne,] = N-Nx/2 + c(0,-1,1)
+			  }
 			  for (n in (N-Nx+1):N) {
 			    for (nn in 1:4) {
 			      if (!anyNA(neighnodes[n,c(nn,nn+1)])) {
@@ -215,7 +291,7 @@ function (lon=NULL,lat=NULL,Nx=NULL,Ny=NULL,vars=NULL,neighnodes=TRUE,neighelems
 	elem.N.notna = rowSums(!is.na(elem))
 	if (any(c(1,2) %in% elem.N.notna)) {warning("grid contains elements with only one or two vertices, something went wrong")}
 	elem = elem[elem.N.notna > 0, ]
-	
+  
 	if (neighnodes.arg || neighelems.arg) {
 	  findneighbours.res = sl.findneighbours(elem = elem)
 	  if (neighnodes.arg) {
