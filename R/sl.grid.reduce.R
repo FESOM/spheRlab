@@ -77,19 +77,22 @@ function (grd, remove.points, set.coast = TRUE, set.openbound = FALSE, return.in
 	  neno = neighnodes[i, ]
 	  Nneno = sum(!is.na(neno))
 	  if (Nneno < 2) {stop("encountered node with less than two neighbouring nodes, which should not happen")}
-	  neighnodes[i, 1:Nneno] = neno[!is.na(neno)]
+	  neno = neno[!is.na(neno)]
+	  neighnodes[i, 1:Nneno] = neno
 	  if (Nneno.max > Nneno) {neighnodes[i, (Nneno+1):Nneno.max] = NA}
 	  
 	  # delete node connections between nodes without common element remaining
 	  neel.orig = neighelems.orig[i, ]
 	  neel.orig = neel.orig[!is.na(neel.orig)]
 	  if (any(!keep.elems[neel.orig])) {
-	    for (j in neno[!is.na(neno)]) {
+	    for (j in neno) {
 	      if (!(j %in% elem[neel[!is.na(neel)], ])) {
-	        j.ind = which(neno[!is.na(neno)] == j)
+	        j.ind = which(neno == j)
 	        neighnodes[i, j.ind] = NA
-	        neighnodes[i, 1:(Nneno-1)] = neighnodes[i, !is.na(neighnodes[i, ])]
-	        neighnodes[i, Nneno:Nneno.max] = NA
+	        neno = neighnodes[i, !is.na(neighnodes[i, ])]
+	        Nneno = Nneno - 1
+	        neighnodes[i, 1:Nneno] = neno
+	        neighnodes[i, (Nneno+1):Nneno.max] = NA
 	      }
 	    }
 	  }
@@ -100,12 +103,12 @@ function (grd, remove.points, set.coast = TRUE, set.openbound = FALSE, return.in
 	Nneel.max.new = max(rowSums(!is.na(neighelems)))
 	if (Nneel.max.new < Nneel.max) {
 	  neighelems = neighelems[,1:Nneel.max.new]
-	  warning("shrinked 'neighelems' matrix from",Nneel.max,"to",Nneel.max.new,"columns")
+	  warning(paste("shrinked 'neighelems' matrix from",Nneel.max,"to",Nneel.max.new,"columns"))
 	}
 	Nneno.max.new = max(rowSums(!is.na(neighnodes)))
 	if (Nneno.max.new < Nneno.max) {
 	  neighnodes = neighnodes[,1:Nneno.max.new]
-	  warning("shrinked 'neighnodes' matrix from",Nneno.max,"to",Nneno.max.new,"columns")
+	  warning(paste("shrinked 'neighnodes' matrix from",Nneno.max,"to",Nneno.max.new,"columns"))
 	}
 	
 	elem = elem[keep.elems, ]
