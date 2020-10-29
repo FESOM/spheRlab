@@ -50,7 +50,7 @@ Helge Goessling
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link{sl.grid.curvilin2unstr}}
+\code{\link{sl.grid.curvilin2unstr}}, \code{\link{sl.grid.mergepoints}}
 }
 \examples{
 # generate an example curvilinear grid
