@@ -262,7 +262,7 @@ function (plot.init.res,lon,lat,fill=TRUE,col.fill="black",border=FALSE,col.bord
 				return()
 			}
 			if (N.lr > 1) {
-				if (l2r[1] > r2l[1]) {r2l = r2l[c(2:L,1)]}
+				if (l2r[1] > r2l[1]) {r2l = r2l[c(2:N.lr,1)]}
 				for (i in 2:N.lr) {
 					if (r2l[i]%%L+1 > l2r[i]) {
 						right = l2r[i]:(r2l[i]%%L+1)
