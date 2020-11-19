@@ -32,7 +32,7 @@ function (lon,lat,neighmat,areas,Rsphere=1,method="gauss",gauss.sigma=2*pi*Rsphe
 					
 					if (neighs[k] %in% neighhood) {next}
 					
-					d = sl.gc.dist(lon[c(i,neighs[k])],lat[c(i,neighs[k])],Rsphere)
+					d = sl.gc.dist(lon=lon[c(i,neighs[k])],lat=lat[c(i,neighs[k])],Rsphere=Rsphere)
 					
 					if (d > cutoff) {next}
 					
