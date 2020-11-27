@@ -2,7 +2,7 @@ sl.plot.colbar <-
 function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),9),labels=NULL,
           labels.side="bottom",labels.cex=1,labels.signif=3,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",
           do.init=TRUE,do.init.device=do.init,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6,
-          xshift=0,yshift=0,len=0.6) {
+          xshift=0,yshift=0,len=0.6,units=NULL,units.xy=NULL) {
 
   if (!is.null(names(colbar)) && "colbar" %in% names(colbar)) {
     if ("categorical" %in% names(colbar)) {categorical = colbar$categorical}
@@ -87,6 +87,11 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 		} else {
 			stop("triangular ends not yet implemented")
 		}
+		
+		if (!is.null(units)) {
+		  if (is.null(units.xy)) {units.xy = c(0,1.2)}
+		  text(x=units.xy[1]*len/2+xshift,y=units.xy[2]*len/2+yshift,labels=units,cex=labels.cex)
+		}
 
 	} else {
 
@@ -120,6 +125,11 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 	    polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymin,ymin,ymax,ymax))
 	  } else {
 	    stop("triangular ends not yet implemented")
+	  }
+	  
+	  if (!is.null(units)) {
+	    if (is.null(units.xy)) {units.xy = c(1.2,0)}
+	    text(x=units.xy[1]*len/2+xshift,y=units.xy[2]*len/2+yshift,labels=units,cex=labels.cex)
 	  }
 
 	}

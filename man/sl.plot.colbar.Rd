@@ -8,7 +8,7 @@ Plot Colourbar
 Plot a spheRlab colourbar, vertically or horizontally, with a number of options.
 }
 \usage{
-sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, labels.signif = 3, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init = TRUE, do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6)
+sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, labels.signif = 3, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init = TRUE, do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6, xshift = 0, yshift = 0, len = 0.6, units = NULL, units.xy = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -72,6 +72,21 @@ a logical value specifying whether to call \code{dev.off()} to close the corresp
   \item{width}{
   a scalar specifying the width of the figure.
 }
+  \item{xshift}{
+  a scalar specifying how far the colourbar shall be shifted from the plot coordinate origin in x-direction. Default is \code{xshift=0}.
+}
+  \item{yshift}{
+  a scalar specifying how far the colourbar shall be shifted from the plot coordinate origin in y-direction. Default is \code{yshift=0}.
+}
+  \item{len}{
+  a scalar specifying the (absolute) length of the colourbar. Default is \code{0.6}. If \code{do.init=TRUE}, in which case the plot domain ranges from -0.5 to 0.5 in both x and y direction, \code{len} also corresponds to the colourbar length relative to the plot size.
+}
+  \item{units}{
+  a character specifying a units string to be added to the plot. Default is \code{""}, in which case no units are added.
+}
+  \item{units.xy}{
+  a two-element numeric vector specifying the relative (scaled by \code{len}) x and y coordinates of the units relative to the colourbar. If not specified, \code{units.xy=c(0,1.2)} for vertical colourbars (units are added above the upper end) and \code{units.xy=c(1.2,0)} for vertical colourbars (units are added next to the right end).
+}
 }
 \details{
 Colourbars in spheRlab follow the philosophy that they are plotted separately of the fields they annotate. Combining a plotted field and its colourbar subsequently is left to the user and his or her choice of external software (e.g., OpenOffice or the like). This substantially increases the simplicity and flexibility of plot handling within spheRlab.
@@ -95,10 +110,9 @@ NOTE THAT SO FAR THIS FUNCTION HAS UNUSED ARGUMENTS AND OTHER GAPS THAT NEED TO 
 \code{\link{sl.colbar}}, \code{\link{sl.num2colbar}}, \code{\link{sl.view.colbar}}
 }
 \examples{
-cb = sl.colbar(cols=list(c(1,0,0),c(.5,.5,.5),c(0,0,1)),N=10)
+cb = sl.colbar(cols=rgb(c(1,0,0),c(.5,.5,.5),c(0,0,1)),N=10)
 breaks = seq(.1,.9,.1)
-## sl.plot.colbar(colbar=cb,breaks=breaks)
-## Should result in a corresponding figure stored in the file '~/sl.plot.colbar.pdf'
+sl.plot.colbar(colbar=cb,breaks=breaks,do.init.device=F,units="(K)")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
