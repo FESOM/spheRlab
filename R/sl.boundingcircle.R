@@ -8,7 +8,7 @@ function(lon=NULL, lat=NULL, method="ritter", verbose=TRUE) {
   }
   
   if (is.null(lon) || is.null(lat)) {stop("both lon and lat must be provided")}
-  if (sl.dim(lon) != sl.dim(lat)) {stop("lon and lat must have the same dimensions")}
+  if (!identical(sl.dim(lon), sl.dim(lat))) {stop("lon and lat must have the same dimensions")}
   
   not.na = (!is.na(lon) & !is.na(lat))
   if (sum(not.na) == 0) {stop("lon and lat must have at least one common element that is not 'NA'")}
