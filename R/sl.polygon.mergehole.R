@@ -1,5 +1,5 @@
 sl.polygon.mergehole <-
-function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,split.costexp=2) {
+function(poly,poly.hole,connect.maxstep=Inf,checkcross.input=TRUE,checkcross.output=TRUE,split.poly=FALSE,checkfail.maskfrac=0.01,split.costexp=2,split.costborderbygcdist=FALSE) {
   
   if (any(!(c("lon","lat") %in% names(poly.hole)))) {
     stop("handling more than one hole at a time has not yet been implemented")
@@ -15,9 +15,9 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
     o.N = length(poly$lon)
   }
   
-  if (checkcross) {
+  if (checkcross.input) {
     intersect.res = sl.intersect(poly$lon,poly$lat,close1=TRUE,return.on.firsthit=TRUE)
-    if (intersect.res$anylines.intersect) {stop("'poly' contains intersecting segments")}
+    if (intersect.res$anylines.intersect) {browser();stop("'poly' contains intersecting segments")}
   }
   
   o.lon.ext = c(poly$lon[o.N], poly$lon, poly$lon[1])
@@ -30,6 +30,8 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
   if (sum(o.angles) > o.N*pi) {
     poly$lon = poly$lon[o.N:1]
     poly$lat = poly$lat[o.N:1]
+    o.lon.ext = c(poly$lon[o.N], poly$lon, poly$lon[1])
+    o.lat.ext = c(poly$lat[o.N], poly$lat, poly$lat[1])
     o.angles = 2*pi - o.angles[o.N:1]
   }
   
@@ -43,7 +45,7 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
     i.N = length(poly.hole$lon)
   }
   
-  if (checkcross) {
+  if (checkcross.input) {
     intersect.res = sl.intersect(poly.hole$lon,poly.hole$lat,close1=TRUE,return.on.firsthit=TRUE)
     if (intersect.res$anylines.intersect) {stop("'poly.hole' contains intersecting segments")}
   }
@@ -58,6 +60,8 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
   if (sum(i.angles) < i.N*pi) {
     poly.hole$lon = poly.hole$lon[i.N:1]
     poly.hole$lat = poly.hole$lat[i.N:1]
+    i.lon.ext = c(poly.hole$lon[i.N], poly.hole$lon, poly.hole$lon[1])
+    i.lat.ext = c(poly.hole$lat[i.N], poly.hole$lat, poly.hole$lat[1])
     i.angles = 2*pi - i.angles[i.N:1]
   }
   
@@ -66,6 +70,9 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
   i.ind = dist.res$ind[2]
   connect.dist = dist.res$dist
   o.dist = NULL
+  
+  checkfail.maskN.o = max(floor((floor(checkfail.maskfrac * o.N) - 1) / 2), 0)
+  checkfail.maskN.i = max(floor((floor(checkfail.maskfrac * i.N) - 1) / 2), 0)
   
   repeat {
     
@@ -86,7 +93,7 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
     
     angles.OK = (i.ang >= 0 && i.ang <= i.angles[i.ind] && o.ang >= 0 && o.ang <= o.angles[o.ind])
     nocross = TRUE
-    if (angles.OK && checkcross) {
+    if (angles.OK && checkcross.output) {
       
       if (is.null(o.dist)) {
         o.dist = sl.gc.dist(o.lon.ext[2:(o.N+2)], o.lat.ext[2:(o.N+2)], sequential=TRUE)
@@ -109,6 +116,12 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
     
     if (angles.OK && nocross) {break}
     
+    if (checkfail.maskN.o > 0) {
+      o.ind = (((o.ind-checkfail.maskN.o-1):(o.ind+checkfail.maskN.o-1)) %% o.N) + 1
+    }
+    if (checkfail.maskN.i > 0) {
+      i.ind = (((i.ind-checkfail.maskN.i-1):(i.ind+checkfail.maskN.i-1)) %% i.N) + 1
+    }
     dist.res$dist.all[o.ind,i.ind] = NA
     connect.dist = min(dist.res$dist.all,na.rm=TRUE)
     oi.inds = which(dist.res$dist.all == connect.dist, arr.ind = TRUE)[1,]
@@ -146,23 +159,29 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
   o.ind.prev = o.ind
   i.ind.prev = i.ind
   connect.dist.prev = connect.dist
-  if (checkcross) {
+  if (checkcross.output) {
     connect.lon.prev = connect.lon
     connect.lat.prev = connect.lat
   }
   connect.insert.prev = connect.insert
   connect.insert.inv.prev = connect.insert.inv
   
-  o.dist.cumsum = cumsum(o.dist)
+  if (split.costborderbygcdist) {
+    o.dist.cumsum = cumsum(o.dist)
+    i.dist.cumsum = cumsum(i.dist)
+  } else {
+    o.dist.cumsum = 1:o.N
+    i.dist.cumsum = 1:o.N
+  }
+    
   o.dist.total = tail(o.dist.cumsum,1)
   o.dist.cumsum = (o.dist.cumsum - o.dist.cumsum[o.ind.prev])[-o.ind.prev]
   o.dist.min = pmin(o.dist.total-o.dist.cumsum, abs(o.dist.cumsum), o.dist.total+o.dist.cumsum)
-
-  i.dist.cumsum = cumsum(i.dist)
+  
   i.dist.total = tail(i.dist.cumsum,1)
   i.dist.cumsum = (i.dist.cumsum - i.dist.cumsum[i.ind.prev])[-i.ind.prev]
   i.dist.min = pmin(i.dist.total-i.dist.cumsum, abs(i.dist.cumsum), i.dist.total+i.dist.cumsum)
-  
+    
   split.costfun = dist.res$dist.all[-o.ind.prev,-i.ind.prev] / (pmin(matrix(o.dist.min,nrow=o.N-1,ncol=i.N-1),
                                                            matrix(i.dist.min,nrow=o.N-1,ncol=i.N-1,byrow=TRUE)))^split.costexp
   
@@ -192,7 +211,7 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
     
     angles.OK = (i.ang >= 0 && i.ang <= i.angles[i.ind] && o.ang >= 0 && o.ang <= o.angles[o.ind])
     nocross = TRUE
-    if (angles.OK && checkcross) {
+    if (angles.OK && checkcross.output) {
       
       connect.lon = c(poly.hole$lon[i.ind],poly$lon[o.ind])
       connect.lat = c(poly.hole$lat[i.ind],poly$lat[o.ind])
@@ -215,7 +234,15 @@ function(poly,poly.hole,connect.maxstep=Inf,checkcross=TRUE,split.poly=FALSE,spl
     
     if (angles.OK && nocross) {break}
     
-    split.costfun[oi.inds[1],oi.inds[2]] = NA
+    o.ind = oi.inds[1]
+    i.ind = oi.inds[2]
+    if (checkfail.maskN.o > 0) {
+      o.ind = (((o.ind-checkfail.maskN.o-1):(o.ind+checkfail.maskN.o-1)) %% o.N) + 1
+    }
+    if (checkfail.maskN.i > 0) {
+      i.ind = (((i.ind-checkfail.maskN.i-1):(i.ind+checkfail.maskN.i-1)) %% i.N) + 1
+    }
+    split.costfun[o.ind,i.ind] = NA
     oi.inds = which(split.costfun == min(split.costfun,na.rm=TRUE), arr.ind = TRUE)[1,]
     o.ind = oi.inds[1]
     if (o.ind >= o.ind.prev) {o.ind = o.ind + 1}
