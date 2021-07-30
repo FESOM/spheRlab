@@ -8,7 +8,7 @@ Load Natural Earth Data
 Load (read) and/or download Natural Earth data.
 }
 \usage{
-sl.load.naturalearth(what="all", resolution="medium", naturalearth.dir="~/naturalearthdata", force.download=FALSE, download.if.missing=TRUE, download.baseurl="http://www.naturalearthdata.com/http//www.naturalearthdata.com/download", read=TRUE, verbose=TRUE)
+sl.load.naturalearth(what="all", resolution="medium", poly.split=TRUE, naturalearth.dir="~/naturalearthdata", force.download=FALSE, download.if.missing=TRUE, download.baseurl="http://www.naturalearthdata.com/http//www.naturalearthdata.com/download", read=TRUE, verbose=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,8 +18,17 @@ to load, e.g., 'coastline'. To list all possible values for the specified resolu
   \item{resolution}{
 a character or character vector sepcifying which resolution(s) to use. Possible values are 'coarse' (1:110Mio), 'medium' (1:50Mio; default), and 'fine' (1:10Mio).
 }
+  \item{poly.split}{
+a logical value indicating whether polygon objects (e.g. if \code{what='land'}) are to be split into small polygons before reading. Default is \code{TRUE}. If the splitting for a specific dataset is done for the first time, \code{sl.polygon.split()} is called (and optionally \code{sl.polygon.mergehole()} for polygons that include holes), and an R-object with the splitted polygons is saved in \code{naturalearth.dir}. This can take some time, highly depending on the polygon resolution. If such an object already exists (and \code{force.raw2split=FALSE}), the object is loaded instead of splitting the raw polygons again.
+}
   \item{naturalearth.dir}{
-a character specifying the local Natural Earth data directory. If data are downloaded from the internet, they will be save to this directory; if it does not yet exist, it will be created.
+a character specifying the local Natural Earth data directory. If data are downloaded from the internet, they will be save to this directory; if it does not yet exist, it will be created. Default is \code{NULL}, in which case such a value is sourced from \code{./spheRlab} if it exists, and if not it's assumed that \code{naturalearth.dir='~/naturalearthdata'}.
+}
+  \item{force.raw2split}{
+a logical value specifying whether to redo the polygon splitting even if a corresponding splitted-polygons R-object already exists. Default is \code{FALSE}. Only relevant if a polygon object is specified (e.g. if \code{what='land'}) and \code{poly.split=TRUE}.
+}
+  \item{force.shape2raw}{
+a logical value specifying whether to redo the conversion from the original Natural Earth shape file to an (raw, that is, not splitted) R-object if the latter already exists. Default is \code{FALSE}.
 }
   \item{force.download}{
 a logical value indicating whether or not to download the data from the internet, even if it already exists locally, to replace the local file. This can be useful when updates are available. By default, force.download=FALSE .
