@@ -144,7 +144,7 @@ function (grd, remove.points, set.coast = TRUE, set.openbound = FALSE, return.in
 	          warning(paste("reduced list-element",names(grd)[i],"automatically based on vector length = N(nodes)"))
 	        }
 	        if (length(grd[[i]]) == Nelem) {
-	          grd[[i]] = grd[[i]][keep.points]
+	          grd[[i]] = grd[[i]][keep.elems]
 	          warning(paste("reduced list-element",names(grd)[i],"automatically based on vector length = N(elems)"))
 	        }
 	      } else {
