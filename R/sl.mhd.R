@@ -51,7 +51,7 @@ sl.mhd <- function(A,B,cA=NULL,cB=NULL,kA=NULL,kB=NULL,R=NULL)
 		tempdist <- numeric(B_dim_c[1])
 		lons[1] <- A[a,1]
 		lats[1] <- A[a,2]
-		tempdist <- sl.gc.dist(lons,lats,R,sequential=FALSE)
+		tempdist <- sl.gc.dist(lons,lats,Rsphere=R,sequential=FALSE)
 		fhd <- fhd + min(tempdist)
 	}
 
@@ -70,7 +70,7 @@ sl.mhd <- function(A,B,cA=NULL,cB=NULL,kA=NULL,kB=NULL,R=NULL)
 		tempdist <- numeric(A_dim_c[1])
 		lons[1] <- B[b,1]
 		lats[1] <- B[b,2]
-		tempdist <- sl.gc.dist(lons,lats,R,sequential=FALSE)
+		tempdist <- sl.gc.dist(lons,lats,Rsphere=R,sequential=FALSE)
 		rhd <- rhd + min(tempdist)
 	}
 
@@ -105,7 +105,7 @@ sl.mhd <- function(A,B,cA=NULL,cB=NULL,kA=NULL,kB=NULL,R=NULL)
 	# {	
 		# lons[1] <- A[a,1]
 		# lats[1] <- A[a,2]
-		# tempdist_vec <- sl.gc.dist(lons,lats,R,sequential=FALSE)
+		# tempdist_vec <- sl.gc.dist(lons,lats,Rsphere=R,sequential=FALSE)
 		# tempdist_min <- min(tempdist_vec)
 		# tempdist_min
 	# }
@@ -130,7 +130,7 @@ sl.mhd <- function(A,B,cA=NULL,cB=NULL,kA=NULL,kB=NULL,R=NULL)
 	# {	
 		# lons[1] <- B[b,1]
 		# lats[1] <- B[b,2]
-		# tempdist_vec <- sl.gc.dist(lons,lats,R,sequential=FALSE)
+		# tempdist_vec <- sl.gc.dist(lons,lats,Rsphere=R,sequential=FALSE)
 		# tempdist_min <- min(tempdist_vec)
 		# tempdist_min
 	# }
