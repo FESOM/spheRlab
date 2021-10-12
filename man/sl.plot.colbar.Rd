@@ -8,7 +8,7 @@ Plot Colourbar
 Plot a spheRlab colourbar, vertically or horizontally, with a number of options.
 }
 \usage{
-sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, labels.signif = 3, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init = TRUE, do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6, xshift = 0, yshift = 0, len = 0.6, units = NULL, units.xy = NULL)
+sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labels.at = NULL, labels.num = min(length(breaks),5), labels = NULL, labels.side = "bottom", labels.cex = 1, labels.signif = 3, ticks.length = 1, ticks.mirrored = FALSE, ratio = 0.1, triag.ends = FALSE, device = "pdf", do.init = TRUE, do.init.device = TRUE, do.close.device = do.init.device, file.name = paste0("~/sl.plot.colbar.",device), width = 6, xshift = 0, yshift = 0, len = 0.6, units = NULL, units.xy = NULL, labels.col = "black")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -86,6 +86,9 @@ a logical value specifying whether to call \code{dev.off()} to close the corresp
 }
   \item{units.xy}{
   a two-element numeric vector specifying the relative (scaled by \code{len}) x and y coordinates of the units relative to the colourbar. If not specified, \code{units.xy=c(0,1.2)} for vertical colourbars (units are added above the upper end) and \code{units.xy=c(1.2,0)} for vertical colourbars (units are added next to the right end).
+}
+  \item{labels.col}{
+  the colour of the labels (and units).
 }
 }
 \details{

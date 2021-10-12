@@ -2,7 +2,7 @@ sl.plot.colbar <-
 function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labels.num=min(length(breaks),9),labels=NULL,
           labels.side="bottom",labels.cex=1,labels.signif=3,ticks.length=1,ticks.mirrored=FALSE,ratio=.1,triag.ends=FALSE,device="pdf",
           do.init=TRUE,do.init.device=do.init,do.close.device=do.init.device,file.name=paste0("~/sl.plot.colbar.",device),width=6,
-          xshift=0,yshift=0,len=0.6,units=NULL,units.xy=NULL) {
+          xshift=0,yshift=0,len=0.6,units=NULL,units.xy=NULL,labels.col="black") {
 
   if (!is.null(names(colbar)) && "colbar" %in% names(colbar)) {
     if ("categorical" %in% names(colbar)) {categorical = colbar$categorical}
@@ -66,7 +66,7 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 		yma = ymi + ystp
 		polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymi,ymi,yma,yma),col=colbar[[1]],border=colbar[[1]],lwd=.01)
 		if (categorical && labels.at[1]) {
-		  text(x=xmax+(xmax-xmin)/8,y=(ymi+yma)/2,labels=labels[1],pos=4,cex=labels.cex)
+		  text(x=xmax+(xmax-xmin)/8,y=(ymi+yma)/2,labels=labels[1],pos=4,cex=labels.cex,col=labels.col)
 		}
 		for (i in 2:length(colbar)) {
 			ymi = ymi + ystp
@@ -74,11 +74,11 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 			polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymi,ymi,yma,yma),col=colbar[[i]],border=colbar[[i]],lwd=.01)
 			if (categorical) {
 			  if (labels.at[i]) {
-			    text(x=xmax+(xmax-xmin)/8,y=(ymi+yma)/2,labels=labels[i],pos=4,cex=labels.cex)
+			    text(x=xmax+(xmax-xmin)/8,y=(ymi+yma)/2,labels=labels[i],pos=4,cex=labels.cex,col=labels.col)
 			  }
 			}
 			else if (labels.at[i-1]) {
-				text(x=xmax+(xmax-xmin)/8,y=ymi,labels=labels[i-1],pos=4,cex=labels.cex)
+				text(x=xmax+(xmax-xmin)/8,y=ymi,labels=labels[i-1],pos=4,cex=labels.cex,col=labels.col)
 			}
 		}
 
@@ -90,7 +90,7 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 		
 		if (!is.null(units)) {
 		  if (is.null(units.xy)) {units.xy = c(0,1.2)}
-		  text(x=units.xy[1]*len/2+xshift,y=units.xy[2]*len/2+yshift,labels=units,cex=labels.cex)
+		  text(x=units.xy[1]*len/2+xshift,y=units.xy[2]*len/2+yshift,labels=units,cex=labels.cex,col=labels.col)
 		}
 
 	} else {
@@ -106,7 +106,7 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 	  xma = xmi + xstp
 	  polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[1]],border=colbar[[1]],lwd=.01)
 	  if (categorical && labels.at[1]) {
-	    text(x=(xmi+xma)/2,y=ymin-(ymax-ymin)/8,labels=labels[1],pos=1,cex=labels.cex)
+	    text(x=(xmi+xma)/2,y=ymin-(ymax-ymin)/8,labels=labels[1],pos=1,cex=labels.cex,col=labels.col)
 	  }
 	  for (i in 2:length(colbar)) {
 	    xmi = xmi + xstp
@@ -114,10 +114,10 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 	    polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[i]],border=colbar[[i]],lwd=.01)
 	    if (categorical) {
 	      if (labels.at[i]) {
-	        text(x=(xmi+xma)/2,y=ymin-(ymax-ymin)/8,labels=labels[i],pos=1,cex=labels.cex)
+	        text(x=(xmi+xma)/2,y=ymin-(ymax-ymin)/8,labels=labels[i],pos=1,cex=labels.cex,col=labels.col)
 	      }
 	    } else if (labels.at[i-1]) {
-	      text(x=xmi,y=ymin-(ymax-ymin)/8,labels=labels[i-1],pos=1,cex=labels.cex)
+	      text(x=xmi,y=ymin-(ymax-ymin)/8,labels=labels[i-1],pos=1,cex=labels.cex,col=labels.col)
 	    }
 	  }
 
@@ -129,7 +129,7 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 	  
 	  if (!is.null(units)) {
 	    if (is.null(units.xy)) {units.xy = c(1.2,0)}
-	    text(x=units.xy[1]*len/2+xshift,y=units.xy[2]*len/2+yshift,labels=units,cex=labels.cex)
+	    text(x=units.xy[1]*len/2+xshift,y=units.xy[2]*len/2+yshift,labels=units,cex=labels.cex,col=labels.col)
 	  }
 
 	}
