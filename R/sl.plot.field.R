@@ -1,10 +1,13 @@
 sl.plot.field <-
-function (plot.init.res,num,lon.v,lat.v,fill=TRUE,col.fill="colbar",border=FALSE,col.border="colbar",colbar=sl.colbar.redgreyblue_256,colbar.breaks=NA,colbar.breaks.log=FALSE,border.lwd=0.01,border.lty=1) {
+function (plot.init.res,num,lon.v,lat.v,fill=TRUE,col.fill="colbar",border=TRUE,col.border="colbar",colbar=sl.colbar.redgreyblue_256,colbar.breaks=NA,colbar.breaks.log=FALSE,border.lwd=1,border.lty=1,na.col=NA) {
 	
 	Npoly = nrow(lon.v)
 	if (col.fill == "colbar" || col.border == "colbar") {
 		colbar.res = sl.num2colbar(num,colbar,colbar.breaks,colbar.breaks.log)
 		col.ind = colbar.res$colour.index
+		na.col.ind = length(colbar) + 1
+		colbar[[na.col.ind]] = na.col
+		col.ind[is.na(col.ind)] = na.col.ind
 	}
 	for (np in 1:Npoly) {
 		cb.fill = col.fill

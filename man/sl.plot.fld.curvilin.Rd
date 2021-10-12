@@ -31,10 +31,10 @@ an \code{Nlat+1}x\code{Nlon+1} matrix specifying the interface longitudes corres
 an \code{Nlat+1}x\code{Nlon+1} matrix specifying the interface latitudes corresponding to \code{vals}.
 }
   \item{border}{
-a logical value indicating whether or not to draw lines for the polygon borders.
+a logical value indicating whether or not to draw lines for the polygon borders. Default is \code{TRUE}, which can avoid aliasing that may occur when plots are rendered. If aliasing still occurs, you can try to increase \code{border.lwd}.
 }
   \item{border.lwd}{
-the line width of the borders.
+the line width of the borders. Default is \code{1}. Used only if \code{border=TRUE}. If this is used to avoid aliasing when plots are rendered, but aliasing still occurs, you can try to increase this value.
 }
   \item{colbar}{
 a spheRlab colourbar (as returned by \code{\link{sl.colbar}}) of length \code{Nc} to be used for the numerical field. Used only if \code{vals} is specified.

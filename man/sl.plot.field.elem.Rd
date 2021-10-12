@@ -8,7 +8,7 @@ Plot Field on Triangular Elements
 Plot a 2-dimensional numerical field on a triangular grid, where values are given at the nodes (vertices), by averaging the vertex triplets and filling the triangular elements.
 }
 \usage{
-sl.plot.field.elem(plot.init.res, num, lon, lat, elem, fill = TRUE, col.fill = "colbar", border = FALSE, col.border = "colbar", colbar = sl.colbar.redgreyblue_256, colbar.breaks = NA, colbar.breaks.log = FALSE, border.lwd = 0.01, border.lty = 1)
+sl.plot.field.elem(plot.init.res, num, lon, lat, elem, fill = TRUE, col.fill = "colbar", border = TRUE, col.border = "colbar", colbar = sl.colbar.redgreyblue_256, colbar.breaks = NA, colbar.breaks.log = FALSE, border.lwd = 1, border.lty = 1, na.col = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,10 +34,10 @@ a logical value indicating whether the elements (triangles) shall be filled.
 the fill colour. If \code{col.fill="colbar"} (default), the colourbar and breaks defined in \code{colbar} and \code{colbar.breaks} are used.
 }
   \item{border}{
-a logical value indicating whether or not to draw lines for the element borders (edges).
+a logical value indicating whether or not to draw lines for the polygon borders. Default is \code{TRUE}, which can avoid aliasing that may occur when plots are rendered. If aliasing still occurs, you can try to increase \code{border.lwd}.
 }
   \item{col.border}{
-the colour of the borders. If \code{col.border="colbar"} (default), then borders are coloured according to the field (element) values. This generates minute graphical overlap that prevents artefacts ("fractures") between elements in the plot.
+the colour of the borders. If \code{col.border="colbar"} (default), then borders are coloured according to the field (node/polygon) values. This generates minute graphical overlap that prevents aliasing by artefacts ("fractures") between polygons in the plot.
 }
   \item{colbar}{
 a spheRlab colourbar (as returned by \code{\link{sl.colbar}}) of length \code{Nc} to be used for the field.
@@ -49,10 +49,13 @@ a numeric vector of length \code{Nc-1} specifying the breaks between colours.
 a logical value indicating whether colourbar breaks are to be placed logarithmically.
 }
   \item{border.lwd}{
-the line width of the borders (edges).
+the line width of the borders. Default is \code{1}. Used only if \code{border=TRUE}. If this is used to avoid aliasing when plots are rendered, but aliasing still occurs, you can try to increase this value.
 }
   \item{border.lty}{
 the line type of the borders (edges).
+}
+  \item{na.col}{
+the color to be used for NA values. Default is \code{na.col=NA}, meaning that no polygons are drawn where \code{num=NA}.
 }
 }
 \details{

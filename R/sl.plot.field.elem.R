@@ -1,5 +1,5 @@
 sl.plot.field.elem <-
-function (plot.init.res,num,lon,lat,elem,fill=TRUE,col.fill="colbar",border=FALSE,col.border="colbar",colbar=sl.colbar.redgreyblue_256,colbar.breaks=NA,colbar.breaks.log=FALSE,border.lwd=0.01,border.lty=1) {
+function (plot.init.res,num,lon,lat,elem,fill=TRUE,col.fill="colbar",border=TRUE,col.border="colbar",colbar=sl.colbar.redgreyblue_256,colbar.breaks=NA,colbar.breaks.log=FALSE,border.lwd=1,border.lty=1,na.col=NA) {
 	
 	Ne = nrow(elem)
 	num.elem = rep(NA,Ne)
@@ -11,7 +11,10 @@ function (plot.init.res,num,lon,lat,elem,fill=TRUE,col.fill="colbar",border=FALS
 		lat.elem[i,] = lat[elem[i,]]
 	}
 	
-	colbar.res = sl.plot.field(plot.init.res=plot.init.res,num=num.elem,lon.v=lon.elem,lat.v=lat.elem,fill=fill,col.fill=col.fill,border=border,col.border=col.border,colbar=colbar,colbar.breaks=colbar.breaks,colbar.breaks.log=colbar.breaks.log,border.lwd=border.lwd,border.lty=border.lty)
+	colbar.res = sl.plot.field(plot.init.res=plot.init.res,num=num.elem,lon.v=lon.elem,lat.v=lat.elem,
+	                           fill=fill,col.fill=col.fill,border=border,col.border=col.border,colbar=colbar,
+	                           colbar.breaks=colbar.breaks,colbar.breaks.log=colbar.breaks.log,
+	                           border.lwd=border.lwd,border.lty=border.lty,na.col=na.col)
 	
 	if (exists("colbar.res")) {
 		return(colbar.res)

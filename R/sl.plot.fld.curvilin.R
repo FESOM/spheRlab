@@ -1,5 +1,5 @@
 sl.plot.fld.curvilin <-
-function (plot.init.res,vals=NULL,rgba=NULL,mask=NULL,lon.i,lat.i,border=TRUE,border.lwd=0.01,colbar=sl.colbar.blackwhite_256,colbar.breaks=NA,colbar.breaks.log=FALSE,na.col=NULL) {
+function (plot.init.res,vals=NULL,rgba=NULL,mask=NULL,lon.i,lat.i,border=TRUE,border.lwd=1,colbar=sl.colbar.blackwhite_256,colbar.breaks=NA,colbar.breaks.log=FALSE,na.col=NULL) {
 	
 	if (length(sl.dim(lon.i)) == 1) {
 		if (length(sl.dim(lat.i)) == 1) {
