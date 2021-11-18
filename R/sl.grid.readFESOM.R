@@ -98,8 +98,9 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
 	boundary = NULL
 	if (threeD) {
 	  if (verbose) {print("reading 3D information ...")}
-	  Nlev = scan(paste(griddir,"/aux3d.out",sep=""),n=1,what=integer()) - 1
+	  Nlev = scan(paste(griddir,"/aux3d.out",sep=""),n=1,what=integer())
 	  if (fesom2) {
+	    Nlev = Nlev - 1
 	    depth.bounds = scan(paste(griddir,"/aux3d.out",sep=""),skip=1,n=(Nlev+1)) * -1
 	    depth = (depth.bounds[1:Nlev] + depth.bounds[2:(Nlev+1)]) / 2
 	    if (use.nlvls.out) {
