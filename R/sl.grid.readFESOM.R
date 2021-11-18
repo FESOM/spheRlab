@@ -134,7 +134,7 @@ function (griddir,rot=FALSE,rot.invert=FALSE,rot.abg,threeD=TRUE,remove.emptylev
       if (verbose) {print("retrieving depth information from nod3d.out ...")}
 	    nod3d.scan = scan(paste(griddir,"/nod3d.out",sep=""))
       depth = unique(nod3d.scan[seq(5,N3D*5+1,5)]) * -1
-	    if (length(depth) != Nlev) { stop("data in aux3d.out is inconsistent with the number of depth levels") }
+	    if (length(depth) != Nlev) { stop("data in aux3d.out is inconsistent with the number of depth levels; consider trying with 'remove.emptylev=TRUE'") }
       depth.bounds = c(depth[1], (depth[1:(Nlev-1)]+depth[2:Nlev])/2, depth[Nlev])
       if (read.boundary) {
         if (verbose) {print("retrieving 'coast/bottom' information from nod3d.out ...")}
