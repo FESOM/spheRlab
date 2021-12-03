@@ -8,7 +8,7 @@ Plot Text
 Plot simple text into a spheRlab plot
 }
 \usage{
-sl.plot.text(plot.init.res, lon, lat, labels = seq(1, length(lon)), col = "black", ignore.visibility = FALSE, adj = NULL, pos = NULL, offset = 0.5, vfont = NULL, cex = 1, font = NULL)
+sl.plot.text(plot.init.res, lon, lat, labels = seq(1, length(lon)), col = "black", ignore.visibility = FALSE, adj = NULL, pos = NULL, offset = 0.5, vfont = NULL, cex = 1, font = NULL, srt = 0)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -47,6 +47,9 @@ numeric character expansion factor; multiplied by \code{par("cex")} yields the f
 }
   \item{font}{
 If \code{vfont=NULL}, the font to be used, possibly a vector. Defaults to the value of the global graphical parameter in \code{par()}.
+}
+  \item{srt}{
+a scalar specifying the rotation (counter-clockwise) in degrees. Default is \code{srt=0}.
 }
 }
 \details{
