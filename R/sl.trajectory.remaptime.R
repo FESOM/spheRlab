@@ -7,11 +7,45 @@ sl.trajectory.remaptime <- function (oldtime,oldlat,oldlon,newtime,method="linea
   old.N = length(oldtime)
   new.N = length(newtime)
   
-  if (old.N <= 1) {stop("'oldtime' must have at least two elements")}
-  if (any(oldtime[2:old.N] <= oldtime[1:(old.N-1)])) {stop("'oldtime' must increase strict monotonously")}
   if (new.N > 1) {
     if (any(newtime[2:new.N] <= newtime[1:(new.N-1)])) {stop("'newtime' must increase strict monotonously")}
   }
+  if (old.N <= 1) {
+    if (old.N < 1) {stop("'oldtime' must have at least one element")}
+    warning("'oldtime' has only one single element; remapping results will be trivial")
+    if (is.null(dim(oldlat))) {
+      newlat = rep(NA,new.N)
+      newlon = rep(NA,new.N)
+      newlat[newtime==oldtime] = oldlat
+      newlon[newtime==oldtime] = oldlon
+      if (extrapolate) {
+        newlat[newtime!=oldtime] = oldlat
+        newlon[newtime!=oldtime] = oldlon
+      }
+    } else {
+      nTraj = ncol(oldlat)
+      newlat = matrix(nrow=new.N,ncol=nTraj)
+      newlon = matrix(nrow=new.N,ncol=nTraj)
+      newlat[newtime==oldtime,] = oldlat
+      newlon[newtime==oldtime,] = oldlon
+      if (extrapolate) {
+        for (i.newtime in which(newtime!=oldtime)) {
+          newlat[i.newtime,] = oldlat
+          newlon[i.newtime,] = oldlon
+        }
+      }
+    }
+    if (return.remapinfo) {
+      weights.left.ind = rep(1,new.N)
+      weights.left = rep(1,new.N)
+      if (!extrapolate) {
+        weights.left.ind[newtime!=oldtime] = NA
+        weights.left[newtime!=oldtime] = NA
+      }
+      return(list(Lat=newlat,Lon=newlon,remapinfo=list(weights.left.ind=weights.left.ind,weights.left=weights.left)))
+    } else {return(list(Lat=newlat,Lon=newlon))}
+  }
+  if (any(oldtime[2:old.N] <= oldtime[1:(old.N-1)])) {stop("'oldtime' must increase strict monotonously")}
   
   if (newtime[new.N] > oldtime[old.N]) {
     if (newtime[1] > oldtime[old.N]) {
