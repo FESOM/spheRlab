@@ -64,14 +64,14 @@ sl.deformation <- function(lon = NULL, lat = NULL, lonlat2xy.pole = NULL, x = NU
     if (length(dim(x))==2) {
       Nt = ncol(x) - 1
       u = (x[,2:(Nt+1)] - x[,1:Nt]) / dt
-      v = y[,2:(Nt+1)] - y[,1:Nt] / dt
+      v = (y[,2:(Nt+1)] - y[,1:Nt]) / dt
       x = (x[,2:(Nt+1)] + x[,1:Nt]) / 2
       y = (y[,2:(Nt+1)] + y[,1:Nt]) / 2
       if (return.lonlat) {z = (z[,2:(Nt+1)] + z[,1:Nt]) / 2}
     } else {
       Nt = dim(x)[3] - 1
       u = (x[,,2:(Nt+1)] - x[,,1:Nt]) / dt
-      v = y[,,2:(Nt+1)] - y[,,1:Nt] / dt
+      v = (y[,,2:(Nt+1)] - y[,,1:Nt]) / dt
       x = (x[,,2:(Nt+1)] + x[,,1:Nt]) / 2
       y = (y[,,2:(Nt+1)] + y[,,1:Nt]) / 2
       if (return.lonlat) {z = (z[,,2:(Nt+1)] + z[,,1:Nt]) / 2}
