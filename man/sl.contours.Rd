@@ -8,8 +8,8 @@ Compute Contours
 Compute contour lines of a 2-dimensional field on an unstructured triangular mesh on a sphere.
 }
 \usage{
-sl.contours(var = NULL, var.nc = NULL, varid = NULL, levels = 0, neighmat = NULL, lat, lon, elem, return.edge.info = FALSE, verbose = FALSE)
-            
+sl.contours(var = NULL, var.nc = NULL, varid = NULL, levels = 0, grd = NULL, na.treatment = "none",
+          return.edge.info = FALSE, verbose = FALSE, neighmat = NULL, lat = NULL, lon = NULL, elem = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,23 +25,29 @@ a character providing the name of the variable in \code{var.nc} to be used. Used
   \item{levels}{
 a vector providing the values for which contour lines shall be computed.
 }
-  \item{neighmat}{
-an \code{N}x\code{M} matrix providing the neighbour nodes of each node (point) in \code{var} (or \code{var.nc}). If not provided, this matrix is computed using \code{\link{sl.findneighbours}} based on \code{elem}.
+  \item{grd}{
+a spheRlab grid list as returned by \code{\link{sl.grid.readFESOM}} or \code{\link{sl.grid.curvilin2unstr}}.
 }
-  \item{lat}{
-a numeric vector of length \code{N} providing the latitudes of each node (point) in \code{var} (or \code{var.nc}).
-}
-  \item{lon}{
-a numeric vector of length \code{N} providing the latitudes of each node (point) in \code{var} (or \code{var.nc}).
-}
-  \item{elem}{
-an \code{Ne}x\code{3} matrix providing the vertex indices of each triangular element spanned by the nodes (points) in \code{var} (or \code{var.nc}). Note that \code{Ne} ~= 2x\code{N}.
+  \item{na.treatment}{
+a character specifying how to handle \code{NA} values. One of \code{'none'} (can result in errors), \code{'fill'} (it is attempted to fill \code{NA} values using adjacent grid points, iteratively where required, using \code{\link{sl.field.fillNA}}, or \code{'cut'} (\code{NA} values are excluded from the grid using \code{\link{sl.grid.reduce}}, which can slow down the function by a factor 2 or more).}.
 }
   \item{return.edge.info}{
 a logical value specifiying whether information on end points of, and relative positions on, the edges corresponding to each point of the contour(s) shall be returned. Default is \code{FALSE}.
 }
   \item{verbose}{
 a logical value specifiying whether additional statements shall be printed to document progress. Default is \code{FALSE}.
+}
+\item{neighmat}{
+an \code{N}x\code{M} matrix providing the neighbour nodes of each node (point) in \code{var} (or \code{var.nc}). If not provided (and not provided as \code{'grd$neighnodes'}), this matrix is computed using \code{\link{sl.findneighbours}} based on \code{elem}. This argument is used (or computed) only if \code{'grd$neighnodes'} is not provided.
+}
+  \item{lat}{
+a numeric vector of length \code{N} providing the latitudes of each node (point) in \code{var} (or \code{var.nc}). Only used if \code{'grd$lat'} is not provided.
+}
+  \item{lon}{
+a numeric vector of length \code{N} providing the latitudes of each node (point) in \code{var} (or \code{var.nc}). Only used if \code{'grd$lon'} is not provided.
+}
+  \item{elem}{
+an \code{Ne}x\code{3} matrix providing the vertex indices of each triangular element spanned by the nodes (points) in \code{var} (or \code{var.nc}). Note that \code{Ne} ~= 2x\code{N}. Only used if \code{'grd$elem'} is not provided.
 }
 }
 \details{

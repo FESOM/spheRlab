@@ -1,14 +1,73 @@
 sl.contours <-
-function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,return.edge.info=FALSE,verbose=FALSE) {
+function (var=NULL,var.nc=NULL,varid=NULL,levels=0,grd=NULL,na.treatment="none",
+          return.edge.info=FALSE,verbose=FALSE,neighmat=NULL,lat=NULL,lon=NULL,elem=NULL) {
 	
-	require(ncdf4)
-	
-	if (is.null(neighmat)) {
-		neighmat = sl.findneighbours(elem)$neighbour.nodes
-	}
+  node.elems = NULL
+  argmiss1 = FALSE
+  argmiss2 = FALSE
+  derive.neighmat = FALSE
+  # the redundant argument structure handled in the following is due to the necessity to ensure backward-compatibility
+  if (is.null(grd)) {
+    if (is.null(lat) || is.null(lon)) {argmiss1 = TRUE}
+	  if (is.null(neighmat)) {
+	    if (is.null(elem)) {argmiss2 = TRUE} else {derive.neighmat = TRUE}
+	  }
+  } else {
+    if ("lat" %in% names(grd)) {
+      if (!is.null(lat)) {warning("ignoring argument 'lat', using 'grd$lat' instead")}; lat = grd$lat
+    } else if (is.null(lat)) {argmiss1=TRUE}
+    if ("lon" %in% names(grd)) {
+      if (!is.null(lon)) {warning("ignoring argument 'lon', using 'grd$lon' instead")}; lon = grd$lon
+    } else if (is.null(lon)) {argmiss1=TRUE}
+    if ("neighnodes" %in% names(grd) || !is.null(neighmat)) {
+      if ("neighnodes" %in% names(grd)) {
+        if (!is.null(neighmat)) {warning("ignoring argument 'neighmat', using 'grd$neighnodes' instead")}; neighmat = grd$neighnodes}
+    } else {
+      derive.neighmat = TRUE
+      if ("elem" %in% names(grd)) {if (!is.null(elem)) {warning("ignoring argument 'elem', using 'grd$elem' instead")}; elem = grd$elem}
+      else if (is.null(elem)) {argmiss2=TRUE}
+    }
+    if ("neighelems" %in% names(grd)) {node.elems = grd$neighelems}
+  }
+  if (argmiss1) {
+    stop("'lat' and 'lon' must be provided, each of them either as list element of 'grd' or as individual argument")
+  }
+  if (argmiss2) {
+    stop("At least one of 'grd$neighnodes', 'neighmat', 'grd$elem', and 'elem' must be provided")
+  }
+  
+  if (derive.neighmat) {
+    neigh.res = sl.findneighbours(elem)
+    neighmat = neigh.res$neighbour.nodes
+    if (is.null(node.elems)) {node.elems = neigh.res$neighbour.elements}
+  }
+  
+  N0 = length(lat)
+  if (nrow(neighmat) != N0) {stop("'lat' and 'neighmat' are inconsistent")}
+  if (length(lon) != N0) {stop("'lon' and 'lat' are inconsistent")}
+  M0 = ncol(neighmat)
+  
+  if (is.null(node.elems)) {
+    # find which elements belong to each node; required to derive whether edges are coastal
+    if (verbose) {print("generating node.elems")}
+    node.elems = matrix(rep(NA,N0*M0),nrow=N0)
+    Nnode.elems = rep(0,N0)
+    Nelem = nrow(elem)
+    Melem = ncol(elem)
+    for (ne in 1:Nelem) {
+      for (me in 1:Melem) {
+        elemx = elem[ne,me]
+        if (is.na(elemx)) {next}
+        Nnode.elems[elemx] = Nnode.elems[elemx] + 1
+        node.elems[elemx,Nnode.elems[elemx]] = ne
+      }
+    }
+    node.elems = node.elems[,1:max(Nnode.elems)]
+  }
 	
 	if (is.null(var)) {
 		if (is.null(var.nc)) {stop("either var or var.nc must be provided")}
+	  require(ncdf4)
 		ifl = nc_open(var.nc)
 		var = ncvar_get(ifl,varid=varid)
 		if (length(dim(var)) > 1) {stop("input file has more than one dimension")}
@@ -17,32 +76,43 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,re
 		if (!is.null(var.nc)) {warning("using var, ignoring var.nc")}
 	}
 		
-	# check whether field contains non-NA values
-	if (sum(is.null(var)) == length(var)) {
-		stop("var contains only NAs")
-	}
+	# check for NA values
+  N = length(var)
+  sum.na = sum(is.na(var))
+  if (sum.na > 0) {
+    if (sum.na == N) {
+      stop("var contains only NAs")
+    }
+    if (na.treatment == "none") {
+      stop("'var' contains NA values and 'na.treatment' is 'none'; consider setting 'na.treatment' to 'cut' or 'fill' and rerun")
+    }
+    if (na.treatment == "cut") {
+      if (verbose) {print(paste0(sum.na," of ",N," values in 'var' are NA and will be cut (neighbours will be treated like boundary/coast) ..."))}
+      if (is.null(elem)) {
+        if (!is.null(grd) && "elem" %in% names(grd)) {elem = grd$elem}
+        else {stop("one of 'grd$elem' and 'elem' is required to cut NA values")}
+      }
+      grd = sl.grid.reduce(grd = list(elem=elem,neighnodes=neighmat,neighelems=node.elems), remove.points = is.na(var))
+      neighmat = grd$neighnodes
+      node.elems = grd$neighelems
+      var = var[grd$reduce.kept$nodes]
+      lat = lat[grd$reduce.kept$nodes]
+      lon = lon[grd$reduce.kept$nodes]
+      N = length(var)
+      if (verbose) {print("cutting completed")}
+    } else if (na.treatment == "fill") {
+      if (verbose) {print(paste0(sum.na," of ",N," values in 'var' are NA and will be filled using sl.field.fillNA() ..."))}
+      var = sl.field.fillNA(num=var, grd=list(neighnodes=neighmat), method="interative.adjacent.mean", verbose=verbose)
+      if (anyNA(var)) {var[is.na(var)] = Inf}
+      if (verbose) {print("filling completed")}
+    } else {stop("'var' contains NA values and 'na.treatment' is not valid (must be one of 'none', 'cut', and 'fill')")}
+  }
 	
 	contours.list = list()
-	N = dim(neighmat)[1]
+	if (dim(neighmat)[1] != N) {stop("'var' and grid are inconsistent")}
 	M = dim(neighmat)[2]
 	
 	Nneigh = rowSums(!is.na(neighmat))
-	
-	# find which elements belong to each node; required to derive whether edges are coastal
-	if (verbose) {print("generating node.elems")}
-	node.elems = matrix(rep(NA,N*M),nrow=N)
-	Nnode.elems = rep(0,N)
-	Nelem = nrow(elem)
-	Melem = ncol(elem)
-	for (ne in 1:Nelem) {
-		for (me in 1:Melem) {
-			elemx = elem[ne,me]
-			if (is.na(elemx)) {next}
-			Nnode.elems[elemx] = Nnode.elems[elemx] + 1
-			node.elems[elemx,Nnode.elems[elemx]] = ne
-		}
-	}
-	node.elems = node.elems[,1:max(Nnode.elems)]
 	
 	i.max = 20
 	
@@ -54,7 +124,8 @@ function (var=NULL,var.nc=NULL,varid=NULL,levels=0,neighmat=NULL,lat,lon,elem,re
 		s = 0
 		
 		# check whether field range includes lev
-		if (min(var) >= lev || max(var) <= lev) {
+		notinf = (var != Inf)
+		if (min(var[notinf]) >= lev || max(var[notinf]) <= lev) {
 			contours.list[[c]] = list(level=lev,segments=segments,length=0)
 			next
 		}
