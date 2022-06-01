@@ -29,7 +29,7 @@ a vector providing the values for which contour lines shall be computed.
 a spheRlab grid list as returned by \code{\link{sl.grid.readFESOM}} or \code{\link{sl.grid.curvilin2unstr}}.
 }
   \item{na.treatment}{
-a character specifying how to handle \code{NA} values. One of \code{'none'} (can result in errors), \code{'fill'} (it is attempted to fill \code{NA} values using adjacent grid points, iteratively where required, using \code{\link{sl.field.fillNA}}, or \code{'cut'} (\code{NA} values are excluded from the grid using \code{\link{sl.grid.reduce}}, which can slow down the function by a factor 2 or more).}.
+a character specifying how to handle \code{NA} values. One of \code{'none'} (can result in errors), \code{'fill'} (it is attempted to fill \code{NA} values using adjacent grid points, iteratively where required, using \code{\link{sl.field.fillNA}}, or \code{'cut'} (\code{NA} values are excluded from the grid using \code{\link{sl.grid.reduce}}, which can slow down the function by a factor 2 or more).
 }
   \item{return.edge.info}{
 a logical value specifiying whether information on end points of, and relative positions on, the edges corresponding to each point of the contour(s) shall be returned. Default is \code{FALSE}.
