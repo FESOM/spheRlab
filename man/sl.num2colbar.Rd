@@ -8,7 +8,7 @@ Convert Numerics to Integers Corresponding to Colourbar Breaks
 Convert a numerical vector or array to integers corresponding to discrete intervals defined by colourbar breaks. If the latter are not provided (as argument \code{breaks} or as an element of \code{colbar} named 'breaks'), they are computed by calling \code{\link{sl.num2colbarbreaks}}). This function is used by various plotting functions.
 }
 \usage{
-sl.num2colbar(num, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = FALSE)
+sl.num2colbar(num, colbar = NULL, breaks = NA, breaks.log = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,7 @@ sl.num2colbar(num, colbar = sl.colbar.blackwhite_256, breaks = NA, breaks.log = 
 a numerical scalar, vector, or array that shall be mapped to colourbar breaks
 }
   \item{colbar}{
-a spheRlab colourbar of length \code{N} (as returned by \code{\link{sl.colbar}}), or a list including such a colourbar as an element named 'colbar'. In the latter case, if \code{colbar} also includes an element named 'breaks', the argument \code{breaks} is ignored and taken from \code{colbar}.
+a spheRlab colourbar of length \code{N} (as returned by \code{\link{sl.colbar}}), or a list including such a colourbar as an element named 'colbar'. In the latter case, if \code{colbar} also includes an element named 'breaks', the argument \code{breaks} is ignored and taken from \code{colbar}. If \code{breaks} are provided, this argument is optional.
 }
   \item{breaks}{
 a vector of length \code{N-1} specifying the breaks corresponding to \code{colbar}. Ignored if \code{colbar} is a list with elements 'colbar' as well as 'breaks'.
