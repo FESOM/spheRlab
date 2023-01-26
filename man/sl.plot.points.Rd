@@ -8,7 +8,7 @@ Plot Points
 Plot points into a spheRlab plot.
 }
 \usage{
-sl.plot.points(plot.init.res, lon, lat, col = "black", pch = 1, ignore.visibility = FALSE)
+sl.plot.points(plot.init.res, lon, lat, col = "black", pch = 1, ignore.visibility = FALSE, return.xy = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,6 +30,9 @@ a point 'character' (or a vector or array thereof).
   \item{ignore.visibility}{
 a logical value indicating whether or not points shall be attempted to be drawn even if they are invisible, that is, outside the plot domain.
 }
+  \item{return.xy}{
+a logical value indicating whether or not x-y-values of actually plotted points shall be returned. Can be useful e.g. for the creation of 2D histograms using \code{sl.2D.hist.plot()}. Default is \code{FALSE}. Not used for multi-part projections.
+}
 }
 \details{
 If \code{lon} and \code{lat} contain no NAs, \code{N} points are drawn (if visible).
@@ -37,6 +40,7 @@ If \code{lon} and \code{lat} contain no NAs, \code{N} points are drawn (if visib
 This is one of the lowest-level plotting functions of spheRlab.
 }
 \value{
+Nothin is returned, except if \code{return.xy = TRUE}, in which case a list with elements \code{x} and \code{y} providing the locttions of the plotted points in plot coordinates is returned.
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}

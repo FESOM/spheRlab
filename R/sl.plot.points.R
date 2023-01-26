@@ -1,9 +1,11 @@
 sl.plot.points <-
-function (plot.init.res,lon,lat,col="black",pch=1,cex=1,ignore.visibility=FALSE) {
+function (plot.init.res,lon,lat,col="black",pch=1,cex=1,ignore.visibility=FALSE,return.xy=FALSE) {
 	
 	projection = plot.init.res$projection
 	
 	if (projection == "platon" || projection == "3D") {
+	  
+	  if (return.xy) {warning("'return.xy=TRUE' not used for multi-part projections")}
 	  
 	  if (!is.null(plot.init.res$transform.function)) {
 	    lonlat.trans = plot.init.res$transform.function(lon,lat)
@@ -67,5 +69,6 @@ function (plot.init.res,lon,lat,col="black",pch=1,cex=1,ignore.visibility=FALSE)
 	}
 	
 	points(x=x+xshift,y=y+yshift,col=col,pch=pch,cex=cex)
+	if (return.xy) {return(list(x=x+xshift,y=y+yshift))}
 	
 }
