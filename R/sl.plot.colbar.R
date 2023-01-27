@@ -61,17 +61,26 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 		xmax = (ymax - ymin) * ratio / 2
 		xmin = -xmax + xshift
 		xmax = xmax + xshift
+		xstp = xmax - xmin
 
 		ymi = ymin
 		yma = ymi + ystp
-		polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymi,ymi,yma,yma),col=colbar[[1]],border=colbar[[1]],lwd=.01)
+		if (!triag.ends) {
+		  polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymi,ymi,yma,yma),col=colbar[[1]],border=colbar[[1]],lwd=.01)
+		} else {
+		  polygon(x=c(xmin,xmin+xstp/2,xmax),y=c(yma,yma-xstp,yma),col=colbar[[1]],border=colbar[[1]],lwd=.01)
+		}
 		if (categorical && labels.at[1]) {
 		  text(x=xmax+(xmax-xmin)/8,y=(ymi+yma)/2,labels=labels[1],pos=4,cex=labels.cex,col=labels.col)
 		}
 		for (i in 2:length(colbar)) {
 			ymi = ymi + ystp
 			yma = ymi + ystp
-			polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymi,ymi,yma,yma),col=colbar[[i]],border=colbar[[i]],lwd=.01)
+			if (i < length(colbar) || !triag.ends) {
+			  polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymi,ymi,yma,yma),col=colbar[[i]],border=colbar[[i]],lwd=.01)
+			} else {
+			  polygon(x=c(xmin,xmax,xmin+xstp/2),y=c(ymi,ymi,ymi+xstp),col=colbar[[i]],border=colbar[[i]],lwd=.01)
+			}
 			if (categorical) {
 			  if (labels.at[i]) {
 			    text(x=xmax+(xmax-xmin)/8,y=(ymi+yma)/2,labels=labels[i],pos=4,cex=labels.cex,col=labels.col)
@@ -85,7 +94,8 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 		if (!triag.ends) {
 			polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymin,ymin,ymax,ymax))
 		} else {
-			stop("triangular ends not yet implemented")
+		  polygon(x=c(xmin,xmin+xstp/2,xmax,xmax,xmin+xstp/2,xmin),
+		          y=c(ymin+ystp,ymin+ystp-xstp,ymin+ystp,ymax-ystp,ymax-ystp+xstp,ymax-ystp))
 		}
 		
 		if (!is.null(units)) {
@@ -101,17 +111,26 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 	  ymax = (xmax - xmin) * ratio / 2
 	  ymin = -ymax + yshift
 	  ymax = ymax + yshift
+	  ystp = ymax - ymin
 
 	  xmi = xmin
 	  xma = xmi + xstp
-	  polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[1]],border=colbar[[1]],lwd=.01)
+	  if (!triag.ends) {
+	    polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[1]],border=colbar[[1]],lwd=.01)
+	  } else {
+	    polygon(x=c(xma-ystp,xma,xma),y=c(ymin+ystp/2,ymin,ymax),col=colbar[[1]],border=colbar[[1]],lwd=.01)
+	  }
 	  if (categorical && labels.at[1]) {
 	    text(x=(xmi+xma)/2,y=ymin-(ymax-ymin)/8,labels=labels[1],pos=1,cex=labels.cex,col=labels.col)
 	  }
 	  for (i in 2:length(colbar)) {
 	    xmi = xmi + xstp
 	    xma = xmi + xstp
-	    polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[i]],border=colbar[[i]],lwd=.01)
+	    if (i < length(colbar) || !triag.ends) {
+	      polygon(x=c(xmi,xma,xma,xmi),y=c(ymin,ymin,ymax,ymax),col=colbar[[i]],border=colbar[[i]],lwd=.01)
+	    } else {
+	      polygon(x=c(xmi,xmi+ystp,xmi),y=c(ymin,ymin+ystp/2,ymax),col=colbar[[i]],border=colbar[[i]],lwd=.01)
+	    }
 	    if (categorical) {
 	      if (labels.at[i]) {
 	        text(x=(xmi+xma)/2,y=ymin-(ymax-ymin)/8,labels=labels[i],pos=1,cex=labels.cex,col=labels.col)
@@ -124,7 +143,8 @@ function (colbar,categorical=FALSE,breaks=NULL,vertical=TRUE,labels.at=NULL,labe
 	  if (!triag.ends) {
 	    polygon(x=c(xmin,xmax,xmax,xmin),y=c(ymin,ymin,ymax,ymax))
 	  } else {
-	    stop("triangular ends not yet implemented")
+	    polygon(x=c(xmin+xstp-ystp,xmin+xstp,xmax-xstp,xmax-xstp+ystp,xmax-xstp,xmin+xstp),
+	            y=c(ymin+ystp/2,ymin,ymin,ymin+ystp/2,ymax,ymax))
 	  }
 	  
 	  if (!is.null(units)) {

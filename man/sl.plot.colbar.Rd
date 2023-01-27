@@ -52,7 +52,7 @@ sl.plot.colbar(colbar, categorical = FALSE, breaks = NULL, vertical = TRUE, labe
   a scalar specifying the ratio of width and length of the colourbar. By default \code{ratio=0.1}.
 }
   \item{triag.ends}{
-  a logical value indicating whether the ends of the colourbar shall be triangular. By default \code{triag.ends=FALSE}. TRIANGULAR ENDS ARE NOT YET IMPLEMENTED!
+  a logical value indicating whether the ends of the colourbar (that is, the last colour polygons) shall be triangular. By default \code{triag.ends=FALSE}.
 }
   \item{device}{
 a character specifying which graphics device to use. Default is \code{device='pdf'}. Ignored if \code{do.init.device=FALSE}.
@@ -61,7 +61,7 @@ a character specifying which graphics device to use. Default is \code{device='pd
 a logical value indicating whether or not an initial call of \code{plot} shall be executed. Default is \code{do.init=TRUE}.
 }
   \item{do.init.device}{
-a logical value indicating whether or not initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
+a logical value indicating whether or not to initialise a device as specified by \code{device}. Default is \code{do.init.device=do.init}. If \code{do.init.device=FALSE} but \code{do.init=TRUE}, the plot will be initialised in the standard graphical device.
 }
   \item{do.close.device}{
 a logical value specifying whether to call \code{dev.off()} to close the corresponding device in the end. Default is \code{do.close.device=do.init.device}.
@@ -92,7 +92,9 @@ a logical value specifying whether to call \code{dev.off()} to close the corresp
 }
 }
 \details{
-Colourbars in spheRlab follow the philosophy that they are plotted separately of the fields they annotate. Combining a plotted field and its colourbar subsequently is left to the user and his or her choice of external software (e.g., OpenOffice or the like). This substantially increases the simplicity and flexibility of plot handling within spheRlab.
+By default, colourbars in spheRlab follow the philosophy that they are plotted separately of the fields they annotate. In this case, combining a plotted field and its colourbar subsequently is left to the user and his or her choice of external software (e.g., OpenOffice or the like). This increases the simplicity and flexibility of plot handling within spheRlab.
+
+It is also possible to add a colourbar to an existing plot by setting \code{do.init=FALSE} and adjusting \code{xshift}, \code{yshift}, and \code{len}. If adding to a spheRlab plot initialised with \code{\link{sl.plot.init}} or variants thereof, note that the plot x-y-ranges are stored in the list returned by the initialising function call in the elements \code{xlim} and \code{ylim}.
 }
 \value{
 An integer giving the device into which the figure was plotted.
@@ -104,7 +106,7 @@ An integer giving the device into which the figure was plotted.
 Helge Goessling
 }
 \note{
-NOTE THAT SO FAR THIS FUNCTION HAS UNUSED ARGUMENTS AND OTHER GAPS THAT NEED TO BE FILLED ASAP!
+This function still has some unused arguments that should be implemented at some point.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
