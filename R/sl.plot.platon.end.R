@@ -61,6 +61,24 @@ function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,o
 		if (outer.boundaries) {
 			lines(x=l.x.ob,y=l.y.ob,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
 		}
+	} else if (plot.platon.init.res$body.type == "truncatedicosahedron") {
+	  if (adhes.surf) {
+	    patt.x = c(0,0.2,0.55,0.5,NA)
+	    patt.y = c(1,0.95,0.25,0,NA)
+	    l.x = deltaxy * c(patt.x,patt.x+1,patt.x+2,patt.x+3,patt.x+4,-patt.x+1/2,-patt.x+3/2,-patt.x+5/2,-patt.x+7/2,-patt.x+9/2,-patt.x)
+	    l.y = deltaxy * sin(pi/3) * c(rep(patt.y+1/3,5),rep(-patt.y-2/3,5),-patt.y+1/3)
+	    lines(x=l.x,y=l.y,col=col.adh,lty=lty.adh,lwd=lwd.adh)
+	  }
+	  #l.x.ib = deltaxy * c(seq(0,5)-0.5,seq(8,1)/2,seq(0,5))
+	  #l.y.ib = deltaxy * sin(pi/3) * c(rep(1/3,6),rep(c(-2/3,1/3),4),rep(-2/3,6))
+	  #if (inner.boundaries) {
+	 #   lines(x=l.x.ib,y=l.y.ib,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
+	  #}
+	  #l.x.ob = deltaxy * c(seq(-1,9)/2,seq(10,-1)/2)
+	  #l.y.ob = deltaxy * sin(pi/3) * c(rep(c(1/3,4/3),5),1/3,rep(c(-2/3,-5/3),5),-2/3,1/3)
+	  #if (outer.boundaries) {
+	 #   lines(x=l.x.ob,y=l.y.ob,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
+	  #}
 	} else {
 		print("boundary mesh not defined for this body, only closing device")
 		corners = FALSE
