@@ -1,5 +1,5 @@
 sl.gc.dist <-
-  function(lon=NULL,lat=NULL,x=NULL,y=NULL,z=NULL,Rsphere=1,sequential=TRUE,distmat=FALSE,distmat.split.index=NULL,byrot=FALSE) {
+  function(lon=NULL,lat=NULL,x=NULL,y=NULL,z=NULL,Rsphere=1,sequential=TRUE,distmat=FALSE,byrot=FALSE) {
     
     if (!byrot) {
       if (is.null(x)) {
