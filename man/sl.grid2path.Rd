@@ -53,7 +53,7 @@ sl.grid2path(dat.time = NULL, dat = NULL, dat.files = NULL, dat.timeind = rep(1,
   }
 }
 \details{
-For each data point provided by \code{traj.time}, \code{traj.lon}, and \code{traj.lat}, the algorithm first checks whether the previous nearest neighbour is still the nearest neighbour by comparing only against the adjacent grid points. If it's not, the nearest neighbour search is done by computing the distance to all grid points, which can be expensive for large (high-resolution) grids. The algorithm is thus the more efficient the smaller the spatial steps are relative to the grid resolution.
+For each data point provided by \code{traj.time}, \code{traj.lon}, and \code{traj.lat}, the algorithm first checks whether the previous nearest neighbour is still the nearest neighbour by comparing only against the adjacent grid points. If it's not, the nearest neighbour search is done using \code{\link{sl.findnn.curvilin}}.
 
 New data from the gridded field is read only if the time (for temporal data) of the path/trajectory surpasses a time step of the gridded data, or if the nearest neighbour has changed. If both is not the case, the previously-read data is used and, if applicable, only the weight for the linear time interpolation is adjusted.
 }
@@ -76,15 +76,15 @@ New data from the gridded field is read only if the time (for temporal data) of 
 Helge Goessling
 }
 \note{
-If very large (high-resolution) grids are used, it might be worthwile to update the function to make the nearest-neighbour search more efficient. For example, instead of computing the distance directly from all grid points, one could make one or more intermediate step(s) where the nearest neighbour of a coarser grid is searched, and then zooming into the relevant region and refining the grid until the full resolution is retained.
-
-It would also be nice to complement the function such that not only nearest-neighbour but more sophisticated spatial interpolation (e.g., bilinear) is supported.
+To extensions would be nice:
+(i) Complement the function such that not only nearest-neighbour but more sophisticated spatial interpolation (e.g., bilinear) is supported.
+(ii) Support of unstructured grids.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-%%
+\code{\link{sl.findnn.curvilin}}
 }
 \examples{
 # generate an example curvilinear grid; first just lon-lat, then rotate to make it more general

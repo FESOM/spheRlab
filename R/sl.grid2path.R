@@ -19,6 +19,8 @@ sl.grid2path <-
       if (is.null(dat.files)) {stop("one of 'dat' and 'dat.files' must be provided")}
       if (length(dat.timeind) != length(dat.time)) {stop("'dat.time' and 'dat.timeind' must have the same length")}
       require(ncdf4)
+      dat.files.exist = file.exists(dat.files)
+      if (!any(!is.na(dat.files.exist))) {stop("none of the files in 'dat.files' exists")}
     } else {
       from.files = FALSE
       if (!is.null(dat.files)) {warning("ignoring 'dat.files' (and 'dat.timeind') as 'dat' is provided")}
@@ -89,6 +91,7 @@ sl.grid2path <-
     nn.inds = c(1,1)
     
     dat.files.prev = NULL
+    dat.files.next = NULL
     vals.prev = rep(NA,vars.N)
     vals.next = rep(NA,vars.N)
     
@@ -136,12 +139,10 @@ sl.grid2path <-
                                         z=data.frame(z1=traj.z[traj.ti],z2=z2),Rsphere = 6371),
                              ncol=length(prox.cols))
       if (dist.nn.prev > min(dat.dist.prox)) {   # this means that the previous NN is not the NN anymore
-        dat.dist = matrix(sl.gc.dist(x=data.frame(x1=traj.x[traj.ti],x2=as.vector(dat.x)),
-                                     y=data.frame(y1=traj.y[traj.ti],y2=as.vector(dat.y)),
-                                     z=data.frame(z1=traj.z[traj.ti],z2=as.vector(dat.z)),Rsphere = 6371),
-                          ncol=dat.Ncol)
-        dist.nn = min(dat.dist)
-        nn.inds = which(dat.dist == dist.nn, arr.ind = TRUE)[1,]
+        nn.res = sl.findnn.curvilin(x = traj.x[traj.ti], y = traj.y[traj.ti], z = traj.z[traj.ti],
+                                    x.grid = dat.x, y.grid = dat.y, z.grid = dat.z, Rsphere = 6371)
+        dist.nn = nn.res$nn.dist
+        nn.inds = unlist(nn.res$nn.index)
         if (verbose) {
           print(paste0("Nearest neighbour changed to:"))
           print(nn.inds)
@@ -160,13 +161,34 @@ sl.grid2path <-
       if (time.advanced || is.null(dat.files.prev) || (dat.files[dat.ti-1] != dat.files.prev) || any(nn.inds != nn.index[traj.ti-1,])) {
         if (verbose) {print(paste0("Reading new data (gridded data time or location index advanced) ..."))}
         if (from.files) {
+          dat.files.prev.prev = dat.files.prev
           dat.files.prev = dat.files[dat.ti-1]
           read.prev = FALSE
           val.prev = NA
+          dat.files.next.prev = dat.files.next
+          dat.files.next = dat.files[dat.ti]
           read.next = FALSE
           val.next = NA
-          if (file.exists(dat.files.prev)) {fl.prev = nc_open(dat.files.prev); read.prev = TRUE}
-          if (file.exists(dat.files[dat.ti])) {fl.next = nc_open(dat.files[dat.ti]); read.next = TRUE}
+          if (dat.files.exist[dat.ti-1]) {
+            if (is.null(dat.files.prev.prev) || dat.files.prev != dat.files.prev.prev) {
+              if (exists("fl.prev")) {nc_close(fl.prev)}
+              if (!is.null(dat.files.next.prev) && dat.files.prev == dat.files.next.prev) {
+                fl.prev = fl.next
+              } else {
+                if (verbose) {print(paste0("Opening NetCDF file ",dat.files.prev))}
+                fl.prev = nc_open(dat.files.prev)
+              }
+            }
+            read.prev = TRUE
+          }
+          if (dat.files.exist[dat.ti]) {
+            if (is.null(dat.files.next.prev) || dat.files.next != dat.files.next.prev) {
+              if (exists("fl.next") && dat.files.next.prev != dat.files.prev) {nc_close(fl.next)}
+              if (verbose) {print(paste0("Opening NetCDF file ",dat.files.next))}
+              fl.next = nc_open(dat.files.next)
+            }
+            read.next = TRUE
+          }
           for (i.var in 1:vars.N) {
             if (!dat.hastimedim) {
               if (read.prev) {val.prev = ncvar_get(fl.prev, varid = vars[i.var], start = nn.inds, count = c(1,1))}
@@ -175,11 +197,11 @@ sl.grid2path <-
               if (read.prev) {val.prev = ncvar_get(fl.prev, varid = vars[i.var], start = c(nn.inds,dat.timeind[dat.ti-1]), count = c(1,1,1))}
               if (read.next) {val.next = ncvar_get(fl.next, varid = vars[i.var], start = c(nn.inds,dat.timeind[dat.ti]), count = c(1,1,1))}
             }
-            if (read.prev) {nc_close(fl.prev)} else {
+            if (!read.prev) {
               if (dat.wgh.prev == 0) {val.prev = 0} else if (verbose && i.var == 1) {print(paste0("NAs generated as previous file ",dat.files.prev," does not exist"))}
             }
-            if (read.next) {nc_close(fl.next)} else {
-              if (dat.wgh.prev == 1) {val.next = 0} else if (verbose && i.var == 1) {print(paste0("NAs generated as next file ",dat.files[dat.ti]," does not exist"))}
+            if (!read.next) {
+              if (dat.wgh.prev == 1) {val.next = 0} else if (verbose && i.var == 1) {print(paste0("NAs generated as next file ",dat.files.next," does not exist"))}
             }
           }
           vars.out[[i.var]][traj.ti] = val.prev * dat.wgh.prev + val.next * (1 - dat.wgh.prev)
@@ -205,12 +227,17 @@ sl.grid2path <-
             if (dat.wgh.prev == 0) {val.prev = 0} else if (verbose && i.var == 1) {print(paste0("NAs generated as previous file ",dat.files.prev," does not exist"))}
           }
           if (!read.next) {
-            if (dat.wgh.prev == 1) {val.next = 0} else if (verbose && i.var == 1) {print(paste0("NAs generated as next file ",dat.files[dat.ti]," does not exist"))}
+            if (dat.wgh.prev == 1) {val.next = 0} else if (verbose && i.var == 1) {print(paste0("NAs generated as next file ",dat.files.next," does not exist"))}
           }
           vars.out[[i.var]][traj.ti] = val.prev * dat.wgh.prev + val.next * (1 - dat.wgh.prev)
         }
       }
       
+    }
+    
+    if (from.files) {
+      if (exists("fl.prev")) {nc_close(fl.prev)}
+      if (exists("fl.next")) {nc_close(fl.next)}
     }
     
     return(list(data=vars.out,nn.index=nn.index,nn.distance=nn.distance))
