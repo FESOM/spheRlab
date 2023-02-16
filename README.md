@@ -29,5 +29,5 @@ $ docker run -it --rm -v "$(pwd):/app" ghcr.io/fesom/spherelab:master R
 This would mount your current working directory into the container. If instead you are using `singularity`, you could use:
 
 ```console
-$ singularity run --pwd /app -B $(pwd):/app -w docker://ghcr.io/fesom/spherelab:master R
+$ singularity run --pwd /app -B $(pwd):/app --writable-tmpfs docker://ghcr.io/fesom/spherlab:master R
 ```
