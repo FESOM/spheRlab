@@ -7,3 +7,27 @@ The original development of spheRlab has been driven by personal technical needs
 The further development of spheRlab is hoped to get some boost by the move of the project to GitHub for public collaborative code sharing and development.
 
 Any help and other feedback is greatly appreciated, either directly on GitHub or via email to <helge.goessling@awi.de>!
+
+## Usage in Docker
+
+If you are experiencing difficulties with a local installation, you can also consider running spheRlab via a container.
+
+For example, you could use `docker` like this:
+
+```console
+$ docker run -it --rm ghcr.io/fesom/spherlab:master R 
+```
+
+This launches you into an interactive R session with spheRlab already installed!
+
+If you need access to specific data:
+
+```console
+$ docker run -it --rm -v "$(pwd):/app" ghcr.io/fesom/spherelab:master R
+```
+
+This would mount your current working directory into the container. If instead you are using `singularity`, you could use:
+
+```console
+$ singularity run --pwd /app -B $(pwd):/app --writable-tmpfs docker://ghcr.io/fesom/spherlab:master R
+```
