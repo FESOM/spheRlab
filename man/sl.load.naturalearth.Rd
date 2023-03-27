@@ -8,7 +8,7 @@ Load Natural Earth Data
 Load (read) and/or download Natural Earth data.
 }
 \usage{
-sl.load.naturalearth(what="all", resolution="medium", poly.split=TRUE, naturalearth.dir="~/naturalearthdata", force.download=FALSE, download.if.missing=TRUE, download.baseurl="http://www.naturalearthdata.com/http//www.naturalearthdata.com/download", read=TRUE, verbose=TRUE)
+sl.load.naturalearth(what="all", resolution="medium", poly.split=TRUE, naturalearth.dir="~/naturalearthdata", force.download=FALSE, download.if.missing=TRUE, download.baseurl="https://www.naturalearthdata.com/http//www.naturalearthdata.com/download", read=TRUE, verbose=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -47,7 +47,7 @@ a logical value indicating whether or not to print more information.
 }
 }
 \details{
-This function, together with \code{\link{sl.plot.naturalearth}}, enables using the openly available and free-to-use Natural Earth data (http://www.naturalearthdata.com) - including coastlines, rivers, land and ocean polygons, and much more - in spheRlab. This function is also invoked from \code{\link{sl.plot.naturalearth}} if needed, so it does not need to be used explicitly to plot Natural Earth data.
+This function, together with \code{\link{sl.plot.naturalearth}}, enables using the openly available and free-to-use Natural Earth data (https://www.naturalearthdata.com) - including coastlines, rivers, land and ocean polygons, and much more - in spheRlab. This function is also invoked from \code{\link{sl.plot.naturalearth}} if needed, so it does not need to be used explicitly to plot Natural Earth data.
 
 If \code{read=TRUE}, the package rgdal is needed to read the shape file(s).
 }
@@ -55,7 +55,7 @@ If \code{read=TRUE}, the package rgdal is needed to read the shape file(s).
 If \code{read=TRUE}, a named list with each element corresponding to one Natural Earth data set, with naming convention 'resolution_what'. List elements are return values of the rgdal function \code{readOGR()}.
 }
 \references{
-http://www.naturalearthdata.com
+https://www.naturalearthdata.com
 }
 \author{
 Helge Goessling

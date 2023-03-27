@@ -1,7 +1,7 @@
 sl.load.naturalearth <-
 function (what="all",resolution="medium",poly.split=TRUE,naturalearth.dir=NULL,force.raw2split=FALSE,
           force.shape2raw=FALSE,force.download=FALSE,download.if.missing=TRUE,
-          download.baseurl="http://www.naturalearthdata.com/http//www.naturalearthdata.com/download",read=TRUE,verbose=TRUE) {
+          download.baseurl="https://www.naturalearthdata.com/http//www.naturalearthdata.com/download",read=TRUE,verbose=TRUE) {
 	
 	if (length(what) == 1 && (what == "all" || what == "list" )) {
 		if (what == "all" && length(resolution) > 1) {stop("what='all' works only for one resolution at a time.")}
