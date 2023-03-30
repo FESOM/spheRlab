@@ -1,5 +1,5 @@
 sl.plot.init <-
-function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12,transform.function=NULL) {
+function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12,transform.function=NULL,mar=rep(0,4)) {
 	
 	pir = list(projection=projection)
 	
@@ -68,7 +68,7 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 		dev.fun(file.name, width, height)
 	}
 	if (do.init) {
-	  par(mar=rep(0,4))
+	  par(mar=mar)
 	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab=xlab,ylab=ylab,main=main,xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n")
 	}
 	

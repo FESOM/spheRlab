@@ -8,7 +8,7 @@
 Initialise a spheRlab 3D polar plot. Two panels are drawn next to each other, rotated slightly such that a 3D effect occurs when the panels are overlaid, by aiming with the eyes at a point either before or behind the plane where the figure is displayed.
 }
 \usage{
-sl.plot.3D.init(projection = "polar", width = 30, lonlatrot.left = c(10, 0, 0), lonlatrot.right = c(-10, 0, 0), gap.frac = 0.1, col.background = NULL, precision = 1, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.3D.",device))
+sl.plot.3D.init(projection = "polar", width = 30, lonlatrot.left = c(10, 0, 0), lonlatrot.right = c(-10, 0, 0), gap.frac = 0.1, col.background = NULL, precision = 1, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.3D.",device), mar = rep(0,4))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -44,6 +44,9 @@ a logical value indicating whether or not initialise a device as specified by \c
 }
   \item{file.name}{
 a character specifying the output file. Only used if \code{do.init.device=TRUE}. Default is \code{file.name=paste0('~/sl.plot.3D.',device)}.
+}
+  \item{mar}{
+a numerical vector of the form \code{c(bottom, left, top, right)} which gives the number of lines of margin to be specified on the four sides of the plot. This can be used to make space for a colourbar, for example. The default is \code{rep(0,4)}.
 }
 }
 \details{

@@ -1,5 +1,5 @@
 sl.plot.3D.init <-
-function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(-10,0,0),gap.frac=.1,col.background=NULL,precision=1,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.3D.",device),transform.function=NULL) {
+function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(-10,0,0),gap.frac=.1,col.background=NULL,precision=1,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.3D.",device),transform.function=NULL,mar=rep(0,4)) {
 	
 	if (projection != "polar") {stop("projections other than 'polar' not yet implemented!")}
 	
@@ -16,7 +16,7 @@ function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(
 	  dev.fun(file.name,width=width,height=height)
 	}
 	if (do.init) {
-	  par(mar=rep(0,4))
+	  par(mar=mar)
 	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
 	}
 	

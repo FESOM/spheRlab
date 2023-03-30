@@ -8,7 +8,7 @@ Initialise Platon Plot
 Initialise a Platonian-type body plot. Currently possible are hexahedrons (cubes) and icosahedrons. The plot is composed of faces arranged in a net that can be crafted into a 3-dimensional platonian-type body. Returns a list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.platon.end}}.
 }
 \usage{
-sl.plot.platon.init(body.type = "hexahedron", width = 60, skip.faces = NULL, col.background = NULL, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.platon.",device))
+sl.plot.platon.init(body.type = "hexahedron", width = 60, skip.faces = NULL, col.background = NULL, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.platon.",device), mar = rep(0,4))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,6 +35,9 @@ a logical value indicating whether or not initialise a device as specified by \c
 }
   \item{file.name}{
 a character specifying the output file. Only used if \code{do.init.device=TRUE}. Default is \code{file.name=paste0('~/sl.plot.platon.',device)}.
+}
+  \item{mar}{
+a numerical vector of the form \code{c(bottom, left, top, right)} which gives the number of lines of margin to be specified on the four sides of the plot. This can be used to make space for a colourbar, for example. The default is \code{rep(0,4)}.
 }
 }
 \details{

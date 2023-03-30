@@ -1,5 +1,5 @@
 sl.plot.platon.init <-
-function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.platon.",device),transform.function=NULL,extra.face=FALSE) {
+function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.platon.",device),transform.function=NULL,extra.face=FALSE,mar=rep(0,4)) {
 	
   if (body.type == "tetrahedron") {
     print("initialising tetrahedron plot")
@@ -148,7 +148,7 @@ function(body.type="hexahedron",width=60,skip.faces=NULL,col.background=NULL,dev
     dev.fun(file.name,width=width,height=height)
   }
   if (do.init) {
-    par(mar=rep(0,4))
+    par(mar=mar)
     plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n")
   }
 	

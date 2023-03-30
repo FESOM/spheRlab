@@ -8,7 +8,7 @@ Initialise spheRlab Plot
 Initialise a standard spheRlab plot. Returns a plot specifics list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.end}}.
 }
 \usage{
-sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), lonlat.lonlatrot = NULL, polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = NULL, precision = 1, main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.",device), width = 12)
+sl.plot.init(projection = "lonlat", lonlat.lonrange = c(-180, 180), lonlat.latrange = c(-90, 90), lonlat.lonlatrot = NULL, polar.lonlatrot = c(0, 90, 0), polar.latbound = 0, regpoly.lonlatrot = c(0, 90, 0), regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = NULL, precision = 1, main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, do.init.device = do.init, file.name = paste0("~/sl.plot.",device), width = 12, mar = rep(0,4))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -71,6 +71,9 @@ a character specifying the output file. Only used if \code{do.init.device=TRUE}.
 }
   \item{width}{
 a scalar giving the width of the resulting figure. The height will be derived according to the chosen projection and other relevant plotting parameters. Only used if \code{do.init.device=TRUE}. Default is \code{width=12}. Note that for \code{device \%in\% c("bmp","jpeg","png","tiff")}, \code{width} is multiplied by \code{100} to ensure a reasonable default size.
+}
+  \item{mar}{
+a numerical vector of the form \code{c(bottom, left, top, right)} which gives the number of lines of margin to be specified on the four sides of the plot. This can be used to make space for a colourbar, for example. The default is \code{rep(0,4)}.
 }
 }
 \details{
