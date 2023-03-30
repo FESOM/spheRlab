@@ -73,7 +73,7 @@ a character specifying the output file. Only used if \code{do.init.device=TRUE}.
 a scalar giving the width of the resulting figure. The height will be derived according to the chosen projection and other relevant plotting parameters. Only used if \code{do.init.device=TRUE}. Default is \code{width=12}. Note that for \code{device \%in\% c("bmp","jpeg","png","tiff")}, \code{width} is multiplied by \code{100} to ensure a reasonable default size.
 }
   \item{mar}{
-a numerical vector of the form \code{c(bottom, left, top, right)} which gives the number of lines of margin to be specified on the four sides of the plot. This can be used to make space for a colourbar, for example. The default is \code{rep(0,4)}.
+a numerical vector of the form \code{c(bottom, left, top, right)} which gives the relative width of margin to be added to the four sides of the plot. This can be used to make space for a colourbar, for example. The default is \code{rep(0,4)}.
 }
 }
 \details{

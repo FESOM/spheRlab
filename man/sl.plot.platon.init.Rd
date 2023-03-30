@@ -37,7 +37,7 @@ a logical value indicating whether or not initialise a device as specified by \c
 a character specifying the output file. Only used if \code{do.init.device=TRUE}. Default is \code{file.name=paste0('~/sl.plot.platon.',device)}.
 }
   \item{mar}{
-a numerical vector of the form \code{c(bottom, left, top, right)} which gives the number of lines of margin to be specified on the four sides of the plot. This can be used to make space for a colourbar, for example. The default is \code{rep(0,4)}.
+a numerical vector of the form \code{c(bottom, left, top, right)} which gives the relative width of margin to be added to the four sides of the plot. This can be used to make space for a colourbar, for example. The default is \code{rep(0,4)}.
 }
 }
 \details{

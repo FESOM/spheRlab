@@ -13,11 +13,17 @@ function(projection="polar",width=30,lonlatrot.left=c(10,0,0),lonlatrot.right=c(
 	if (do.init.device) {
 	  if (device %in% c("bmp","jpeg","png","tiff")) {width = width * 100}
 	  dev.fun = match.fun(device,descend=FALSE)
-	  dev.fun(file.name,width=width,height=height)
+	  dev.fun(file.name, width*(1+mar[2]+mar[4]), height*(1+mar[1]+mar[3]))
 	}
 	if (do.init) {
-	  par(mar=mar)
-	  plot(x=NULL,xlim=xlim,ylim=ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
+	  par(mar=rep(0,4))
+	  plot.xlim = xlim
+	  plot.ylim = ylim
+	  plot.ylim[1] = plot.ylim[1] - mar[1] * diff(ylim)
+	  plot.xlim[1] = plot.xlim[1] - mar[2] * diff(xlim)
+	  plot.ylim[2] = plot.ylim[2] + mar[3] * diff(ylim)
+	  plot.xlim[2] = plot.xlim[2] + mar[4] * diff(xlim)
+	  plot(x=NULL,xlim=plot.xlim,ylim=plot.ylim,xlab="",ylab="",main="",xaxs="i",yaxs="i",xaxt="n",yaxt="n",bty="n",bg="white")
 	}
 	
 	pir.list = list()
