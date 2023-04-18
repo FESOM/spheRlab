@@ -31,7 +31,7 @@ a scalar specifying the line width of the boundaries.
 the line type of the boundaries.
 }
   \item{do.close.device}{
-a logical value specifying whether to call \code{dev.off()} to close the corresponding device in the end. Default is \code{do.close.device=TRUE}.
+a logical value specifying whether to call \code{dev.off()} to close the corresponding device in the end. Default is \code{do.close.device=plot.init.res$do.init.device}.
 }
 }
 \details{
