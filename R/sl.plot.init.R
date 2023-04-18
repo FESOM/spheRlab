@@ -10,7 +10,7 @@ function (projection="lonlat",lonrange=c(-180,180),latrange=c(-85,85),lonlatrot=
   if (projection=="lonlat" && missing(lonrange)) {lonrange = lonlat.lonrange}
   if (projection=="lonlat" && missing(latrange)) {latrange = lonlat.latrange}
   
-  do.init.device = !missing(file.name)
+  do.init.device = !is.null(file.name)
   
 	pir = list(projection=projection)
 	
