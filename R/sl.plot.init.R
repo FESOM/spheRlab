@@ -1,27 +1,53 @@
 sl.plot.init <-
-function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),polar.latbound=0,regpoly.lonlatrot=c(0,90,0),regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,do.init.device=do.init,file.name=paste0("~/sl.plot.",device),width=12,transform.function=NULL,mar=rep(0,4)) {
+function (projection="lonlat",lonrange=c(-180,180),latrange=c(-85,85),lonlatrot=NULL,polar.latbound=0,regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,file.name=NULL,width=12,transform.function=NULL,mar=rep(0,4),lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),regpoly.lonlatrot=c(0,90,0)) {
 	
+  # handling of deprecated arguments for backward compatibility
+  if (missing(lonlatrot)) {
+    if (projection=="lonlat") {lonlatrot = lonlat.lonlatrot}
+    else if (projection=="polar") {lonlatrot = polar.lonlatrot}
+    else if (projection=="regpoly") {lonlatrot = regpoly.lonlatrot}
+  }
+  if (projection=="lonlat" && missing(lonrange)) {lonrange = lonlat.lonrange}
+  if (projection=="lonlat" && missing(latrange)) {latrange = lonlat.latrange}
+  
+  do.init.device = !missing(file.name)
+  
 	pir = list(projection=projection)
 	
-	if (projection == "lonlat") {
+	if (projection %in% c("lonlat","mollweide")) {
 		xlab = ""
 		ylab = ""
-		if (lonlat.lonrange[2] <= lonlat.lonrange[1]) {stop("lonlat.lonrange must be given in increasing order")}
-		if (lonlat.lonrange[2] > 360 || lonlat.lonrange[1] <= -360) {stop("lonlat.lonrange must be within (-360,360]")}
-		if (lonlat.lonrange[2] - lonlat.lonrange[1] > 360) {stop("lonlat.lonrange spans more than 360 degree")}
-		if (max(abs(lonlat.latrange)) > 89) {stop("lonlat.latrange must be within [-89,89]")}
-		if (lonlat.latrange[2] <= lonlat.latrange[1]) {stop("lonlat.latrange must be given in increasing order")}
-		lat.span = lonlat.latrange
-		xlim = extendrange(lonlat.lonrange,f=0.1)
-		ylim = extendrange(lonlat.latrange,f=0.1)
-		pir$lonlat.lonrange = lonlat.lonrange
-		pir$lonlat.latrange = lonlat.latrange
-		pir$lonlat.lonlatrot = lonlat.lonlatrot
-		if (!is.null(lonlat.lonlatrot)) {
-		  abg = sl.lonlatrot2abg(lonlat.lonlatrot)
+		if (lonrange[2] <= lonrange[1]) {stop("lonrange must be given in increasing order")}
+		if (lonrange[2] > 360 || lonrange[1] <= -360) {stop("lonrange must be within (-360,360]")}
+		if (lonrange[2] - lonrange[1] > 360) {stop("lonrange spans more than 360 degree")}
+		if (max(abs(latrange)) > 89) {stop("latrange must be within [-89,89]")}
+		if (latrange[2] <= latrange[1]) {stop("latrange must be given in increasing order")}
+		lat.span = latrange
+		if (projection == "lonlat") {
+		  xlim = extendrange(lonrange,f=0.1)
+		  ylim = extendrange(latrange,f=0.1)
+		}
+		else if (projection == "mollweide") {
+		  lonrange.mo = rep(lonrange,2); latrange.mo = rep(latrange, each=2)
+		  if (latrange[1] < 0 && latrange[2] > 0) {
+		    lonrange.mo = c(lonrange.mo, lonrange); latrange.mo = c(latrange.mo, 0, 0)
+		  }
+		  mollweide.corners = sl.proj.mollweide(lon = lonrange.mo, lat = latrange.mo)
+		  xlim = extendrange(mollweide.corners$x,f=0.1)
+		  ylim = extendrange(mollweide.corners$y,f=0.1)
+		}
+		pir$lonrange = lonrange
+		pir$latrange = latrange
+		pir$lonlatrot = lonlatrot
+		if (!is.null(lonlatrot)) {
+		  abg = sl.lonlatrot2abg(lonlatrot)
 		  pir$alpha = abg[1]
 		  pir$beta = abg[2]
 		  pir$gamma = abg[3]
+		} else {
+		  pir$alpha = NULL
+		  pir$beta = NULL
+		  pir$gamma = NULL
 		}
 	} else if (projection == "polar") {
 		xlab = ""
@@ -29,8 +55,8 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 		if (polar.latbound < 0 || polar.latbound >= 90) {stop("polar.latbound must be in [0,90)")}
 		xlim = extendrange(c(sin(pi*(polar.latbound-90)/180),sin(pi*(90-polar.latbound)/180)),f=0.1)
 		ylim = xlim
-		abg = sl.lonlatrot2abg(polar.lonlatrot)
-		pir$polar.lonlatrot = polar.lonlatrot
+		abg = sl.lonlatrot2abg(lonlatrot)
+		pir$lonlatrot = lonlatrot
 		pir$polar.latbound = polar.latbound
 		pir$alpha = abg[1]
 		pir$beta = abg[2]
@@ -43,8 +69,8 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 		if (regpoly.N < 3) {stop("regpoly.N must be >= 3")}
 		xlim = extendrange(c(sin(pi*(regpoly.lat0-90)/180),sin(pi*(90-regpoly.lat0)/180)),f=0.1)
 		ylim = xlim
-		abg = sl.lonlatrot2abg(regpoly.lonlatrot)
-		pir$regpoly.lonlatrot = regpoly.lonlatrot
+		abg = sl.lonlatrot2abg(lonlatrot)
+		pir$lonlatrot = lonlatrot
 		pir$regpoly.N = regpoly.N
 		pir$regpoly.lat0 = regpoly.lat0
 		pir$alpha = abg[1]
@@ -92,12 +118,24 @@ function (projection="lonlat",lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,
 	    polygon(x+xshift,y+yshift,col=col.background,border=NA)
 	  } else if (projection == "lonlat") {
 	    rect(lonlat.lonrange[1]+xshift,lonlat.latrange[1]+yshift,lonlat.lonrange[2]+xshift,lonlat.latrange[2]+yshift,col=col.background,border=NA)
+	  } else if (projection == "mollweide") {
+	    poly.lons = seq(lonrange[1],lonrange[2],precision)
+	    if (tail(poly.lons,1) != lonrange[2]) {poly.lons = c(poly.lons,lonrange[2])}
+	    Nlo = length(poly.lons)
+	    poly.lats = seq(latrange[1],latrange[2],precision)
+	    if (tail(poly.lats,1) != latrange[2]) {poly.lats = c(poly.lats,latrange[2])}
+	    Nla = length(poly.lats)
+	    xy = sl.proj.mollweide(lon = c(rep(lonrange[1],Nla), poly.lons[2:max(Nlo-1,2)], rep(lonrange[2],Nla), poly.lons[max(Nlo-1,2):2]),
+	                   lat = c(poly.lats, rep(latrange[2],max(Nlo-2,1)), poly.lats, rep(latrange[1],max(Nlo-2,1))))
+	    polygon(xy$x+xshift,xy$y+yshift,col=col.background,border=NA)
 	  } else if (projection == "regpoly") {
 	    lon.ext = c(rot.inv$lon,rot.inv$lon[1])
 	    lat.ext = c(rot.inv$lat,rot.inv$lat[1])
 	    sl.plot.polygon(pir,lon.ext,lat.ext,col.fill=col.background,border=FALSE,ignore.visibility=TRUE)
 	  }
 	}
+	
+	pir$do.init.device = do.init.device
 	
 	return(pir)
 	

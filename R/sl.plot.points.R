@@ -68,6 +68,12 @@ function (plot.init.res,lon,lat,col="black",pch=1,cex=1,ignore.visibility=FALSE,
 		y = y[visible]
 	}
 	
+	if (projection == "mollweide") {
+	  xy = sl.proj.mollweide(lon = x, lat = y)
+	  x = xy$x
+	  y = xy$y
+	}
+	
 	points(x=x+xshift,y=y+yshift,col=col,pch=pch,cex=cex)
 	if (return.xy) {return(list(x=x+xshift,y=y+yshift))}
 	

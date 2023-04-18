@@ -14,10 +14,10 @@ function (plot.init.res,lon,lat) {
 	}
 
 	# determine visibility, shift longitudes (if necessary), and rotate (if necessary)
-	if (projection == "lonlat") {
-		lonlat.lonrange = plot.init.res$lonlat.lonrange
-		lonlat.latrange = plot.init.res$lonlat.latrange
-		if (!is.null(plot.init.res$lonlat.lonlatrot)) {
+	if (projection %in% c("lonlat","mollweide")) {
+		lonrange = plot.init.res$lonrange
+		latrange = plot.init.res$latrange
+		if (!is.null(plot.init.res$lonlatrot)) {
 		  alpha = plot.init.res$alpha
 		  beta = plot.init.res$beta
 		  gamma = plot.init.res$gamma
@@ -33,12 +33,12 @@ function (plot.init.res,lon,lat) {
 		while (max(lon) > 180) {
 			lon[lon > 180] = lon[lon > 180] - 360
 		}
-		if (min(lon)+360 < lonlat.lonrange[2]) {
-			lon[lon<lonlat.lonrange[1]] = lon[lon<lonlat.lonrange[1]] + 360
-		} else if (max(lon)-360 > lonlat.lonrange[1]) {
-			lon[lon>lonlat.lonrange[2]] = lon[lon>lonlat.lonrange[2]] - 360
+		if (min(lon)+360 < lonrange[2]) {
+			lon[lon<lonrange[1]] = lon[lon<lonrange[1]] + 360
+		} else if (max(lon)-360 > lonrange[1]) {
+			lon[lon>lonrange[2]] = lon[lon>lonrange[2]] - 360
 		}
-		visible = (lat>=lonlat.latrange[1] & lat<=lonlat.latrange[2] & lon>=lonlat.lonrange[1] & lon<=lonlat.lonrange[2])
+		visible = (lat>=latrange[1] & lat<=latrange[2] & lon>=lonrange[1] & lon<=lonrange[2])
 		x = lon
 		y = lat
 	} else if (projection == "polar") {
@@ -76,7 +76,7 @@ function (plot.init.res,lon,lat) {
 		x[pos.hem] = rot.res$x[pos.hem] * stretch.fac[pos.hem]
 		y[pos.hem] = rot.res$y[pos.hem] * stretch.fac[pos.hem]
 	} else {
-		stop("projections other than 'lonlat', 'polar', and 'regpoly' not yet implemented")
+		stop("projections other than 'lonlat', 'mollweide', 'polar', and 'regpoly' not yet implemented")
 	}
 	
 	if (!is.null(Norig)) {

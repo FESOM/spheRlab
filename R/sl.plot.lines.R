@@ -54,23 +54,23 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 		if (sum(visible[c(ns-1,ns)]) == 0) {next}
 		seg.x = x[c(ns-1,ns)]
 		seg.y = y[c(ns-1,ns)]
-		if (projection == "lonlat") {
-			lonlat.lonrange = plot.init.res$lonlat.lonrange
-			lonlat.latrange = plot.init.res$lonlat.latrange
+		if (projection %in% c("lonlat","mollweide")) {
+			lonrange = plot.init.res$lonrange
+			latrange = plot.init.res$latrange
 			if (sum(visible[c(ns-1,ns)]) == 1) {
-				if (min(seg.x) < lonlat.lonrange[1] || max(seg.x) > lonlat.lonrange[2]) {
-					if (min(seg.x) < lonlat.lonrange[1]) {
-						boundline.lon = lonlat.lonrange[1]
+				if (min(seg.x) < lonrange[1] || max(seg.x) > lonrange[2]) {
+					if (min(seg.x) < lonrange[1]) {
+						boundline.lon = lonrange[1]
 					} else {
-						boundline.lon = lonlat.lonrange[2]
+						boundline.lon = lonrange[2]
 					}
 					p.x = boundline.lon
 					p.y = sl.line.line.intersect(seg.x,seg.y,rep(boundline.lon,2),c(-89,89))$lat
-				} else if (min(seg.y) < lonlat.latrange[1] || max(seg.y) > lonlat.latrange[2]) {
-					if (min(seg.y) < lonlat.latrange[1]) {
-						boundline.lat = lonlat.latrange[1]
+				} else if (min(seg.y) < latrange[1] || max(seg.y) > latrange[2]) {
+					if (min(seg.y) < latrange[1]) {
+						boundline.lat = latrange[1]
 					} else {
-						boundline.lat = lonlat.latrange[2]
+						boundline.lat = latrange[2]
 					}
 					p.x = sl.line.lat.intersect(seg.x,seg.y,boundline.lat)$lon
 					p.y = boundline.lat
@@ -86,18 +86,33 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 			if (max(seg.x) - min(seg.x) > 180) {
 				# this seems to be a circular boundary segment that needs to be drawn in two parts on both sides
 				seg.x.mod = seg.x
-				seg.x.mod[seg.x<mean(lonlat.lonrange)] = lonlat.lonrange[2]
+				seg.x.mod[seg.x<mean(lonrange)] = lonrange[2]
 				seg.y.mod = seg.y
-				lli.res.right = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[2],2),c(-89,89))
-				seg.y.mod[seg.x<mean(lonlat.lonrange)] = lli.res.right$lat
+				lli.res.right = sl.line.line.intersect(seg.x,seg.y,rep(lonrange[2],2),c(-89,89))
+				seg.y.mod[seg.x<mean(lonrange)] = lli.res.right$lat
+				if (projection == "mollweide") {
+				  seg.xy.mod = sl.proj.mollweide(lon = seg.x.mod, lat = seg.y.mod)
+				  seg.x.mod = seg.xy.mod$x
+				  seg.y.mod = seg.xy.mod$y
+				}
 				lines(x=seg.x.mod+xshift,y=seg.y.mod+yshift,col=col[ns-1],lwd=lwd,lty=lty)
 				seg.x.mod = seg.x
-				seg.x.mod[seg.x>mean(lonlat.lonrange)] = lonlat.lonrange[1]
+				seg.x.mod[seg.x>mean(lonrange)] = lonrange[1]
 				seg.y.mod = seg.y
-				lli.res.left = sl.line.line.intersect(seg.x,seg.y,rep(lonlat.lonrange[1],2),c(-89,89))
-				seg.y.mod[seg.x>mean(lonlat.lonrange)] = lli.res.left$lat
+				lli.res.left = sl.line.line.intersect(seg.x,seg.y,rep(lonrange[1],2),c(-89,89))
+				seg.y.mod[seg.x>mean(lonrange)] = lli.res.left$lat
+				if (projection == "mollweide") {
+				  seg.xy.mod = sl.proj.mollweide(lon = seg.x.mod, lat = seg.y.mod)
+				  seg.x.mod = seg.xy.mod$x
+				  seg.y.mod = seg.xy.mod$y
+				}
 				lines(x=seg.x.mod+xshift,y=seg.y.mod+yshift,col=col[ns-1],lwd=lwd,lty=lty)
 			} else {
+			  if (projection == "mollweide") {
+			    seg.xy = sl.proj.mollweide(lon = seg.x, lat = seg.y)
+			    seg.x = seg.xy$x
+			    seg.y = seg.xy$y
+			  }
 				lines(x=seg.x+xshift,y=seg.y+yshift,col=col[ns-1],lwd=lwd,lty=lty)
 			}
 		} else if (projection == "polar") {
@@ -148,7 +163,7 @@ function (plot.init.res,lon,lat,col="black",lwd=1,lty=1,ignore.visibility=FALSE)
 			}
 			lines(x=seg.x+xshift,y=seg.y+yshift,col=col[ns-1],lwd=lwd,lty=lty)
 		} else {
-			stop("projections other than 'lonlat', 'polar', and 'regpoly' not yet implemented")
+			stop("projections other than 'lonlat', 'mollweide', 'polar', and 'regpoly' not yet implemented")
 		}
 		
 	}

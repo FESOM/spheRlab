@@ -43,7 +43,15 @@ function (plot.init.res,lon,lat,labels=seq(1,length(lon)),col="black",ignore.vis
 	yshift = plot.init.res$yshift
 	
 	if (any(visible)) {
-		text(x=x[visible]+xshift,y=y[visible]+yshift,labels=labels[visible],adj=adj,pos=pos,offset=offset,vfont=vfont,cex=cex,col=col,font=font,srt=srt)
+	  x = x[visible]
+	  y = y[visible]
+	  labels = labels[visible]
+	  if (plot.init.res$projection == "mollweide") {
+	    xy = sl.proj.mollweide(lon = x, lat = y)
+	    x = xy$x
+	    y = xy$y
+	  }
+		text(x=x+xshift,y=y+yshift,labels=labels,adj=adj,pos=pos,offset=offset,vfont=vfont,cex=cex,col=col,font=font,srt=srt)
 	}
 	
 }

@@ -9,8 +9,8 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=NULL,lat.distance=NULL,lon.
       radius = 90 - plot.init.res$polar.latbound
     } else if (plot.init.res$projection == "regpoly") {
       radius = 90 - plot.init.res$regpoly.lat0
-    } else if (plot.init.res$projection == "lonlat") {
-      radius = abs(diff(plot.init.res$lonlat.latrange)/2)
+    } else if (plot.init.res$projection %in% c("lonlat","mollweide")) {
+      radius = abs(diff(plot.init.res$latrange)/2)
     } else if (plot.init.res$projection == "platon") {
       radius = 90 - plot.init.res[[1]]$regpoly.lat0
     } else if (plot.init.res$projection == "3D") {
@@ -25,19 +25,19 @@ function (plot.init.res,lon.0=0,lat.0=0,lon.distance=NULL,lat.distance=NULL,lon.
   if (is.null(lon.distance)) {
     if (plot.init.res$projection == "polar") {
       radius = 90 - plot.init.res$polar.latbound
-      latref = abs(plot.init.res$polar.lonlatrot[2])
+      latref = abs(plot.init.res$lonlatrot[2])
     } else if (plot.init.res$projection == "regpoly") {
       radius = 90 - plot.init.res$regpoly.lat0
-      latref = abs(plot.init.res$regpoly.lonlatrot[2])
-    } else if (plot.init.res$projection == "lonlat") {
-      radius = abs(diff(plot.init.res$lonlat.latrange)/2)
+      latref = abs(plot.init.res$lonlatrot[2])
+    } else if (plot.init.res$projection %in% c("lonlat","mollweide")) {
+      radius = abs(diff(plot.init.res$latrange)/2)
       latref = 0
     } else if (plot.init.res$projection == "platon") {
       radius = 90 - plot.init.res[[1]]$regpoly.lat0
       latref = 45
     } else if (plot.init.res$projection == "3D") {
       radius = 90 - plot.init.res[[1]]$polar.latbound
-      latref = abs(plot.init.res[[1]]$polar.lonlatrot[2])
+      latref = abs(plot.init.res[[1]]$lonlatrot[2])
     }
     if (latref + radius > 90) {latref = abs(latref - ((latref+radius-90) / 2))}
     lon.distance = 2^(round(log2(radius / 4 / autodensity.f / cos(2*pi*latref/360))))
