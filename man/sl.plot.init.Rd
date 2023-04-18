@@ -8,7 +8,7 @@ Initialise spheRlab Plot
 Initialise a standard spheRlab plot. Returns a plot specifics list that needs to be provided to any spheRlab plotting functions called afterwards, ended by a call of \code{\link{sl.plot.end}}.
 }
 \usage{
-sl.plot.init(projection = "lonlat", lonrange = c(-180,180), latrange = c(-85,85), lonlatrot = NULL, polar.latbound = 0, regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = NULL, precision = 1, main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, file.name = NULL, width = 12, transform.function = NULL, mar = rep(0,4), lonlat.lonrange = c(-180,180), lonlat.latrange = c(-85,85), lonlat.lonlatrot = NULL, polar.lonlatrot = c(0,90,0), regpoly.lonlatrot = c(0,90,0))
+sl.plot.init(projection = "lonlat", lonrange = c(-180,180), latrange = c(-89,89), lonlatrot = NULL, polar.latbound = 0, regpoly.N = 3, regpoly.lat0 = 60, regpoly.rotfrac = 0, col.background = NULL, precision = 1, main = "", xshift = 0, yshift = 0, device = "pdf", do.init = TRUE, file.name = NULL, width = 12, transform.function = NULL, mar = rep(0,4), lonlat.lonrange = c(-180,180), lonlat.latrange = c(-85,85), lonlat.lonlatrot = NULL, polar.lonlatrot = c(0,90,0), regpoly.lonlatrot = c(0,90,0))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
