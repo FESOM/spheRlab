@@ -1,5 +1,5 @@
 sl.plot.init <-
-function (projection="lonlat",lonrange=c(-180,180),latrange=c(-89,89),lonlatrot=NULL,polar.latbound=0,regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,file.name=NULL,width=12,transform.function=NULL,mar=rep(0,4),lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),regpoly.lonlatrot=c(0,90,0)) {
+function (projection="lonlat",lonrange=c(-180,180),latrange=c(-89,89),lonlatrot=NULL,polar.latbound=0,regpoly.N=3,regpoly.lat0=60,regpoly.rotfrac=0,col.background=NULL,precision=1,main="",xshift=0,yshift=0,device="pdf",do.init=TRUE,file.name=NULL,width=12,transform.function=NULL,mar=rep(0,4),lonlat.lonrange=c(-180,180),lonlat.latrange=c(-85,85),lonlat.lonlatrot=NULL,polar.lonlatrot=c(0,90,0),regpoly.lonlatrot=c(0,90,0),do.init.device=NULL) {
 	
   # handling of deprecated arguments for backward compatibility
   if (missing(lonlatrot)) {
@@ -10,7 +10,15 @@ function (projection="lonlat",lonrange=c(-180,180),latrange=c(-89,89),lonlatrot=
   if (projection=="lonlat" && missing(lonrange)) {lonrange = lonlat.lonrange}
   if (projection=="lonlat" && missing(latrange)) {latrange = lonlat.latrange}
   
-  do.init.device = !is.null(file.name)
+  if (!is.null(do.init.device)) {
+    warning("Argument 'do.init.device' is deprecated. Specifying or not specifying 'file.name' is sufficient to determine if a (non-standard) device is initiated.")
+    if (is.null(file.name)) {
+      file.name = paste0("~/sl.plot.",device)
+      warning(paste0("'file.name' is set to ",file.name))
+    }
+  } else {
+    do.init.device = !is.null(file.name)
+  }
   
 	pir = list(projection=projection)
 	

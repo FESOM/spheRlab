@@ -76,7 +76,7 @@ New data from the gridded field is read only if the time (for temporal data) of 
 Helge Goessling
 }
 \note{
-To extensions would be nice:
+Two extensions would be nice:
 (i) Complement the function such that not only nearest-neighbour but more sophisticated spatial interpolation (e.g., bilinear) is supported.
 (ii) Support of unstructured grids.
 }
