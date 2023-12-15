@@ -63,11 +63,50 @@ function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,o
 		}
 	} else if (plot.platon.init.res$body.type == "truncatedicosahedron") {
 	  if (adhes.surf) {
-	    patt.x = c(0,0.2,0.55,0.5,NA)
-	    patt.y = c(1,0.95,0.25,0,NA)
-	    l.x = deltaxy * c(patt.x,patt.x+1,patt.x+2,patt.x+3,patt.x+4,-patt.x+1/2,-patt.x+3/2,-patt.x+5/2,-patt.x+7/2,-patt.x+9/2,-patt.x)
-	    l.y = deltaxy * sin(pi/3) * c(rep(patt.y+1/3,5),rep(-patt.y-2/3,5),-patt.y+1/3)
-	    lines(x=l.x,y=l.y,col=col.adh,lty=lty.adh,lwd=lwd.adh)
+	    do.face = list(c(14,20,26,32),
+	                   c(1,2,6,9,14,15,20,21,26,27,32),
+	                   c(1,2,6,9,14,15,20,21,26,27,32),
+	                   c(1,15,21,27),
+	                   c(6,14,20,26,32),
+	                   c(1,9,15,21,27,31))
+	    do.face.squeezed.left = list(c(),
+	                                c(),
+	                                c(10,16,22,28),
+	                                c(),
+	                                c(),
+	                                c(5,13,19,25))
+	    do.face.squeezed.right = list(c(),
+	                                 c(5,13,19,25,31),
+	                                 c(),
+	                                 c(),
+	                                 c(2,10,16,22,28),
+	                                 c())
+	    angs = seq(0,300,60)
+	    rot2d = function(x,y,ang,deg=TRUE) {
+	      if (deg) {ang = ang*2*pi/360}
+	      return(list(x = cos(ang)*x - sin(ang)*y, y = sin(ang)*x + cos(ang)*y))
+	    }
+	    x0 = deltaxy/3 * c(0,0.1,0.9,1) - deltaxy/6
+	    y0 = deltaxy/3 * c(0,0.1,0.1,0) + cos(pi/6) * deltaxy/3
+	    for (iface in 1:32) {
+	      xs = pir[[iface]]$xshift
+	      ys = pir[[iface]]$yshift
+	      for (iang in 1:6) {
+	        xy = rot2d(x=x0,y=y0,angs[iang])
+	        if (iface %in% do.face[[iang]]) {
+	          lines(xs+xy$x,ys+xy$y,col=col.adh,lty=lty.adh,lwd=lwd.adh)
+	        }
+	        xy = rot2d(x=x0[c(1,2,4)],y=y0[c(1,2,4)],angs[iang])
+	        if (iface %in% do.face.squeezed.left[[iang]]) {
+	          lines(xs+xy$x,ys+xy$y,col=col.adh,lty=lty.adh,lwd=lwd.adh)
+	        }
+	        xy = rot2d(x=x0[c(1,3,4)],y=y0[c(1,3,4)],angs[iang])
+	        if (iface %in% do.face.squeezed.right[[iang]]) {
+	          lines(xs+xy$x,ys+xy$y,col=col.adh,lty=lty.adh,lwd=lwd.adh)
+	        }
+	      }
+	    }
+	    
 	  }
 	  #l.x.ib = deltaxy * c(seq(0,5)-0.5,seq(8,1)/2,seq(0,5))
 	  #l.y.ib = deltaxy * sin(pi/3) * c(rep(1/3,6),rep(c(-2/3,1/3),4),rep(-2/3,6))
@@ -85,21 +124,25 @@ function(plot.platon.init.res,corners=TRUE,corners.length=0.05,adhes.surf=TRUE,o
 	}
 	
 	if (corners) {
-		l.x.ibob = c(l.x.ib,NA,l.x.ob)
-		l.y.ibob = c(l.y.ib,NA,l.y.ob)
-		l.x = NULL
-		l.y = NULL
-		for (n in 1:(length(l.x.ibob)-1)) {
-			l.x.n = l.x.ibob[n]
-			l.x.diff = l.x.ibob[n+1] - l.x.n
-			l.x = c(l.x,l.x.n,l.x.n+corners.length*l.x.diff,NA,l.x.n+(1-corners.length)*l.x.diff)
-			l.y.n = l.y.ibob[n]
-			l.y.diff = l.y.ibob[n+1] - l.y.n
-			l.y = c(l.y,l.y.n,l.y.n+corners.length*l.y.diff,NA,l.y.n+(1-corners.length)*l.y.diff)
-		}
-		l.x = c(l.x,l.x.ibob[n+1])
-		l.y = c(l.y,l.y.ibob[n+1])
-		lines(x=l.x,y=l.y,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
+	  if (plot.platon.init.res$body.type == "truncatedicosahedron") {
+	    warning("'corners' not yet implemented for body type 'truncatedicosahedron'")
+	  } else {
+  		l.x.ibob = c(l.x.ib,NA,l.x.ob)
+  		l.y.ibob = c(l.y.ib,NA,l.y.ob)
+  		l.x = NULL
+  		l.y = NULL
+  		for (n in 1:(length(l.x.ibob)-1)) {
+  			l.x.n = l.x.ibob[n]
+  			l.x.diff = l.x.ibob[n+1] - l.x.n
+  			l.x = c(l.x,l.x.n,l.x.n+corners.length*l.x.diff,NA,l.x.n+(1-corners.length)*l.x.diff)
+  			l.y.n = l.y.ibob[n]
+  			l.y.diff = l.y.ibob[n+1] - l.y.n
+  			l.y = c(l.y,l.y.n,l.y.n+corners.length*l.y.diff,NA,l.y.n+(1-corners.length)*l.y.diff)
+  		}
+  		l.x = c(l.x,l.x.ibob[n+1])
+  		l.y = c(l.y,l.y.ibob[n+1])
+  		lines(x=l.x,y=l.y,col=col.bnd,lty=lty.bnd,lwd=lwd.bnd)
+	  }
 	}
 	
 	if (do.close.device) {dev.off()}
