@@ -8,7 +8,7 @@ Remap Array
 Remap a numeric array along one of its dimensions from an old to a new dimension variable vector.
 }
 \usage{
-sl.remap(input.data, input.dimvals, new.dimvals, remap.dim = 1, method = "linear", extrapolate = FALSE, return.remapinfo = FALSE, verbose = TRUE)
+sl.remap(input.data, input.dimvals, new.dimvals, remap.dim = 1, method = "linear", extrapolate.method = "none", return.remapinfo = FALSE, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,8 +27,8 @@ an integer for which \code{1 <= remap.dim <= D} specifying the dimension along w
   \item{method}{
 a character specifying the interpolation method. Must be one of \code{"linear"} (default) and \code{"nearestneighbour"}.
 }
-  \item{extrapolate}{
-a logical value specifying whether or not to extrapolate to dimension variable values outside the original dimension range. Default is \code{FALSE} which implies that corresponding values will be \code{NA}. If \code{TRUE}, the method specified in the argument \code{method} will be used also for the extrapolation.
+  \item{extrapolate.method}{
+a character specifying the extrapolation method. Must be one of \code{"none"} (default), \code{"linear"}, and \code{"nearestneighbour"}. Default is \code{"none"} which implies that values outside the original dimension range will be \code{NA}.
 }
   \item{return.remapinfo}{
 a logical value specifying whether or not to return information on the remapping (nearest-neighbour-before indices and weights). Default is \code{FALSE}. 
@@ -53,7 +53,7 @@ a logical value specifying whether to produce warnings, in particular when the n
 Helge Goessling
 }
 \note{
-This function is similar to \code{sl.trajectory.remaptime} but works on arrays (including vectors) instead of 1-dimensional spatial line objects on spheres (such as trajectories).
+This function is similar to and was inspired by \code{sl.trajectory.remaptime} but works on arrays (including vectors) instead of 1-dimensional spatial line objects on spheres (such as trajectories).
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -68,9 +68,9 @@ x = seq(-2, 3, by=0.5)
 y = x^2
 x.remap = seq(-1, 5, by=0.3)
 y.remap.lin = as.vector(sl.remap.array(input.dat=y, input.dimvals=x, new.dimvals=x.remap,
-                                       extrapolate=TRUE)$data)
+                                       method="linear",extrapolate.method="linear")$data)
 y.remap.nn = as.vector(sl.remap.array(input.dat=y, input.dimvals=x,new.dimvals=x.remap,
-                                      extrapolate=TRUE, method="nearestneighbour")$data)
+                                      method="nearestneighbour",extrapolate.method="nearestneighbour")$data)
 
 plot(x,y,ylim=c(0,20),type="p",xlim=c(-2,5))
 points(x.remap,y.remap.lin,col="red")
@@ -79,7 +79,7 @@ points(x.remap,y.remap.nn,col="blue")
 # Matrix remapping
 dat1 = matrix(seq(0.5,3,by=0.5),ncol=3)
 dat2 = sl.remap.array(input.dat=dat1, input.dimvals=1:3, new.dimvals = seq(1.5,3.5,by=0.5),
-                      remap.dim=2, extrapolate=TRUE)
+                      remap.dim=2, method="linear",extrapolate.method="linear")
 
 print(dat1)
 print(dat2$data)

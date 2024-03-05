@@ -1,7 +1,10 @@
-sl.remap.array <- function (input.dimvals,input.data,new.dimvals,remap.dim=1,method="linear",extrapolate=FALSE,return.remapinfo=FALSE,verbose=TRUE) {
+sl.remap.array <- function (input.dimvals,input.data,new.dimvals,remap.dim=1,method="linear",extrapolate.method="none",return.remapinfo=FALSE,verbose=TRUE) {
   
   if (method != "nearestneighbour" && method != "linear") {
     stop("'method' must be one of 'nearestneighbour' and 'linear'.")
+  }
+  if (!(extrapolate.method %in% c("nearestneighbour","linear","none"))) {
+    stop("'extrapolate.method' must be one of 'nearestneighbour', 'linear', and 'none'.")
   }
   
   input.N = length(input.dimvals)
@@ -24,14 +27,14 @@ sl.remap.array <- function (input.dimvals,input.data,new.dimvals,remap.dim=1,met
   if (new.dimvals[new.N] > input.dimvals[input.N]) {
     if (new.dimvals[1] > input.dimvals[input.N]) {
       if (verbose) {warning("New dimension values completely out of original dimension values.")}
-      if (!extrapolate) {
+      if (extrapolate.method == "none") {
         if (verbose) {warning("All values will be 'NA'.")}
       } else {
         if (verbose) {warning("All values will be extrapolated.")}
       }
     } else {
       if (verbose) {warning("Maximum of new dimension values above maximum of original dimension values.")}
-      if (extrapolate) {
+      if (extrapolate.method != "none") {
         if (verbose) {warning("Values outside original dimension range will be extrapolated.")}
       } else {
         if (verbose) {warning("Values outside original dimension range will be 'NA'.")}
@@ -41,14 +44,14 @@ sl.remap.array <- function (input.dimvals,input.data,new.dimvals,remap.dim=1,met
   if (new.dimvals[1] < input.dimvals[1]) {
     if (new.dimvals[new.N] < input.dimvals[1]) {
       if (verbose) {warning("New dimension values completely out of original dimension values.")}
-      if (!extrapolate) {
+      if (extrapolate.method == "none") {
         if (verbose) {warning("All values will be 'NA'.")}
       } else {
         if (verbose) {warning("All values will be extrapolated.")}
       }
     } else {
       if (verbose) {warning("Minimum of new dimension values below minimum of original dimension values.")}
-      if (extrapolate) {
+      if (extrapolate.method != "none") {
         if (verbose) {warning("Values outside original dimension range will be extrapolated.")}
       } else {
         if (verbose) {warning("Values outside original dimension range will be 'NA'.")}
@@ -66,12 +69,15 @@ sl.remap.array <- function (input.dimvals,input.data,new.dimvals,remap.dim=1,met
     weights.left.ind[i.new] = i.input
     weights.left[i.new] = (input.dimvals[i.input+1] - new.dimvals[i.new]) / (input.dimvals[i.input+1] - input.dimvals[i.input])
   }
-  if (!extrapolate) {
+  if (extrapolate.method == "none") {
     weights.left[weights.left < 0 | weights.left > 1] = NA
+  } else if (extrapolate.method == "nearestneighbour") {
+    weights.left[weights.left < 0] = 0
+    weights.left[weights.left > 1] = 1
   }
   if (method == "nearestneighbour") {
-    weights.left[weights.left > .5] = 1
-    weights.left[weights.left <= .5] = 0
+    weights.left[weights.left > .5 & weights.left < 1] = 1
+    weights.left[weights.left <= .5 & weights.left > 0] = 0
   }
   
   new.data = array(dim=new.dim)
