@@ -2,6 +2,8 @@ sl.plot.end <-
 function(plot.init.res, line.border=TRUE, col.border="black", precision=1, lwd.border=1, lty.border=1, do.close.device=plot.init.res$do.init.device) {
 	
 	projection = plot.init.res$projection
+	xshift = plot.init.res$xshift
+	yshift = plot.init.res$yshift
 	
 	if (projection == "polar") {
 		
@@ -9,7 +11,7 @@ function(plot.init.res, line.border=TRUE, col.border="black", precision=1, lwd.b
 			xyrad = sin(pi*(90-plot.init.res$polar.latbound)/180)
 			x = c(-cos(seq(0,2*pi,2*pi*precision/360))) * xyrad
 			y = c(sin(seq(0,2*pi,2*pi*precision/360))) * xyrad
-			lines(x,y,col=col.border,lwd=lwd.border,lty=lty.border)
+			lines(x+xshift,y+yshift,col=col.border,lwd=lwd.border,lty=lty.border)
 		}
 	
 	} else if (projection == "lonlat") {
@@ -17,7 +19,7 @@ function(plot.init.res, line.border=TRUE, col.border="black", precision=1, lwd.b
 		if (line.border) {
 			lonrange = plot.init.res$lonrange
 			latrange = plot.init.res$latrange
-			rect(lonrange[1],latrange[1],lonrange[2],latrange[2],border=col.border,lty=lty.border,lwd=lwd.border)
+			rect(lonrange[1]+xshift,latrange[1]+yshift,lonrange[2]+xshift,latrange[2]+yshift,border=col.border,lty=lty.border,lwd=lwd.border)
 		}
 		
 	} else if (projection == "mollweide") {
@@ -33,7 +35,7 @@ function(plot.init.res, line.border=TRUE, col.border="black", precision=1, lwd.b
 	    }
 	    xy = sl.proj.mollweide(lon=c(rep(lonrange,each=length(lat.ext)),lonrange[1]),
 	                           lat=c(lat.ext,rev(lat.ext),latrange[1]))
-	    lines(xy$x,xy$y,col=col.border,lwd=lwd.border,lty=lty.border)
+	    lines(xy$x+xshift,xy$y+yshift,col=col.border,lwd=lwd.border,lty=lty.border)
 	  }
 	  
 	} else if (projection == "regpoly") {
