@@ -1,7 +1,7 @@
 sl.load.naturalearth <-
 function (what="all",resolution="medium",poly.split=TRUE,naturalearth.dir=NULL,force.raw2split=FALSE,
           force.shape2raw=FALSE,force.download=FALSE,download.if.missing=TRUE,
-          download.baseurl="https://www.naturalearthdata.com/http//www.naturalearthdata.com/download",read=TRUE,verbose=TRUE) {
+          download.baseurl="https://naturalearth.s3.amazonaws.com",read=TRUE,verbose=TRUE) {
 	
 	if (length(what) == 1 && (what == "all" || what == "list" )) {
 		if (what == "all" && length(resolution) > 1) {stop("what='all' works only for one resolution at a time.")}
@@ -89,7 +89,7 @@ function (what="all",resolution="medium",poly.split=TRUE,naturalearth.dir=NULL,f
 		  if (!file.exists(fl) || force.download) {
 			  if (download.if.missing || force.download) {
 				  if (verbose) {print(paste0("Fetching Natural Earth data for ",fl," from the internet."))}
-				  download.url = paste0(download.baseurl,"/",resolution.str,"/physical/ne_",reswhat,".zip")
+				  download.url = paste0(download.baseurl,"/",resolution.str,"_physical/ne_",reswhat,".zip")
 				  destfile = paste0(naturalearth.dir,"/ne_",reswhat,".zip")
 				  if (.Platform$OS.type == "windows") {destfile = paste(strsplit(destfile,"/")[[1]],collapse="\\")}
 				  download.try = try(download.file(download.url,destfile))
